@@ -1,0 +1,33 @@
+{
+  "name": "netflix-blog",
+  "version": "1.0.0",
+  "description": "A forum to discuss latest movies and tv shows being watched on netflix.",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmpal78/netflix-blog.git"
+  },
+  "keywords": [
+    "netflix",
+    "blog",
+    "thinkful",
+    "capstone"
+  ],
+  "author": "Matthew Palumbo",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mmpal78/netflix-blog/issues"
+  },
+  "homepage": "https://github.com/mmpal78/netflix-blog#readme",
+  "dependencies": {
+    "express": "^4.15.2"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "mocha": "^3.2.0"
+  }
+}
