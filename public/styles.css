@@ -1,3 +1,43 @@
+/* Log In View */
+
+.login-wrapper{
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 100px;
+  border: 1px solid #ccc;
+  width: 70%;
+  height: 700px;
+  text-align: center;
+}
+
+.login-form{
+  margin-top: 30px;
+  margin-bottom: 80px;
+  height: 200px;
+}
+
+.login-title, .sign-up-title{
+  text-align: left;
+}
+
+
+
+.inp-login, .label-login{
+  display: block;  
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+}
+
+input[class*="inp-"]{
+  height: 30px;
+  width: 80%;
+}
+
+.wrong-login{
+  display: none;
+  color: red;
+}
 
 header{
   text-align: center;
@@ -7,8 +47,18 @@ header{
 }
 
 nav {
+  position: relative;
   background-color: #7DFFF2;
   height: 70px;
+}
+
+.welcome{
+  display: none;
+  position: absolute;
+  float: left;
+  left: 50px;
+  bottom: 0px;
+  vertical-align: middle;
 }
 
 .search-wrapper{
@@ -68,6 +118,10 @@ p, input{
 
 .thread.view{
   display: none;
+}
+
+.thread-view-go-back{
+  width: 50px;
 }
 
 .thread-view-title-posts{

@@ -11,6 +11,10 @@ function hideAllViews(){
   $('.view').hide();
 }
 
+function showView(screenName){
+  $(`.${screenName}.view`).fadeIn(400);
+}
+
 
 
 function renderMovieThreads(state){
@@ -70,7 +74,7 @@ function renderIndThreadView(threadID, state){
 }
 
 
-
+hideAllViews();
   
 function grabThread(threadID){  
    var y = $.grep(state.movieThreads, function(elem, ind){          
@@ -83,8 +87,53 @@ function getMovieThreadsAndDisplay(){
   getMovieThreads(renderMovieThreads);
 }
 
-$(function(){
+// Login Functions
 
+function createUser(){
+  let id = $('#new-user-id').val();
+  let pass = $('#new-user-password').val();
+  login(id);
+
+}
+
+// Just for mock-data-client
+var USER;
+function checkLogin(){
+  let id = $('#user-id').val();
+  let pass = $('#password').val();
+
+    if(id === 'user' && pass === 'password'){
+      $('.wrong-login').hide();
+      login(id)
+    }
+    else{
+      $('.wrong-login').fadeIn();
+    }
+}
+
+function login(id){
+  showView('thread-list.view')
+  hideAllViews();
+  $('.welcome').text(`Welcome ${id}`);
+  $('.welcome').fadeIn();
+  getMovieThreadsAndDisplay();
+}
+
+$(function(){
+  
+
+  // Listeners
+
+  $('.login-form').submit(function(e){
+    e.preventDefault();
+    checkLogin();    
+  });
+
+  $('.sign-up-form').submit(function(e){
+    e.preventDefault();
+    createUser();
+
+  });
 
   $('.thread-list-items').on('click', '.js-movie-thread', function(){
     renderIndThreadView($(this).attr('id'), state);
@@ -97,7 +146,9 @@ $(function(){
     renderMovieThreads(state);
   })
 
-  getMovieThreadsAndDisplay();
+  
+  showView('login');
+
   
 });
 
