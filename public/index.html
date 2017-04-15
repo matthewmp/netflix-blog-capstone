@@ -3,12 +3,50 @@
 	<head>
 
 	</head>
-
+		<link rel="stylesheet" type="text/css" href="styles.css">
 	<body>
 
-		<p> Hello World! </p>
+		<header>		  
+		  <h1>Header Here and Search => <h1>
+		</header>
+
+	    <nav>
+	      <div class="search-wrapper">
+	        <p>Search for your movie or tv show: </p>
+	        <input></input>
+	      </div>
+	    </nav>
+  
+
+	  <!--  Thread List View -->
+	    <section class="thread-list view"> 
+	      <div class="movies-label">
+	        <p>Movie Discussions</p>
+	        <p class="plus">+</P>
+	      </div>
+
+	      <div class="thread-list-items"></div>
+	    </section>
+
+  
+		
+
+
+<!-- Thread View -->
+
+		<section class="thread view">
+			<div class="thread-view-go-back"><a href="#">Back</a></div>
+			<h1 class="thread-view-title"> </h1>
+			<span class="thread-author"></span>
+			<span class="thread-created"></span>
+
+			<div class="thread-view-title-posts"></div>
+		</section>
 
 
 
 	</body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script type="text/javascript" src="main.js"></script>
+
 </html>

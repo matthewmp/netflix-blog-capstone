@@ -1,0 +1,125 @@
+
+header{
+  text-align: center;
+  background-color: #8ABCFF;
+  height: 200px;
+  color: #fff;
+}
+
+nav {
+  background-color: #7DFFF2;
+  height: 70px;
+}
+
+.search-wrapper{
+  float: right;
+  margin-right: 10%;
+}
+
+p, input{
+  display: inline-block;
+}
+
+.movies{
+  width: 75%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.movies-label{
+  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  height: 50px;
+  background-color: #727DE8;
+  
+}
+
+
+.plus{
+  float: right;
+  padding-right: 20px;
+}
+
+.js-movie-thread:hover{
+  cursor: pointer;
+  background-color: azure;
+}
+
+.js-movie-thread img{
+  width: 50px;
+  vertical-align: middle;
+}
+
+.thread-title{
+  padding-left: 5%;
+}
+
+.thread-created{
+ margin-right: 20px;
+}
+
+.thread-author{
+
+}
+
+
+/*   Thread View */
+
+.thread.view{
+  display: none;
+}
+
+.thread-view-title-posts{
+  margin-top: 40px;
+}
+
+.js-post{
+  margin-left: 50px;
+  margin-bottom: 30px;
+  background-color: #e3eefd;
+}
+
+.js-post-content{
+  font-family: arial, serif;
+  font-size: 30px;
+}
+
+.js-post-created {
+  vertical-align: sub;
+  margin-left: 40px;
+  font-size: 13px;
+}
+
+.js-post-likes, .js-post-author{
+  vertical-align: sub;
+  margin-left: 10px;
+  font-size: 13px;
+}
+
+.js-post-comments{
+  width: 50%;
+  margin-left: 80px;
+  margin-bottom: 20px;
+  background-color: #ffffd0;
+  font-size: 20px;
+}
+
+.btn-comment{
+  position: relative;
+    top: -63px;
+    float: right;
+    margin-right: 30px;
+    width: 100px;
+    height: 30px;
+    border-style: none;
+    background-color: azure;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.btn-comment:active{
+  background-color: #7d8e8e;
+  color: #fff;
+
+}
