@@ -5,6 +5,10 @@ function getMovieThreads(callbackFn){
   setTimeout(function(){callbackFn(state)}, 100);
 }
 
+function getMovieThreadsAndDisplay(){
+  getMovieThreads(renderMovieThreads);
+}
+
 // Render Functions
 
 function hideAllViews(){
@@ -18,9 +22,7 @@ function showView(screenName){
 
 
 function renderMovieThreads(state){
-
   // Clear View
-  
   $('.thread-list.view').fadeIn();
 
   state.movieThreads.forEach(function(thread, ind){
@@ -41,13 +43,18 @@ function renderIndThreadView(threadID, state){
   let thread = grabThread(Number(threadID));
   console.log(thread)
 
-  // Clear Posts
-   $('.thread-view-title-posts').empty();
+  // Add Thread ID to Section id
+  $('.thread.view').attr('id', thread[0].id);
 
+  //Clear Posts
+  $('.thread-view-title-posts').empty();
+
+  // Fill in Thread Title Info
   $('.thread-view-title').text(thread[0].title);
   $('.thread-author').text(`Thread Created by: ${thread[0].author}`);
   $('.thread-created').text(`on ${thread[0].date}`);
 
+  // Load Thread Posts
   thread[0].posts.forEach(function(post){
     $('.thread-view-title-posts').append(
         `<article class="js-post" id=${post.id}>
@@ -59,6 +66,7 @@ function renderIndThreadView(threadID, state){
         </article>`        
       );
 
+    // Load Thread Post Comments
     if(post.comments){
       post.comments.forEach(function(comm){
         $(`#${post.id}`).append(
@@ -68,14 +76,14 @@ function renderIndThreadView(threadID, state){
              </article>`
           );
       })
-      $('.thread-view-title-posts').append('<button class="btn-comment">Comment</button>')
+      $('.thread-view-title-posts').append('<button class="js-btn-comment">Comment</button>')
     }
   })
 }
 
 
 hideAllViews();
-  
+// Grab Thread ID  
 function grabThread(threadID){  
    var y = $.grep(state.movieThreads, function(elem, ind){          
       return  elem.id == threadID;        
@@ -83,20 +91,18 @@ function grabThread(threadID){
    return y;
 }
 
-function getMovieThreadsAndDisplay(){
-  getMovieThreads(renderMovieThreads);
-}
+
 
 // Login Functions
 
 function createUser(){
   let id = $('#new-user-id').val();
   let pass = $('#new-user-password').val();
+  state.user = id;
   login(id);
 
 }
 
-// Just for mock-data-client
 var USER;
 function checkLogin(){
   let id = $('#user-id').val();
@@ -104,7 +110,8 @@ function checkLogin(){
 
     if(id === 'user' && pass === 'password'){
       $('.wrong-login').hide();
-      login(id)
+      state.user = id;
+      login(state.user);
     }
     else{
       $('.wrong-login').fadeIn();
@@ -114,8 +121,8 @@ function checkLogin(){
 function login(id){
   showView('thread-list.view')
   hideAllViews();
-  $('.welcome').text(`Welcome ${id}`);
-  $('.welcome').fadeIn();
+  $('.welcome').text(`Welcome ${state.user}`);
+  $('nav').fadeIn();
   getMovieThreadsAndDisplay();
 }
 
@@ -144,8 +151,28 @@ $(function(){
     hideAllViews();
     $('.thread-list-items').empty();
     renderMovieThreads(state);
+  });
+
+  $('.btn-add-post').click(function(){
+    showView('create-post.view');
+  });
+
+  $('.cancel').click(function(){
+    $('.create-post.view').fadeOut();
+    $('.create-thread.view').fadeOut();
   })
 
+  $('.btn-create-post').click(function(){
+    addPost();
+  })
+
+  $('.btn-add-thread').click(function(){
+    $('.create-thread.view').fadeIn();
+  })
+
+  $('.btn-create-thread').click(function(){
+    addThread();
+  })
   
   showView('login');
 
@@ -153,9 +180,76 @@ $(function(){
 });
 
 
+function stampDate(){
+  let d = new Date();
+  let month = d.getMonth();
+  let day = d.getDate();
+  let year = d.getFullYear();
 
+  return `${month} ${day} ${year}`
+
+}
+
+function addThread(){
+  let title = $('.create-thread-title').val();
+  let post = $('.thread-content').val();
+
+  let thread = {
+    "id":  Math.floor(Math.random() * 999999999),
+    "title": title,
+    "date": stampDate(),
+    "author": state.user,
+    "posts": [
+        {
+          "id": Math.floor(Math.random() * 999999999),
+          "content": post,
+          "user": state.user,
+          "created": stampDate(),
+          "likes": 0,
+          "comments": []
+        }
+    ]
+  }
+
+  state.movieThreads.push(thread);
+  renderIndThreadView(state.movieThreads[state.movieThreads.length - 1].id, state)
+
+}
+
+function addPost(content){
+    if(content === undefined) {
+      content = $('.post-content').val()
+    }
+    let id = Number($('.thread.view').attr('id'));
+    let index;
+    let obj = state.movieThreads.forEach(function(elem, ind){
+      if(elem.id === id){
+        index = state.movieThreads.indexOf(elem);
+      }      
+    })
+
+    let post = {
+      id: Math.floor(Math.random() * 999999999),
+      content: content,
+      user: state.user,
+      created: stampDate(),
+      likes: 0,
+      comments: []
+    }
+
+    state.movieThreads[index].posts.push(post);
+    renderIndThreadView(id, state);
+
+    // Clear textarea
+    $('.post-content').val('');
+}
+
+
+
+/*--------------  Data -------------*/
 const state = 
 {
+  user: '',
   movieThreads: 
   [
      {

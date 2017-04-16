@@ -12,6 +12,8 @@
 
 	    <nav>
 	    	<p class="welcome"></p>
+
+	    	<p class="btn-add-thread"> New Thread</p>
 	      	<div class="search-wrapper">	      	
 	        	<p>Search for your movie or tv show: </p>
 	        	<input></input>
@@ -52,12 +54,21 @@
 	  <!--  Thread List View -->
 	    <section class="thread-list view"> 
 	      <div class="movies-label">
-	        <p>Movie Discussions</p>
-	        <p class="plus">+</P>
+	        <p>Latest Conversations</p>	       
 	      </div>
 
 	      <div class="thread-list-items"></div>
+
+	      <div class="create-thread view">
+				<label for="create-thread-title">Enter Thread Title</label>
+				<input type="text" name="create-thread-title" class="create-thread-title" />
+				<label for="create-thread-content">Enter Your Post</label>
+				<textarea name="create-thread-content" rows="6" cols="50" class="thread-content" required></textarea>
+				<div class="btn-wrapper"><button class="btn-create-thread">Submit</button></div>
+				<p class="cancel">Cancel</p>
+			</div>
 	    </section>
+
 
   
 		
@@ -67,10 +78,24 @@
 
 		<section class="thread view">
 			<div class="thread-view-go-back"><a href="#">Back</a></div>
+
 			<h1 class="thread-view-title"> </h1>
 			<span class="thread-author"></span>
 			<span class="thread-created"></span>
 
+			<div class="add-post-wrapper">
+				<button type="button" class="btn-add-post">Add Post</button> 
+			</div>
+
+			<!-- Add Post View -->
+			<div class="create-post view">
+				<label for="create-post-content">Enter Your Post</label>
+				<textarea name="create-post-content" rows="6" cols="50" class="post-content"></textarea>
+				<div class="btn-wrapper"><button class="btn-create-post">Post</button></div>
+				<p class="cancel">Cancel</p>
+			</div>
+
+			<!-- Post Listing -->
 			<div class="thread-view-title-posts"></div>
 		</section>
 

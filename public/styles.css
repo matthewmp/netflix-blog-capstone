@@ -47,22 +47,25 @@ header{
 }
 
 nav {
+  display: none;
   position: relative;
   background-color: #7DFFF2;
   height: 70px;
 }
 
 .welcome{
-  display: none;
-  position: absolute;
-  float: left;
   left: 50px;
   bottom: 0px;
   vertical-align: middle;
 }
 
+.btn-add-thread, .welcome, .search-wrapper{
+  float: left;
+  margin-left: 30px;
+}
+
+
 .search-wrapper{
-  float: right;
   margin-right: 10%;
 }
 
@@ -159,7 +162,7 @@ p, input{
   font-size: 20px;
 }
 
-.btn-comment{
+.js-btn-comment{
   position: relative;
     top: -63px;
     float: right;
@@ -172,8 +175,87 @@ p, input{
     cursor: pointer;
 }
 
-.btn-comment:active{
+.js-btn-comment:active{
   background-color: #7d8e8e;
   color: #fff;
-
 }
+
+.add-post-wrapper{
+  margin-top: 50px;
+  margin-left: 50px;
+}
+
+.btn-add-thread{
+  font-family: arial, serif;
+  color: #ff00ff;
+  cursor: pointer;
+}
+
+.btn-add-post, .btn-create-post, .btn-create-thread{
+  width: 100px;
+  height: 40px;
+  border-style: none;
+  background-color: rgba(0, 0, 255, 0.56);
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.btn-add-post:active{
+  background-color: rgba(25, 18, 142, 0.57)
+}
+.btn-create-post:active{
+  background-color: rgba(25, 18, 142, 0.57)
+}
+
+.btn-create-thread:active{
+  background-color: rgba(25, 18, 142, 0.57)
+}
+
+.btn-create-post{
+  position: relative;
+  margin-right: auto; 
+  margin-left: auto;
+}
+
+.btn-wrapper{
+  text-align: center;
+  margin-top: 30px;
+}
+
+.create-post.view, .create-thread.view{
+  position: absolute;
+  margin: 0 auto;
+  top: 20%;
+  left: 0;
+  right: 0;
+  width: 400px;
+  height: 400px;
+  text-align: center;
+  background-color: azure;
+}
+
+.create-post.view textarea, label{
+  display: block;
+  padding-top: 20px;
+  margin-top: 30px;
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+
+.create-thread-title{
+  width: 80%;
+  height: 30px;
+}
+
+.post-content{
+  resize: none;
+}
+
+.cancel:hover{
+  cursor: pointer;
+  color: red;
+}
+
+
