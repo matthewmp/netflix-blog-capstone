@@ -18,14 +18,6 @@ describe('connect to index.html', function(){
 });
 
 describe('/threads', function(){
-	before(function(){
-		return runServer();
-	});
-
-	after(function(){
-		return closeServer();
-	})
-
 	it('should return list of threads', function(){
 		return chai.request(app)
 		.get('/threads')
@@ -39,3 +31,14 @@ describe('/threads', function(){
 
 	})
 })
+
+
+/*
+before(function(){
+		return runServer();
+	});
+
+	after(function(){
+		return closeServer();
+	})
+*/
