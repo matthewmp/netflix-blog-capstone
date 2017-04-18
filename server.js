@@ -8,8 +8,8 @@ const morgan = require('morgan');
 const {PORT, DATABASE_URL} = require('./config');
 const {Threads} = require('./models');
 
-const threadsRouter = require('./threadsRouter');
-const router = require('./threadsRouter')
+const threadsRouter = require('./routes/threadsRouter');
+const router = require('./routes/threadsRouter')
 
 mongoose.Promise = global.Promise;
 

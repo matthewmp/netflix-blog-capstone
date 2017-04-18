@@ -8,22 +8,39 @@ const {app, runServer, closeServer} = require('../server');
 chai.use(chaiHttp);
 
 describe('connect to index.html', function(){
+before(function() {    
+    return runServer();
 
+  });
+
+  after(function() {
+    return closeServer();
+  });
 	it('should receive status 200', function(){
 		return chai.request(app)
+		
 		.get('/')
 		.then((res) => {
 			res.should.have.status(200);
+			
 			
 		})
 	});
 });
 
 describe('/threads', function(){
+	before(function() {    
+    return runServer();
+
+  });
+
+  after(function() {
+    return closeServer();
+  });
 	it('should return list of threads', function(){
 
 		return chai.request(app)
-		this.timeout(5000)
+		
 		.get('/threads')
 		.then((res) => {
 			res.should.have.status(200);
@@ -31,7 +48,43 @@ describe('/threads', function(){
 			res.body.should.be.a('object');
 			res.body.should.have.all.keys('movieThreads');
 			res.body.movieThreads[0].should.have.all.keys('_id', 'title', 'author', 'posts', 'date')
+		
 		})
 
 	});
 }); 
+
+describe('/threads/:id', function(){
+	before(function() {    
+    return runServer();
+  });
+
+  after(function() {
+    return closeServer();
+  });
+	it('should return a single thread from id', function(){
+		return chai.request(app)
+		.get('/threads/58f6566b47cc1c5c1944c7db')
+		.then((thread => {
+			thread.should.have.status(200);
+			thread.should.be.a('object');
+		}))
+
+	})
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

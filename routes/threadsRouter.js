@@ -3,7 +3,7 @@ const router = express.Router();
 
 const bodyParser = require('body-parser');
 
-const {Threads} = require('./models');
+const {Threads} = require('../models');
 
 
 router.get('/', (req, res) => {
@@ -17,6 +17,16 @@ router.get('/', (req, res) => {
   .catch(err => {
     console.error(err);
     res.status(500).json({message: 'Internal Server Error'})
+  })
+})
+
+router.get('/:id', (req, res) => {
+  Threads
+  .findById(req.params.id)
+  .exec()
+  .then(thread => {
+    console.log('Receiving Thread');
+    res.json(thread);
   })
 })
 
