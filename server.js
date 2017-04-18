@@ -19,6 +19,8 @@ app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use('/threads', threadsRouter);
 
+let server;
+
 function runServer(databaseUrl=DATABASE_URL, port=PORT) {
   return new Promise((resolve, reject) => {
     mongoose.connect(databaseUrl, err => {
