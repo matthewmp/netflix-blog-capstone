@@ -10,6 +10,8 @@ const {app, runServer, closeServer} = require('../server');
 const {TEST_DATABASE_URL} = require('../config');
 const {Threads} = require('../models.js');
 
+mongoose.Promise = global.Promise;
+
 chai.use(chaiHttp);
 
 function seedForumData(){
