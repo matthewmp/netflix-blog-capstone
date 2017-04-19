@@ -54,7 +54,10 @@ function closeServer(){
 }
 
 if(require.main === module){
-	runServer().catch(err => console.log(err));
+	runServer().catch(err => {
+		console.log(err);
+		console.log('Error: in require.main ==== module');
+	});
 };
 
 
