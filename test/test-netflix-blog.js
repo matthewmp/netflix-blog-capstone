@@ -120,6 +120,24 @@ describe('Forum API Resource', function(){
 
 		})
 	})
+
+	describe('/threads/new-thread', function(){
+		it('should create a new thread and return it', function(){
+			const newThread = generateForumData();			
+			return chai.request(app)
+			.post('/threads/new-thread')
+			.send(newThread)
+			.then(function(res){				
+				res.should.have.status(201);
+				res.should.be.json;
+				res.body.should.be.a('object');
+				res.body.should.contain.keys('_id', 'title', 'author', 'posts', 'date');
+				res.body.posts.should.be.a('array');
+				res.body.posts.should.have.length.least(1);
+				res.body.posts[0].comments.should.be.a('array');
+			})
+		})
+	})
 })
 
 

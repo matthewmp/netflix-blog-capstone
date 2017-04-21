@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
-const threadSchema = mongoose.Schema({
-	//id: {type: mongoose.Schema.Types.ObjectId, auto: true},
+const threadSchema = mongoose.Schema({	
 	title: {type: String, required: true},
 	date: {type: Date, default: Date.now},
 	author: {type: String, required: true},
@@ -13,7 +12,7 @@ const threadSchema = mongoose.Schema({
 					created: {type: Date, default: Date.now},
 					likes: {type: Number},
 					comments: [{
-							//id: {type: mongoose.Schema.Types.ObjectId, auto: true},
+						id: {type: mongoose.Schema.Types.ObjectId, auto: true},
 						comment: {type: String},
 						user: {type: String},
 						likes: {type: Number},

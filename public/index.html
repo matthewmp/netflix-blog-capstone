@@ -3,71 +3,74 @@
 	<head>
 
 	</head>
+		<link href="https://fonts.googleapis.com/css?family=Condiment|Londrina+Outline|Rajdhani|Righteous|Roboto" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Ranga" rel="stylesheet">		
+		<link href="https://fonts.googleapis.com/css?family=Passion+One" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="styles.css">
-	<body>
+		<link rel="stylesheet" type="text/css" href="reset.css">
 
-		<header>		  
-		  <h1>Header Here and Search => <h1>
+	<body>
+	<div class="main-wrapper">	
+		<header>
+			<h1 class="header-title">Screen Junkie<span class="header-sub-title">A  Netflix Forum</span></h1>
+			<div class="login btn-header">Login</div><div class="signup btn-header">Sign Up</div>
 		</header>
 
 	    <nav>
-	    	<p class="welcome"></p>
+	    	<div class="welcome"></div>
 
-	    	<p class="btn-add-thread"> New Thread</p>
+	    	<div class="btn-add-thread"> New Thread</div>
 	      	<div class="search-wrapper">	      	
-	        	<p>Search for your movie or tv show: </p>
-	        	<input></input>
+	        	<p class="lbl-search" for="inp-search">Search for your movie or tv show: </p>
+	        	<input class="inp-search" name="inp-search" placeholder="ie. House of Cards"></input>
 	      	</div>
 	    </nav>
 
 
 	  <!-- Log In View -->
-	  <section class="login view">
-	  	<div class="login-wrapper">
-	  		<h2 class="login-title">Log In</h2>
-	  		<form class="login-form">
-	  			<input type="text" placeholder="User I.D." id="user-id" class="inp-login" required="">
-	  			<input type="password" class="inp-login" id="password" placeholder="Password" required="">
-	  			<button type="submit" class="btn-submit-login">Submit</button>
+		  <section class="login view">
+		  	<div class="login-wrapper">
+		  	<div class="x-wrapper"><div class="x-close">&#x2716;</div></div>
+		  		<form class="login-form">
+		  		 	<p class="login-signup-title">Log In</p>
 
-	  			<div class="wrong-login">
-	  				<p>User Name or Password is Incorrect</p>
-	  			</div>
-			</form>	 
+		  			<input type="text" placeholder="User I.D." id="user-id" class="inp-login" required="">
+		  			<input type="password" class="inp-login" id="password" placeholder="Password" required="">
 
-			<form class="sign-up-form"> 			
-				<h2 class="sign-up-title">Sign Up</h2>
-				<label for="create-user-id" class="label-login">User I.D.</label>
-				<input type="text" name="create-user-id" class="inp-login" id="new-user-id" required>
+		  			<button type="submit" class="btn-submit-login">Submit</button>
 
-				<label for="create-user-password" class="label-login">Password.</label>
-				<input type="password" name="create-user-password" class="inp-login" id="new-user-password" required>
+		  			<div class="wrong-login">
+		  				<p>User Name or Password is Incorrect</p>
+		  			</div>
+				</form>
+				<form class="sign-up-form"> 	
+					<p class="login-signup-title">Sign Up</p>
 
-				<button type="submit" class="btn-submit-create">Submit</button>
-			</form>
+					<input type="text" name="create-user-id" class="inp-login" id="new-user-id" placeholder="Create ID" required>	
+					<input type="password" name="create-user-password" class="inp-login" id="new-user-password" placeholder="Password"required>
 
+					<button type="submit" class="btn-submit-create">Submit</button>
+				</form>  	
+			</div>	
+		  </section>		   
 
-	  	</div>
-	  </section>
-  
+		  <!--  Thread List View -->
+		    <section class="thread-list view"> 
+		      <div class="movies-label">
+		        <p>Latest Conversations</p>	       
+		      </div>
 
-	  <!--  Thread List View -->
-	    <section class="thread-list view"> 
-	      <div class="movies-label">
-	        <p>Latest Conversations</p>	       
-	      </div>
+		      <div class="thread-list-items"></div>
 
-	      <div class="thread-list-items"></div>
-
-	      <div class="create-thread view">
-				<label for="create-thread-title">Enter Thread Title</label>
-				<input type="text" name="create-thread-title" class="create-thread-title" />
-				<label for="create-thread-content">Enter Your Post</label>
-				<textarea name="create-thread-content" rows="6" cols="50" class="thread-content" required></textarea>
-				<div class="btn-wrapper"><button class="btn-create-thread">Submit</button></div>
-				<p class="cancel">Cancel</p>
-			</div>
-	    </section>
+		      <div class="create-thread view">
+					<label for="create-thread-title">Enter Thread Title</label>
+					<input type="text" name="create-thread-title" class="create-thread-title" />
+					<label for="create-thread-content">Enter Your Post</label>
+					<textarea name="create-thread-content" rows="6" cols="50" class="thread-content" required></textarea>
+					<div class="btn-wrapper"><button class="btn-create-thread">Submit</button></div>
+					<p class="cancel">Cancel</p>
+				</div>
+		    </section>
 
 
   
@@ -76,29 +79,29 @@
 
 <!-- Thread View -->
 
-		<section class="thread view">
-			<div class="thread-view-go-back"><a href="#">Back</a></div>
+			<section class="thread view">
+				<div class="thread-view-go-back"><a href="#">Back</a></div>
 
-			<h1 class="thread-view-title"> </h1>
-			<span class="thread-author"></span>
-			<span class="thread-created"></span>
+				<h1 class="thread-view-title"> </h1>
+				<span class="thread-author"></span>
+				<span class="thread-created"></span>
 
-			<div class="add-post-wrapper">
-				<button type="button" class="btn-add-post">Add Post</button> 
-			</div>
+				<div class="add-post-wrapper">
+					<button type="button" class="btn-add-post">Add Post</button> 
+				</div>
 
-			<!-- Add Post View -->
-			<div class="create-post view">
-				<label for="create-post-content">Enter Your Post</label>
-				<textarea name="create-post-content" rows="6" cols="50" class="post-content"></textarea>
-				<div class="btn-wrapper"><button class="btn-create-post">Post</button></div>
-				<p class="cancel">Cancel</p>
-			</div>
+				<!-- Add Post View -->
+				<div class="create-post view">
+					<label for="create-post-content">Enter Your Post</label>
+					<textarea name="create-post-content" rows="6" cols="50" class="post-content"></textarea>
+					<div class="btn-wrapper"><button class="btn-create-post">Post</button></div>
+					<p class="cancel">Cancel</p>
+				</div>
 
-			<!-- Post Listing -->
-			<div class="thread-view-title-posts"></div>
-		</section>
-
+				<!-- Post Listing -->
+				<div class="thread-view-title-posts"></div>
+			</section>
+	</div>		
 
 
 	</body>

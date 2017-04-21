@@ -30,4 +30,43 @@ router.get('/:id', (req, res) => {
   })
 })
 
+router.post('/new-thread', (req, res) => {
+  console.log('In New Thread');
+   const requiredFields = ['title', 'posts', 'author'];
+  for (let i=0; i<requiredFields.length; i++) {
+    const field = requiredFields[i];
+    if (!(field in req.body)) {
+      const message = `Missing \`${field}\` in request body`
+      console.error(message);
+      return res.status(400).send(message);
+    }
+  }
+
+  Threads
+    .create({
+      title: req.body.title,
+      posts: req.body.posts,
+      author: req.body.author
+    })
+    .then(thread => res.status(201).json(thread)
+    .catch(err => {
+        console.error(err);
+        res.status(500).json({error: 'Something went wrong'});
+    }));
+})
+
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
+
+
+
+

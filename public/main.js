@@ -60,7 +60,7 @@ function renderMovieThreads(state){
 
   state.movieThreads.forEach(function(thread, ind){
     $('.thread-list-items').append(`<article class="js-movie-thread" id=${thread.id}>
-      <img src="https://tse4.mm.bing.net/th?id=OIP.VceLSE-SH0LSQysgDJZ0zgEsEs&pid=15.1&P=0&w=300&h=300" />    
+      <img src="media/film.png">    
       <p class="thread-title">${thread.title}</p>      
       <span class="thread-created">${thread.date},</span>
       <span class="thread-author">${thread.author}</span>      
@@ -218,6 +218,11 @@ $(function(){
   
 
   // Listeners
+
+  $('.btn-header').click(function(){
+    showView('login');
+  })
+
   $('.login-form').submit(function(e){
     e.preventDefault();
     checkLogin();    
@@ -229,7 +234,12 @@ $(function(){
   });
 
   $('.thread-list-items').on('click', '.js-movie-thread', function(){
-    renderIndThreadView($(this).attr('id'), state);
+    if(!(state.user)){
+      showView('login');
+    }
+    else{
+      renderIndThreadView($(this).attr('id'), state);
+    }    
   });
   
   $('.thread-view-go-back').click(function(){
@@ -259,8 +269,22 @@ $(function(){
   $('.btn-create-thread').click(function(){
     addThread();
   })
+
+  // If no user is logged in
+  $('.thread-list-items').click(function(e){
+    if(!(state.user)){
+      e.stopPropagation();
+      showView('login');
+    }
+  })
+
+  $('.x-wrapper').click(function(){
+    $('.signup.view').hide();
+    $('.login.view').hide();
+  })
   
-  showView('login');
+  renderMovieThreads(state);
+  showView('thread-list.view');
 });
 
 

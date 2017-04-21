@@ -18,6 +18,7 @@ app.use(morgan('common'));
 app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use('/threads', threadsRouter);
+app.use('/new-thread', threadsRouter);
 
 let server;
 
