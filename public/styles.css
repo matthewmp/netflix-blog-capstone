@@ -13,10 +13,11 @@ header{
       rgba(200, 0, 0, 0.5), 
       rgba(200, 0, 0, 0.5)
     ),
-    url('media/luke_cage.jpg') no-repeat;
+    url('media/dd.gif') no-repeat;
   background-size: cover;
   text-align: center;
-  height: 400px;
+  height: 500px;
+
   
 }
 
@@ -95,7 +96,7 @@ header{
     rgba(255,0,0,0.4),
     rgba(255,0,0,0.4)
   ),
-    url('http://cdn.fansided.com/wp-content/blogs.dir/229/files/2014/12/HOUSEOFCARDS-850x560.jpg') no-repeat;
+    url('media/hoc.jpg') no-repeat;
   background-size: cover;
   background-position-x: -100px;
 }
@@ -180,6 +181,10 @@ nav {
   line-height: 70px;
   font-family: 'Rajdhani';
   color: #fff;
+}
+
+.btn-add-thread:hover{
+  cursor: pointer;
 }
 
 
@@ -285,6 +290,7 @@ color: #fff;
 }
 
 .thread-view-go-back{
+  cursor: pointer;
   width: 50px;
 }
 

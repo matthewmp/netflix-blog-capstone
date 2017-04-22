@@ -41,33 +41,39 @@ function addThread(){
 }
 
 function _POST_NewThread(title, post){
-  let thread = {
-    "id":  90,
+  let thread = {    
     "title": title,
-    "date": stampDate(),
     "author": state.user,
     "posts": [
         {
-          "id": 91,
           "content": post,
           "user": state.user,
-          "created": stampDate(),
           "likes": 0,
-          "comments": []
         }
     ]
   }
+
+  $.ajax({
+    url: 'threads/new-thread',
+    contentType: 'application/json',
+    type: 'POST',
+    data: JSON.stringify(thread),
+    success: _state_NewThreadUpdate
+  })
+
+  /*
   MOCK_DATA.movieThreads.unshift(thread);
   // CallBack
   console.log(MOCK_DATA)
   _state_NewThreadUpdate(getThread(thread.id)[0])
-
+*/
 }
 
 function _state_NewThreadUpdate(newThread){      
-  state.movieThreads.unshift(newThread);
-
-  renderMovieThreads(state)
+  state.movieThreads.push(newThread);
+  setTimeout(function(){
+    renderMovieThreads(state);
+  }, 300)  
 }
 
 function renderMovieThreads(state){
@@ -77,7 +83,7 @@ function renderMovieThreads(state){
   $('.thread-list-items').empty();
   $('.thread-list.view').fadeIn();
 
-  state.movieThreads.forEach(function(thread, ind){
+  state.movieThreads.reverse().forEach(function(thread, ind){
     $('.thread-list-items').append(`<article class="js-movie-thread" id=${thread._id}>
       <img src="media/film.png">    
       <p class="thread-title">${thread.title}</p>      
@@ -238,12 +244,30 @@ function checkLogin(){
 }
 
 function login(id){
-  showView('thread-list.view')
-  hideAllViews();
+  //showView('thread-list.view')
+  //hideAllViews();
   $('.welcome').text(`Welcome ${state.user}`);
-  $('nav').fadeIn();
-  //getMovieThreadsAndDisplay();
+  $('nav').fadeIn();  
+   
   renderMovieThreads(state);
+  renderMovieThreads(state);
+}
+
+// Header Background Pic Slides
+function headerAnimation(){
+  let picArr = ['luke-cage-bullets.gif', 'hoc2.jpg', 'ironfist.jpeg'];
+  let count = 0;
+  var interval = setInterval(function(){
+    if(count >= picArr.length){
+      count = 0;
+    }
+    $('header').css('background', `linear-gradient(rgba(255,0,0,0.4),rgba(255,0,0,0.4)),url("media/${picArr[count]}") no-repeat`)
+    $('header').css('background-size', 'cover');
+    
+    count++;
+
+  }, 2500)
+  
 }
 
 
@@ -252,7 +276,6 @@ $(function(){
 
   $(function(){
     _GET_AllThreads();
-    renderMovieThreads();
   })
 
   hideAllViews();
@@ -289,6 +312,7 @@ $(function(){
     console.log("CLICK")
     hideAllViews();
     $('.thread-list-items').empty();
+    renderMovieThreads(state);
     renderMovieThreads(state);
   });
 
@@ -328,6 +352,7 @@ $(function(){
   
   
   showView('thread-list.view');
+  headerAnimation();
 });
 
 
