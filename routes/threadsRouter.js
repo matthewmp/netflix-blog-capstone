@@ -31,12 +31,11 @@ router.get('/:id', (req, res) => {
 })
 
 router.post('/new-thread', (req, res) => {
-  console.log('In New Thread');
    const requiredFields = ['title', 'posts', 'author'];
   for (let i=0; i<requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
-      const message = `Missing \`${field}\` in request body`
+      const message = `Missing \`${field}\` in request body`;
       console.error(message);
       return res.status(400).send(message);
     }
@@ -54,6 +53,39 @@ router.post('/new-thread', (req, res) => {
         res.status(500).json({error: 'Something went wrong'});
     }));
 })
+
+router.put('/new-post/:id', (req, res) => {
+  if(!(req.params.id === req.body.id)){
+    res.status(400).json({
+      error: 'Request Path ID and Request Body ID Must Match'
+    });
+  }
+ 
+  const requiredFields = ['user', 'content'];
+  for(let i = 0; i < requiredFields.length; i++){
+      const field = requiredFields[i];
+      if(!(field in req.body)){
+        const message = `Missing \`${field}\` in request body`;
+        console.error(message);
+        return res.status(400).send(message);
+      }
+    }
+    
+    const post = {
+      content: req.body.content,
+      user: req.body.user,
+      likes: 0
+      
+    }
+
+    console.log(`Inside put route: ${post}`)
+
+    Threads
+    .findByIdAndUpdate(req.params.id, {$push: {posts: {$each: [post], $position: 0}}},{new: true})
+    .exec()
+    .then(thread => res.status(201).json(thread.posts[0]))//(thread => res.status(201).json(thread.posts[0]))
+    .catch(err => res.status(500).json({message: 'Something went wrong'}));
+});
 
 module.exports = router;
 

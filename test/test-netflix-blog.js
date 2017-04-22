@@ -70,7 +70,7 @@ describe('Forum API Resource', function(){
 	after(function(){
 		return closeServer();
 	});
-
+/*
 	describe('connect to index.html', function(){
 		it('should receive status 200', function(){		
 			return chai.request(app)		
@@ -127,7 +127,7 @@ describe('Forum API Resource', function(){
 			return chai.request(app)
 			.post('/threads/new-thread')
 			.send(newThread)
-			.then(function(res){				
+			.then(res => {				
 				res.should.have.status(201);
 				res.should.be.json;
 				res.body.should.be.a('object');
@@ -138,6 +138,43 @@ describe('Forum API Resource', function(){
 			})
 		})
 	})
+*/
+	describe('/threads/new-post/:id', function(){
+		it('should create a new post and return it', function(){
+			
+			let ID;
+			return Threads
+			.findOne()
+			.exec()
+			.then(thread => {				
+				ID = thread._id;
+				newPost = {
+					"user": faker.name.findName(),
+					"content": "NEW STUFF",
+					"id": ID
+				}				
+				return chai.request(app)
+				.put(`/threads/new-post/${ID}`)
+				.send(newPost)
+			})
+			
+			.then(res => {				
+
+				return chai.request(app)
+				.put(`/threads/new-post/${ID}`)
+				.send(newPost)
+				.then(res =>{
+					res.should.have.status(201);
+					res.should.be.json;
+					res.should.be.a('object');
+					res.body.should.have.all.keys('likes', 'user', 'content', '_id', 'comments', 'created')
+				})
+				
+				
+
+			})
+		})
+	})	
 })
 
 

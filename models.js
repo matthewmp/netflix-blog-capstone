@@ -5,8 +5,7 @@ const threadSchema = mongoose.Schema({
 	date: {type: Date, default: Date.now},
 	author: {type: String, required: true},
 	posts: [
-				{
-					id: {type: mongoose.Schema.Types.ObjectId, auto: true},
+				{					
 					content: {type: String, required: true},
 					user: {type: String, required: true},
 					created: {type: Date, default: Date.now},
@@ -20,7 +19,18 @@ const threadSchema = mongoose.Schema({
 					}]
 				}
 	]
-})
+});
+
+	threadSchema.virtual('New_Post').get(function(){
+		return this.posts[0];
+	})
+
+ 	threadSchema.methods.returnPost = function(){
+		return {
+			id: this._id,
+			posts: this.posts[0]
+		};
+}
 
 const Threads = mongoose.model('moviethreads', threadSchema);
 
