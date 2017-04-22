@@ -70,7 +70,7 @@ describe('Forum API Resource', function(){
 	after(function(){
 		return closeServer();
 	});
-/*
+
 	describe('connect to index.html', function(){
 		it('should receive status 200', function(){		
 			return chai.request(app)		
@@ -85,8 +85,7 @@ describe('Forum API Resource', function(){
 		it('should return list of threads', function(){		
 			return chai.request(app)		
 			.get('/threads')
-			.then((res) => {
-				console.log(res.body);
+			.then((res) => {				
 				res.should.have.status(200);
 				res.should.be.json;
 				res.should.be.a('object');
@@ -138,7 +137,7 @@ describe('Forum API Resource', function(){
 			})
 		})
 	})
-*/
+
 	describe('/threads/new-post/:id', function(){
 		it('should create a new post and return it', function(){
 			
