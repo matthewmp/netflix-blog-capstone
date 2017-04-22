@@ -159,18 +159,11 @@ describe('Forum API Resource', function(){
 			
 			.then(res => {				
 
-				return chai.request(app)
-				.put(`/threads/new-post/${ID}`)
-				.send(newPost)
-				.then(res =>{
-					res.should.have.status(201);
-					res.should.be.json;
-					res.should.be.a('object');
-					res.body.should.have.all.keys('likes', 'user', 'content', '_id', 'comments', 'created')
-				})
-				
-				
-
+				res.should.have.status(201);
+				res.should.be.json;
+				res.should.be.a('object');
+				res.body.should.have.all.keys('likes', 'user', 'content', '_id', 'comments', 'created')
+		
 			})
 		})
 	})	
