@@ -137,7 +137,7 @@ describe('Forum API Resource', function(){
 			})
 		})
 	})
-
+/*
 	describe('/threads/new-post/:id', function(){
 		it('should create a new post and return it', function(){
 			
@@ -155,8 +155,7 @@ describe('Forum API Resource', function(){
 				return chai.request(app)
 				.put(`/threads/new-post/${ID}`)
 				.send(newPost)
-			})
-			
+			})			
 			.then(res => {				
 
 				res.should.have.status(201);
@@ -166,7 +165,8 @@ describe('Forum API Resource', function(){
 		
 			})
 		})
-	})	
+	})
+	*/	
 })
 
 

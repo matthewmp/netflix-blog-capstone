@@ -1,8 +1,25 @@
 // theme http://forumstyle.us/forumus/default-version/viewforum.php?f=41&sid=e0225cc41d6fc61d866ff3cfff1c14aa
 
+var state = {
 
+}
 
-  
+function _GET_AllThreads(){
+  $.ajax({
+    dataType: "json",
+    url: "http://localhost:8080/threads",
+    success: setInitialState,
+    type: "GET"
+  })
+}  
+
+function setInitialState(data){
+  state.movieThreads = data.movieThreads;
+  console.log(data);
+  if(state.user === undefined){
+     renderMovieThreads(state);
+  }
+}
 
 function stampDate(){
   let d = new Date();
@@ -13,6 +30,8 @@ function stampDate(){
   return `${month} ${day} ${year}`
 
 }
+
+
 
 function addThread(){  
   let title = $('.create-thread-title').val();
@@ -59,7 +78,7 @@ function renderMovieThreads(state){
   $('.thread-list.view').fadeIn();
 
   state.movieThreads.forEach(function(thread, ind){
-    $('.thread-list-items').append(`<article class="js-movie-thread" id=${thread.id}>
+    $('.thread-list-items').append(`<article class="js-movie-thread" id=${thread._id}>
       <img src="media/film.png">    
       <p class="thread-title">${thread.title}</p>      
       <span class="thread-created">${thread.date},</span>
@@ -72,7 +91,8 @@ function addPost(content){
     if(content === undefined) {
       content = $('.post-content').val()
     }
-    let id = Number($('.thread.view').attr('id'));
+    let id = $('.thread.view').attr('id');
+    console.log(`ADD POST: Id: ${id}, Content: ${content}`)
     _POST_newPost(id, content);
     // Clear textarea
     $('.post-content').val('');
@@ -81,14 +101,22 @@ function addPost(content){
   
 function _POST_newPost(id, content){  
   let post = {
-      id: 200,
+      id: id,
       content: content,
-      user: state.user,
-      created: stampDate(),
-      likes: 0,
-      comments: []
+      user: state.user,      
     }
+    console.log(post);
 
+  $.ajax({
+      url: `/threads/new-post/${id}`,
+      contentType: "application/json"      ,
+      type: "PUT",
+      data: JSON.stringify(post),
+      success: function(data){
+        _GET_AllThreads();         
+      }    
+    })
+  /*
     let index;
     MOCK_DATA.movieThreads.forEach(function(elem, ind){      
       if(elem.id === id){ 
@@ -99,7 +127,12 @@ function _POST_newPost(id, content){
     })
     MOCK_DATA.movieThreads[index].posts.push(post)
     //CallBack
-    _state_NewPostUpdate(id, post);
+    */
+    
+    //_state_NewPostUpdate(id, post);
+    setTimeout(function(){
+      renderIndThreadView(id, state);
+    }, 300)
 }
 
 function _state_NewPostUpdate(id, post){
@@ -120,7 +153,7 @@ function renderIndThreadView(id, state){
   $('.thread.view').fadeIn(1000);
 
   // Add Thread ID to Section id
-  $('.thread.view').attr('id', thread[0].id);
+  $('.thread.view').attr('id', thread[0]._id);
 
   // Clear Posts
   $('.thread-view-title-posts').empty();
@@ -170,9 +203,12 @@ function showView(screenName){
 
 
 function getThread(id){  
-   let thread = $.grep(MOCK_DATA.movieThreads, function(elem, ind){  //y = $.grep(state.movieThreads, function(elem, ind){          
-      return  elem.id === Number(id);    
+  console.log(id);
+   let thread = $.grep(state.movieThreads, function(elem, ind){
+      console.log(`Elem: ${typeof elem._id}, ID: ${id}, ${typeof id}`)
+      return  elem._id === id;    
     });
+   console.log(thread);
   return thread;
 }
 
@@ -214,6 +250,11 @@ function login(id){
 // Setup
 $(function(){ 
 
+  $(function(){
+    _GET_AllThreads();
+    renderMovieThreads();
+  })
+
   hideAllViews();
   
 
@@ -238,6 +279,8 @@ $(function(){
       showView('login');
     }
     else{
+      console.log("DSF: ")
+      console.log($(this).attr('class'));
       renderIndThreadView($(this).attr('id'), state);
     }    
   });
@@ -283,7 +326,7 @@ $(function(){
     $('.login.view').hide();
   })
   
-  renderMovieThreads(state);
+  
   showView('thread-list.view');
 });
 
@@ -292,6 +335,7 @@ $(function(){
 
 
 /*--------------  Data -------------*/
+/*
 const MOCK_DATA = 
 {
   movieThreads: 
@@ -711,3 +755,4 @@ const state =
      }
   ]
 }
+*/
