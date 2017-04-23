@@ -9,7 +9,8 @@ function _GET_AllThreads(){
     dataType: "json",
     url: "http://localhost:8080/threads",
     success: setInitialState,
-    type: "GET"
+    type: "GET",
+    crossDomain: true
   })
 }  
 
@@ -57,7 +58,8 @@ function _POST_NewThread(title, post){
     url: 'threads/new-thread',
     contentType: 'application/json',
     type: 'POST',
-    data: JSON.stringify(thread),
+    crossDomain: true,
+    data: JSON.stringify(thread),    
     success: _state_NewThreadUpdate
   })
 
@@ -117,6 +119,7 @@ function _POST_newPost(id, content){
       url: `/threads/new-post/${id}`,
       contentType: "application/json"      ,
       type: "PUT",
+      crossDomain: true,
       data: JSON.stringify(post),
       success: function(data){
         _GET_AllThreads();         
