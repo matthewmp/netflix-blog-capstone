@@ -16,7 +16,7 @@ function _GET_AllThreads(){
 function setInitialState(data){
   state.movieThreads = data.movieThreads;
   console.log(data);
-  if(state.user === undefined){
+  if(state.user !== undefined){
      renderMovieThreads(state);
   }
 }
@@ -166,21 +166,63 @@ function renderIndThreadView(id, state){
 
   // Fill in Thread Title Info
   $('.thread-view-title').text(thread[0].title);
-  $('.thread-author').text(`Thread Created by: ${thread.author}`);
-  $('.thread-created').text(`on ${thread.date}`);
+  $('.thread-creator').html(`Thread Created by: <span class="js-thread-title-author">${thread[0].author}</span>`);
+  $('.thread-created').text(`${thread[0].date}`);
 
   // Load Thread Posts
   thread[0].posts.forEach(function(post){
     $('.thread-view-title-posts').append(
-        `<article class="js-post" id=${post.id}>
+        `<article class="post-wrapper" id=${post.id}>
+          <div class="post-user-info">
+            <div class="user-info-name">
+              <p> ${post.user} </p>
+            </div>
+            <div class="user-img-wrapper">
+              <img class="user-img" src="http://santetotal.com/wp-content/uploads/2014/05/default-user.png" />
+            </div>  
+          </div>
+
+          <div class="post-content-wrapper">
+            <div class="post-content-date">
+              <p>${post.created}</p>
+            </div>
+            <div class="post-content">${post.content}</div>
+          </div>
+
+          <div class="post-meta">
+            <span class="thumb">&#x1F44D;</span>
+            <span class="likes">${post.likes}</span>
+            <span class="btn-comment">Comment</span>
+          </div>`);
+
+        if(post.comments.length){
+          post.comments.forEach(function(comment){
+              $('.thread-view-title-posts').append(`
+                \n            
+                \n
+                <span class="js-comment-user"><span class="by">by:</span> ${comment.user}</span>
+                \n
+              <div class="js-comment">${comment.comment}</div>
+            `)
+            });
+          
+        }
+
+        /*`<article class="js-post" id=${post.id}>
           <p class="js-post-content">${post.content}</p>
           </ br>
           <span class="js-post-created">${post.created}</span>
           <span class="js-post-likes">Likes: ${post.likes}</span>
           <span class="js-post-author">Posted By: ${post.user}</span>   
         </article>`        
-      );
+      );*/
 
+    
+
+
+
+  
+      /*
     // Load Thread Post Comments
     if(post.comments){
       post.comments.forEach(function(comm){
@@ -191,8 +233,8 @@ function renderIndThreadView(id, state){
              </article>`
           );
       })
-      $('.thread-view-title-posts').append('<button class="js-btn-comment">Comment</button>')
-    }
+     // $('.thread-view-title-posts').append('<button class="js-btn-comment">Comment</button>')
+    }*/
   })
 }
 
@@ -248,14 +290,14 @@ function login(id){
   //hideAllViews();
   $('.welcome').text(`Welcome ${state.user}`);
   $('nav').fadeIn();  
-   
-  renderMovieThreads(state);
-  renderMovieThreads(state);
+   _GET_AllThreads();
+  //renderMovieThreads(state);
+  //renderMovieThreads(state);
 }
 
 // Header Background Pic Slides
 function headerAnimation(){
-  let picArr = ['luke-cage-bullets.gif', 'hoc2.jpg', 'ironfist.jpeg'];
+  let picArr = ['luke-cage-bullets.gif', 'hoc2.jpg', 'ironfist.jpeg', 'bb.jpg', 'dd.jpg'];
   let count = 0;
   var interval = setInterval(function(){
     if(count >= picArr.length){
@@ -273,11 +315,11 @@ function headerAnimation(){
 
 // Setup
 $(function(){ 
-
+/*
   $(function(){
     _GET_AllThreads();
   })
-
+*/
   hideAllViews();
   
 
@@ -330,7 +372,13 @@ $(function(){
   })
 
   $('.btn-add-thread').click(function(){
-    $('.create-thread.view').fadeIn();
+    if(state.user){
+      $('.create-thread.view').fadeIn();  
+    }
+    else {
+      showView('login');
+    }
+    
   })
 
   $('.btn-create-thread').click(function(){
@@ -351,433 +399,6 @@ $(function(){
   })
   
   
-  showView('thread-list.view');
+  showView('news');
   headerAnimation();
 });
-
-
-
-
-
-/*--------------  Data -------------*/
-/*
-const MOCK_DATA = 
-{
-  movieThreads: 
-  [
-     {
-       "id":  1,
-       "title": "Tropic Thunder.. Hilarious",
-       "date": "Mar 04 2017",
-       "author": "Peter Schmo",
-       "posts": [
-                      {
-                        "id": 2,
-                        "content": "THis is my first post",
-                        "user": "keedozq12",
-                        "created": "Mar 04 2017",
-                        "likes": 0,
-                        "comments": [
-                          {
-                            "comment": "Awesom Movie",
-                            "id": 3,
-                            "user": "Matt Guy",
-                            "likes": 3
-                          },
-                          {
-                            "comment": "I dont think so",
-                            "id": 4,
-                            "user": "Bradley Cooper",
-                            "likes": 2
-                          }
-                        ]
-                      },
-              
-                      {
-                        "id": 5,
-                        "content": "Yeah I saw this movie, its ok",
-                        "user": "Bob Deniro",
-                        "created": "Jan 24 2011",
-                        "likes": 1,
-                        "comments": [
-                          {
-                            "comment": "Ok, its awesome",
-                            "id": 6,
-                            "likes": 4
-                          },
-                          {
-                            "comment": "Yeah bob u crazy",
-                            "id": 7,
-                            "likes": 5
-                          }
-                        ]
-                      }
-                    
-                 ]
-     },
-    {
-       "id": 8,
-       "title": "Captain America Civil War",
-       "date": "Mar 04 2017",
-       "author": "Vince Schmo",
-       "posts": [
-                      {
-                        "id": 9,
-                        "content": "Another Super hero movie... BORING",
-                        "user": "Vince Schmo",
-                        "created": "Jul 12 2014",
-                        "likes": 0,
-                        "comments": [
-                          {
-                            "comment": "Boring? Its sick!",
-                            "id": 10,
-                            "user": "Rob Lowe",
-                            "likes": 2
-                          },
-                          {
-                            "comment": "These movies are over done",
-                            "id": 11,
-                            "user": "Al Pacino",
-                            "likes": 10
-                          }
-                        ]
-                      },
-              
-                      {
-                        "id": 12,
-                        "content": "There all the same",
-                        "user": "Ralph Cramden",
-                        "created": "Feb 21 2013",
-                        "likes": 0,
-                        "comments": [
-                          {
-                            "comment": "I dont think so man",
-                            "id": 13,
-                            "likes": 15
-                          },
-                          {
-                            "comment": "Yeah all pretty similar",
-                            "id": 14,
-                            "likes": 7
-                          }
-                        ]
-                      }
-         
-                    
-                 ]
-     },
-    {
-       "id": 15,
-       "title": "Drunken Master, Jackie Chan",
-       "date": "Dec 23 2017",
-       "author": "Frank Schmo",
-       "posts": [
-                      {
-                        "id": 16,
-                        "content": "Jackie Rocks",
-                        "user": "Jet Li",
-                        "created": "Mar 04 2017",
-                        "likes": 10,
-                        "comments": [
-                          {
-                            "comment": "He'll never be Bruce",
-                            "id": 17,
-                            "user": "Branon Lee",
-                            "likes": 23
-                          },
-                          {
-                            "comment": "They both stink",
-                            "id": 18,
-                            "user": "Donnie Yen",
-                            "likes": 5
-                          }
-                        ]
-                      },
-              
-                      {
-                        "id": 19,
-                        "content": "He's getting old",
-                        "user": "Suzie Q",
-                        "created": "Jun 13 2014",
-                        "likes": 0,
-                        "comments": [
-                          {
-                            "comment": "He can still kick your butt",
-                            "id": 20,
-                            "likes": 32
-                          },
-                          {
-                            "comment": "Barely!",
-                            "id": 21,
-                            "likes": 23
-                          }
-                        ]
-                      }
-         
-                    
-                 ]
-     },
-    {
-       "id": 22,
-       "title": "Armagedon, Bruce Willis",
-       "date": "Sep 2 2017",
-       "author": "John Wayne",
-       "posts": [
-                      {
-                        "id": 23,
-                        "content": "Yippie Kay Yeh MF",
-                        "user": "cowboy343",
-                        "created": "Oct 04 2017",
-                        "likes": 4,
-                        "comments": [
-                          {
-                            "comment": "So cool",
-                            "id": 24,
-                            "user": "nobody32",
-                            "likes": 2
-                          },
-                          {
-                            "comment": "Liked the last one best",
-                            "id": 25,
-                            "user": "Sam Jackson",
-                            "likes": 1
-                          }
-                        ]
-                      },
-              
-                      {
-                        "id": 26,
-                        "content": "Fast n Furious is better",
-                        "user": "Al Hitchcock",
-                        "created": "Mar 04 2017",
-                        "likes": 2,
-                        "comments": [
-                          {
-                            "comment": "What?!?!",
-                            "id": 27,
-                            "likes": 100
-                          },
-                          {
-                            "comment": "I dont think so",
-                            "id": 28,
-                            "likes": 20
-                          }
-                        ]
-                      }
-         
-                    
-                 ]
-     }
-  ]
-}
-
-const state = 
-{
-  movieThreads: 
-  [
-     {
-       "id":  1,
-       "title": "Tropic Thunder.. Hilarious",
-       "date": "Mar 04 2017",
-       "author": "Peter Schmo",
-       "posts": [
-                      {
-                        "id": 2,
-                        "content": "THis is my first post",
-                        "user": "keedozq12",
-                        "created": "Mar 04 2017",
-                        "likes": 0,
-                        "comments": [
-                          {
-                            "comment": "Awesom Movie",
-                            "id": 3,
-                            "user": "Matt Guy",
-                            "likes": 3
-                          },
-                          {
-                            "comment": "I dont think so",
-                            "id": 4,
-                            "user": "Bradley Cooper",
-                            "likes": 2
-                          }
-                        ]
-                      },
-              
-                      {
-                        "id": 5,
-                        "content": "Yeah I saw this movie, its ok",
-                        "user": "Bob Deniro",
-                        "created": "Jan 24 2011",
-                        "likes": 1,
-                        "comments": [
-                          {
-                            "comment": "Ok, its awesome",
-                            "id": 6,
-                            "likes": 4
-                          },
-                          {
-                            "comment": "Yeah bob u crazy",
-                            "id": 7,
-                            "likes": 5
-                          }
-                        ]
-                      }
-                    
-                 ]
-     },
-    {
-       "id": 8,
-       "title": "Captain America Civil War",
-       "date": "Mar 04 2017",
-       "author": "Vince Schmo",
-       "posts": [
-                      {
-                        "id": 9,
-                        "content": "Another Super hero movie... BORING",
-                        "user": "Vince Schmo",
-                        "created": "Jul 12 2014",
-                        "likes": 0,
-                        "comments": [
-                          {
-                            "comment": "Boring? Its sick!",
-                            "id": 10,
-                            "user": "Rob Lowe",
-                            "likes": 2
-                          },
-                          {
-                            "comment": "These movies are over done",
-                            "id": 11,
-                            "user": "Al Pacino",
-                            "likes": 10
-                          }
-                        ]
-                      },
-              
-                      {
-                        "id": 12,
-                        "content": "There all the same",
-                        "user": "Ralph Cramden",
-                        "created": "Feb 21 2013",
-                        "likes": 0,
-                        "comments": [
-                          {
-                            "comment": "I dont think so man",
-                            "id": 13,
-                            "likes": 15
-                          },
-                          {
-                            "comment": "Yeah all pretty similar",
-                            "id": 14,
-                            "likes": 7
-                          }
-                        ]
-                      }
-         
-                    
-                 ]
-     },
-    {
-       "id": 15,
-       "title": "Drunken Master, Jackie Chan",
-       "date": "Dec 23 2017",
-       "author": "Frank Schmo",
-       "posts": [
-                      {
-                        "id": 16,
-                        "content": "Jackie Rocks",
-                        "user": "Jet Li",
-                        "created": "Mar 04 2017",
-                        "likes": 10,
-                        "comments": [
-                          {
-                            "comment": "He'll never be Bruce",
-                            "id": 17,
-                            "user": "Branon Lee",
-                            "likes": 23
-                          },
-                          {
-                            "comment": "They both stink",
-                            "id": 18,
-                            "user": "Donnie Yen",
-                            "likes": 5
-                          }
-                        ]
-                      },
-              
-                      {
-                        "id": 19,
-                        "content": "He's getting old",
-                        "user": "Suzie Q",
-                        "created": "Jun 13 2014",
-                        "likes": 0,
-                        "comments": [
-                          {
-                            "comment": "He can still kick your butt",
-                            "id": 20,
-                            "likes": 32
-                          },
-                          {
-                            "comment": "Barely!",
-                            "id": 21,
-                            "likes": 23
-                          }
-                        ]
-                      }
-         
-                    
-                 ]
-     },
-    {
-       "id": 22,
-       "title": "Armagedon, Bruce Willis",
-       "date": "Sep 2 2017",
-       "author": "John Wayne",
-       "posts": [
-                      {
-                        "id": 23,
-                        "content": "Yippie Kay Yeh MF",
-                        "user": "cowboy343",
-                        "created": "Oct 04 2017",
-                        "likes": 4,
-                        "comments": [
-                          {
-                            "comment": "So cool",
-                            "id": 24,
-                            "user": "nobody32",
-                            "likes": 2
-                          },
-                          {
-                            "comment": "Liked the last one best",
-                            "id": 25,
-                            "user": "Sam Jackson",
-                            "likes": 1
-                          }
-                        ]
-                      },
-              
-                      {
-                        "id": 26,
-                        "content": "Fast n Furious is better",
-                        "user": "Al Hitchcock",
-                        "created": "Mar 04 2017",
-                        "likes": 2,
-                        "comments": [
-                          {
-                            "comment": "What?!?!",
-                            "id": 27,
-                            "likes": 100
-                          },
-                          {
-                            "comment": "I dont think so",
-                            "id": 28,
-                            "likes": 20
-                          }
-                        ]
-                      }
-         
-                    
-                 ]
-     }
-  ]
-}
-*/
