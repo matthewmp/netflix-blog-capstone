@@ -8,8 +8,8 @@ const morgan = require('morgan');
 const {PORT, DATABASE_URL} = require('./config');
 const {Threads} = require('./models');
 
-const threadsRouter = require('./threadsRouter');
-const router = require('./threadsRouter')
+const threadsRouter = require('./routes/threadsRouter');
+const router = require('./routes/threadsRouter')
 
 mongoose.Promise = global.Promise;
 
@@ -18,6 +18,7 @@ app.use(morgan('common'));
 app.use(bodyParser.json());
 app.use(express.static('public'));
 app.use('/threads', threadsRouter);
+app.use('/new-thread', threadsRouter);
 
 let server;
 
@@ -39,22 +40,25 @@ function runServer(databaseUrl=DATABASE_URL, port=PORT) {
   });
 }
 
-function closeServer(){
-	return mongoose.disconnect().then(() => {
-		return new Promise((resolve, reject) => {
-			console.log('Closing Server');
-			server.close(err => {
-				if(err){
-					return reject(err);
-				}
-				resolve();
-			});
-		});
-	});
+function closeServer() {
+  return mongoose.disconnect().then(() => {
+     return new Promise((resolve, reject) => {
+       console.log('Closing server');
+       server.close(err => {
+           if (err) {
+               return reject(err);
+           }
+           resolve();
+       });
+     });
+  });
 }
 
 if(require.main === module){
-	runServer().catch(err => console.log(err));
+	runServer().catch(err => {
+		console.log(err);
+		console.log('Error: in require.main ==== module');
+	});
 };
 
 

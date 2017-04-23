@@ -1,0 +1,2 @@
+renderMovieThread function works but when called after login it doesnt show the list of threads in reverse.  However it does show 
+in reverse when first called before login. Same issue on clicking go back link.
