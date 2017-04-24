@@ -139,13 +139,14 @@ describe('Forum API Resource', function(){
 	describe('/threads/new-post/:id', function(){
 		it('should create a new post and return it', function(){
 			
-			let ID;
-			return Threads
-			.findOne()
-			.exec()
-			.then(thread => {	
-			console.log(thread);			
-				ID = thread._id;
+			
+			return chai.request(app)
+			.get('/threads')
+			.then((res => {
+				const ID = res.body.movieThreads[0]._id;		
+						
+				//const ID = thread._id;
+
 				newPost = {
 					"user": faker.name.findName(),
 					"content": "NEW STUFF",
@@ -154,7 +155,7 @@ describe('Forum API Resource', function(){
 				return chai.request(app)
 				.put(`/threads/new-post/${ID}`)
 				.send(newPost)
-			})			
+			}))			
 			.then(res => {				
 
 				res.should.have.status(201);
@@ -166,10 +167,24 @@ describe('Forum API Resource', function(){
 		})
 	})
 })
+/*
+return chai.request(app)
+			.get('/threads')
+			.then((res => {
+				const ID = res.body.movieThreads[0]._id;					
 
+				return chai.request(app)
+				.get(`/threads/${ID}`)
+				.then((res => {
+					res.should.have.status(200);					
+					res.body.should.contain.all.keys('_id', 'title', 'author', 'posts', 'date')
+				}))			
+			}))			
 
+		})
+	})
 
-
+*/
 
 
 
