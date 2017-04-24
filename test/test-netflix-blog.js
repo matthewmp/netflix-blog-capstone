@@ -105,14 +105,12 @@ describe('Forum API Resource', function(){
 			return chai.request(app)
 			.get('/threads')
 			.then((res => {
-				const ID = res.body.movieThreads[0]._id;
-				console.log(res.body.movieThreads[0]._id)	
+				const ID = res.body.movieThreads[0]._id;					
 
 				return chai.request(app)
 				.get(`/threads/${ID}`)
 				.then((res => {
-					res.should.have.status(200);
-					console.log(res.body)
+					res.should.have.status(200);					
 					res.body.should.contain.all.keys('_id', 'title', 'author', 'posts', 'date')
 				}))			
 			}))			
@@ -137,7 +135,7 @@ describe('Forum API Resource', function(){
 			})
 		})
 	})
-/*
+
 	describe('/threads/new-post/:id', function(){
 		it('should create a new post and return it', function(){
 			
@@ -161,12 +159,11 @@ describe('Forum API Resource', function(){
 				res.should.have.status(201);
 				res.should.be.json;
 				res.should.be.a('object');
-				res.body.should.have.all.keys('likes', 'user', 'content', '_id', 'comments', 'created')
+				res.body.should.contain.keys('likes', 'user', 'content', '_id', 'comments', 'created')
 		
 			})
 		})
 	})
-	*/	
 })
 
 

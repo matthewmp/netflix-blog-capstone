@@ -1,7 +1,7 @@
 // theme http://forumstyle.us/forumus/default-version/viewforum.php?f=41&sid=e0225cc41d6fc61d866ff3cfff1c14aa
 
 var state = {
-
+  movieThreads: []
 }
 
 function _GET_AllThreads(){
@@ -12,13 +12,23 @@ function _GET_AllThreads(){
     type: "GET"
   })
 }  
+/*
+function reviewPost(id){
+  $.ajax({
+    dataType: "json",
+    url: "http://localhost:8080/threads",
+    success: showUpdatedPost,
+    type: "GET"
+  })
 
-function setInitialState(data){
-  state.movieThreads = data.movieThreads;
-  console.log(data);
-  if(state.user !== undefined){
-     renderMovieThreads(state);
+  function showUpdatedPost(data){
+    setInitialState(data, 'ind', id)
   }
+} 
+*/
+function setInitialState(data){
+  state.movieThreads = data.movieThreads; 
+  renderMovieThreads(state);
 }
 
 function stampDate(){
@@ -38,6 +48,8 @@ function addThread(){
   let post = $('.thread-content').val();
 
   _POST_NewThread(title, post);  
+  $('.create-thread-title').val('');
+  $('.thread-content').val('');
 }
 
 function _POST_NewThread(title, post){
@@ -58,30 +70,23 @@ function _POST_NewThread(title, post){
     contentType: 'application/json',
     type: 'POST',
     data: JSON.stringify(thread),
-    success: _state_NewThreadUpdate
+    success: _GET_AllThreads()
   })
-
-  /*
-  MOCK_DATA.movieThreads.unshift(thread);
-  // CallBack
-  console.log(MOCK_DATA)
-  _state_NewThreadUpdate(getThread(thread.id)[0])
-*/
 }
-
+/*
 function _state_NewThreadUpdate(newThread){      
   state.movieThreads.push(newThread);
   setTimeout(function(){
     renderMovieThreads(state);
   }, 300)  
 }
-
+*/
 function renderMovieThreads(state){
 
   // Clear View
   hideAllViews();
   $('.thread-list-items').empty();
-  $('.thread-list.view').fadeIn();
+  showView('thread-list');
 
   state.movieThreads.reverse().forEach(function(thread, ind){
     $('.thread-list-items').append(`<article class="js-movie-thread" id=${thread._id}>
@@ -93,15 +98,14 @@ function renderMovieThreads(state){
   })
 }
 
-function addPost(content){
-    if(content === undefined) {
-      content = $('.post-content').val()
-    }
-    let id = $('.thread.view').attr('id');
-    console.log(`ADD POST: Id: ${id}, Content: ${content}`)
+function addPost(){
+  
+    let content = $('.add-post-content').val()
+    
+    let id = $('.thread.view').attr('id');    
     _POST_newPost(id, content);
     // Clear textarea
-    $('.post-content').val('');
+    $('.add-post-content').val('');
     
 }
   
@@ -110,35 +114,15 @@ function _POST_newPost(id, content){
       id: id,
       content: content,
       user: state.user,      
-    }
-    console.log(post);
+    }    
 
   $.ajax({
       url: `/threads/new-post/${id}`,
       contentType: "application/json"      ,
       type: "PUT",
       data: JSON.stringify(post),
-      success: function(data){
-        _GET_AllThreads();         
-      }    
+      success: _GET_AllThreads
     })
-  /*
-    let index;
-    MOCK_DATA.movieThreads.forEach(function(elem, ind){      
-      if(elem.id === id){ 
-        index = ind;       
-        //elem.posts.push(post) 
-        //console.log("PUSHED")
-      }      
-    })
-    MOCK_DATA.movieThreads[index].posts.push(post)
-    //CallBack
-    */
-    
-    //_state_NewPostUpdate(id, post);
-    setTimeout(function(){
-      renderIndThreadView(id, state);
-    }, 300)
 }
 
 function _state_NewPostUpdate(id, post){
@@ -156,7 +140,7 @@ function _state_NewPostUpdate(id, post){
 function renderIndThreadView(id, state){ 
   let thread = getThread(id);
   hideAllViews();
-  $('.thread.view').fadeIn(1000);
+  showView('thread');
 
   // Add Thread ID to Section id
   $('.thread.view').attr('id', thread[0]._id);
@@ -244,19 +228,17 @@ function hideAllViews(){
   $('.view').hide();
 }
 
-function showView(screenName){
+function showView(screenName, flag){
+  hideAllViews();  
   $(`.${screenName}.view`).fadeIn(400);
 }
 
 
 
 function getThread(id){  
-  console.log(id);
-   let thread = $.grep(state.movieThreads, function(elem, ind){
-      console.log(`Elem: ${typeof elem._id}, ID: ${id}, ${typeof id}`)
+   let thread = $.grep(state.movieThreads, function(elem, ind){      
       return  elem._id === id;    
     });
-   console.log(thread);
   return thread;
 }
 
@@ -279,6 +261,7 @@ function checkLogin(){
       $('.wrong-login').hide();
       state.user = id;
       login(state.user);
+      
     }
     else{
       $('.wrong-login').fadeIn();
@@ -288,9 +271,11 @@ function checkLogin(){
 function login(id){
   //showView('thread-list.view')
   //hideAllViews();
+  $('form').hide();
+  $('.login-overlay').hide();
   $('.welcome').text(`Welcome ${state.user}`);
-  $('nav').fadeIn();  
-   _GET_AllThreads();
+  showView('news');
+  // _GET_AllThreads();
   //renderMovieThreads(state);
   //renderMovieThreads(state);
 }
@@ -325,8 +310,39 @@ $(function(){
 
   // Listeners
 
-  $('.btn-header').click(function(){
+  $('.btn-login').click(function(){
+    $('.login-form').show();
+    $('.login-overlay').fadeIn();
     showView('login');
+  })
+
+  $('.signup').click(function(){
+    $('.login-overlay').fadeIn();
+    $('.sign-up-form').fadeIn()
+    showView('login');
+  })
+
+  $('.or-signup').click(function(){
+    $('.login-form').hide();
+    $('.sign-up-form').fadeIn();
+  })
+
+   $('.or-login').click(function(){
+    $('.sign-up-form').hide();
+    $('.login-form').fadeIn();
+  })
+
+  $('.home').click(function(){
+    showView('news');
+  })
+
+  $('.btn-view-threads').click(function(){
+    if(state.user){
+      _GET_AllThreads();
+    }
+    else {
+      $('.btn-login').click();      
+    }
   })
 
   $('.login-form').submit(function(e){
@@ -344,18 +360,8 @@ $(function(){
       showView('login');
     }
     else{
-      console.log("DSF: ")
-      console.log($(this).attr('class'));
       renderIndThreadView($(this).attr('id'), state);
     }    
-  });
-  
-  $('.thread-view-go-back').click(function(){
-    console.log("CLICK")
-    hideAllViews();
-    $('.thread-list-items').empty();
-    renderMovieThreads(state);
-    renderMovieThreads(state);
   });
 
   $('.btn-add-post').click(function(){
@@ -363,8 +369,7 @@ $(function(){
   });
 
   $('.cancel').click(function(){
-    $('.create-post.view').fadeOut();
-    $('.create-thread.view').fadeOut();
+    showView('news');
   })
 
   $('.btn-create-post').click(function(){
@@ -373,10 +378,10 @@ $(function(){
 
   $('.btn-add-thread').click(function(){
     if(state.user){
-      $('.create-thread.view').fadeIn();  
+      showView('create-thread');  
     }
     else {
-      showView('login');
+      $('.btn-login').click();      
     }
     
   })
@@ -394,11 +399,16 @@ $(function(){
   })
 
   $('.x-wrapper').click(function(){
-    $('.signup.view').hide();
-    $('.login.view').hide();
+    $('form').fadeOut();
+    $('.login-overlay').fadeOut();
+    showView('news');
   })
   
   
   showView('news');
   headerAnimation();
+
+  //css
+  $('.login-overlay').height($(document).height())
+
 });

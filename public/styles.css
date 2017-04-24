@@ -1,6 +1,4 @@
-body{
 
-}
 .main-wrapper{
   position: absolute;
   width: 100%;
@@ -64,7 +62,7 @@ header{
   color: #fff;
 }
 
-.login.btn-header{
+.btn-login.btn-header{
   left: 100px;
 }
 
@@ -74,8 +72,16 @@ header{
 
 
 /* Log In View */
+form {
+  display: none;
+}
+
+.login-form, .sign-up-form{
+  margin-top: 120px;
+}
 
 .login.view{
+  display: none;
   z-index: 10;
   position: absolute;
   right: 0;
@@ -83,16 +89,17 @@ header{
   top: 700px;
 }
 
-.login-wrapper{    
+.login-wrapper{   
+  position: absolute; 
   text-align: center;
   border: 10px solid #fff;
   box-shadow: 2px 2px 20px #fff;
   border-radius: 13px;
   height: 600px;
   width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 20px;
+  left: -350px;
+  right: -350px;
+  top: -300px;
   background: linear-gradient(
     rgba(255,0,0,0.4),
     rgba(255,0,0,0.4)
@@ -149,6 +156,14 @@ input[class*="inp-"]{
   color: red;
 }
 
+.or{
+  display: block;
+  cursor: pointer;
+  color: #fff;
+  margin-top: 20px;
+  font-family: 'Rajdhani';
+}
+
 button[class*="btn-submit"]{
    border-style: none;
     width: 120px;
@@ -175,7 +190,7 @@ nav {
   vertical-align: middle;
 }
 
-.btn-add-thread, .welcome, .search-wrapper{
+.nav-btn{
   float: left;
   font-size: 18px;
   margin-left: 30px;
@@ -184,8 +199,9 @@ nav {
   color: #fff;
 }
 
-.btn-add-thread:hover{
+.btn-add-thread:hover, .btn-view-threads:hover, .home:hover{
   cursor: pointer;
+  color: red;
 }
 
 
@@ -245,16 +261,12 @@ p, input{
 }
 
 .js-movie-thread{
-  background-color: #400;
-  border-radius: 3px;
   margin-bottom: 20px;
   margin-left: 50px;
-  width: 80%;
 }
 
 .js-movie-thread:hover{
   cursor: pointer;
-  background-color: #222;
 
 }
 
@@ -264,11 +276,17 @@ p, input{
 }
 
 .thread-title{
-  padding-left: 7%;
+  margin-left: 2%;
+  padding: 10px;
+  border-radius: 3px;
   font-size: 31px;
   font-family: 'Rajdhani';
   color: #ff0000;
   text-shadow: 1px 1px 1px #000;
+}
+
+.thread-title:hover{
+  background: rgba(240,0,0,0.2);
 }
 
 .thread-created{
@@ -298,6 +316,10 @@ color: #fff;
 .back{
   cursor: pointer;
   width: 50px;
+}
+
+.thread-list-view .back{
+  display: none;
 }
 
 .thread-view-title{
@@ -388,7 +410,7 @@ color: #fff;
   width: 100px;
   height: 40px;
   border-style: none;
-  background-color: rgba(0, 0, 255, 0.56);
+  background-color: #ff0000;
   color: #fff;
   font-size: 15px;
   cursor: pointer;
@@ -401,40 +423,50 @@ color: #fff;
   background-color: rgba(25, 18, 142, 0.57)
 }
 
+.btn-create-thread{
+  text-align: ceter;
+  margin: 10px 0 0 0; /**/
+  font-family: 'Passion One';
+  font-size: 23px;
+  text-shadow: 2px 2px 1px #000; 
+}
+
 .btn-create-thread:active{
-  background-color: rgba(25, 18, 142, 0.57)
+  background-color: #7f0000;
 }
 
 .btn-create-post{
-  position: relative;
-  margin-right: auto; 
-  margin-left: auto;
+  text-align: ceter;
+  margin: 10px 0 0 0; /**/
+  font-family: 'Passion One';
+  font-size: 23px;
+  text-shadow: 2px 2px 1px #000;
+}
+
+.btn-create-post:active{
+  background-color: #7f0000;
 }
 
 .btn-wrapper{
-  text-align: center;
-  margin-top: 30px;
+  margin: 20px 0 20px 0;
 }
 
 .create-post.view, .create-thread.view{
-  position: absolute;
-  margin: 0 auto;
-  top: 20%;
-  left: 0;
-  right: 0;
-  width: 400px;
+  position: relative;
+  display: none;
+  margin: 20px 0 0 50px;
+  width: 70%;
   height: 400px;
-  text-align: center;
-  background-color: azure;
+  background-color: ;
 }
 
-.create-post.view textarea, label{
+.create-post.view label, .create-thread.view label{
   display: block;
   padding-top: 20px;
-  margin-top: 30px;
-  margin-right: auto;
-  margin-left: auto;
-  text-align: center;
+  margin: 0 0 0px 0px;
+  font-family: 'Passion One';
+  font-size: 2em;
+  color: #7f0000;
 }
 
 .create-thread-title{
@@ -442,11 +474,18 @@ color: #fff;
   height: 30px;
 }
 
-
+.cancel{
+  margin: 0 0 0 3px;
+  font-family: 'Passion One';
+  text-shadow: 1px 1px 5px #ff0000;
+  color: #eee;
+  font-size: 20px;
+}
 
 .cancel:hover{
   cursor: pointer;
   color: red;
+  text-shadow: 1px 1px 2px #000; 
 }
 
 
@@ -488,10 +527,15 @@ color: #fff;
   
 }
 
-.user-img, .news-img{  
+.news-img{  
   width: 50%;
   height: 50%;
   margin-top: 20%;
+}
+
+.user-img{
+  width: 30%;
+  height: 30%;
 }
 
 .post-content-wrapper, .news-content-wrapper{
@@ -577,3 +621,36 @@ color: #fff;
   .by{
     color: #7f0000;
   }
+
+
+
+
+
+.login-wrapper{    
+  text-align: center;
+  border: 10px solid #fff;
+  box-shadow: 2px 2px 20px #fff;
+  border-radius: 13px;
+  height: 600px;
+  width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 20px;
+  background: linear-gradient(
+    rgba(255,0,0,0.4),
+    rgba(255,0,0,0.4)
+  ),
+    url('media/hoc.jpg') no-repeat;
+  background-size: cover;
+  background-position-x: -100px;
+}
+
+.login-overlay{
+  position: absolute;
+  display: none;
+  top: 0;
+  right: 0;
+  left: 0;
+  background: rgba(255,0,0,0.73);
+  width: 100%;
+}
