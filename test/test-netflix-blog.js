@@ -70,7 +70,7 @@ describe('Forum API Resource', function(){
 	after(function(){
 		return closeServer();
 	});
-
+/*
 	describe('connect to index.html', function(){
 		it('should receive status 200', function(){		
 			return chai.request(app)		
@@ -135,7 +135,7 @@ describe('Forum API Resource', function(){
 			})
 		})
 	})
-
+*/
 	describe('/threads/new-post/:id', function(){
 		it('should create a new post and return it', function(){
 			
@@ -143,7 +143,14 @@ describe('Forum API Resource', function(){
 			return chai.request(app)
 			.get('/threads')
 			.then((res => {
-				const ID = res.body.movieThreads[0]._id;		
+				console.log('Res.body: ')
+				console.log('')
+				console.log('')
+				console.log(res.body)
+				console.log('')
+				console.log('')
+				const ID = res.body.movieThreads[0]._id;	
+				console.log(`ID: ${ID}`)	
 						
 				//const ID = thread._id;
 
@@ -151,13 +158,17 @@ describe('Forum API Resource', function(){
 					"user": faker.name.findName(),
 					"content": "NEW STUFF",
 					"id": ID
-				}				
+				}		
+				console.log(`Post: ${JSON.stringify(newPost)}`)		
 				return chai.request(app)
 				.put(`/threads/new-post/${ID}`)
 				.send(newPost)
 			}))			
 			.then(res => {				
-
+				console.log('')
+				console.log('')
+				console.log('REs.Body: ')
+				console.log(res.body)
 				res.should.have.status(201);
 				res.should.be.json;
 				res.should.be.a('object');
