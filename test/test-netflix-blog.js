@@ -138,24 +138,23 @@ describe('Forum API Resource', function(){
 
 	describe('/threads/new-post/:id', function(){
 		it('should create a new post and return it', function(){
-			return chai.request(app)
-			.get('/threads')
-			.then((res => {
 			
-				
-		
-				
-				const ID = res.body.movieThreads[0]._id;	
-				
-
-				newPost = {
+			const newPost = {
 					"user": faker.name.findName(),
-					"content": "NEW STUFF",
-					"_id": ID
+					"content": "NEW STUFF"
 				}		
+
+			return Threads
+			.findOne()
+			.exec()
+			.then((res => {
+
+				newPost.id = res.id;
+				
+				
 				//console.log(Post: ${JSON.stringify(newPost)})		
 				return chai.request(app)
-				.put(`/threads/new-post/${ID}`)
+				.put(`/threads/new-post/${res.id}`)
 				.send(newPost)
 			}))			
 			.then(res => {				
