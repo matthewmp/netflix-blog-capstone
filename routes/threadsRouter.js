@@ -54,6 +54,8 @@ router.post('/threads/new-thread', (req, res) => {
     }));
 })
 
+
+
 router.put('/threads/:id', (req, res) => {
   if(!(req.params.id === req.body.id)){
     res.status(400).json({
@@ -73,18 +75,16 @@ router.put('/threads/:id', (req, res) => {
     
     const post = {
       content: req.body.content,
-      user: req.body.user,
-      likes: 0
-      
+      user: req.body.user
     }
 
-    //console.log("Inside put route:" + ${JSON.stringify(post)})
+    console.log(`Inside put route: ${JSON.stringify(post)}`)
 
     Threads
-    .findByIdAndUpdate(req.params.id, {$push: {posts: {$each: [post], $position: 0}}},{new: true})
+    .findByIdAndUpdate(req.params.id, {$push: {posts: post}})
     .exec()
-    .then(thread => res.status(201).json(thread.posts[0]))//(thread > res.status(201).json(thread.posts[0]))
-    .catch(err => res.status(500).json({message: 'Something went wrong'}));
+    .then(thread => res.json(thread.posts[0]))//(thread > res.status(201).json(thread.posts[0]))
+    .catch(err => res.status(500).json({message: 'Something went wrong'}))
 });
 
 module.exports = router;
