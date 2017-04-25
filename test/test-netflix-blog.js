@@ -151,9 +151,9 @@ describe('Forum API Resource', function(){
 				newPost = {
 					"user": faker.name.findName(),
 					"content": "NEW STUFF",
-					"id": ID
+					"_id": ID
 				}		
-				console.log(`Post: ${JSON.stringify(newPost)}`)		
+				//console.log(Post: ${JSON.stringify(newPost)})		
 				return chai.request(app)
 				.put(`/threads/new-post/${ID}`)
 				.send(newPost)
