@@ -117,7 +117,7 @@ function _POST_newPost(id, content){
     }    
 
   $.ajax({
-      url: `/threads/new-post/${id}`,
+      url: `/threads/${id}`,
       contentType: "application/json"      ,
       type: "PUT",
       data: JSON.stringify(post),
