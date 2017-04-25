@@ -83,7 +83,7 @@ router.put('/new-post/:id', (req, res) => {
     Threads
     .findByIdAndUpdate(req.params.id, {$push: {posts: {$each: [post], $position: 0}}},{new: true})
     .exec()
-    .then(thread => res.status(201).json(thread.posts[0]))//(thread => res.status(201).json(thread.posts[0]))
+    .then(thread => res.status(201).json(thread.posts[0]))//(thread > res.status(201).json(thread.posts[0]))
     .catch(err => res.status(500).json({message: 'Something went wrong'}));
 });
 
