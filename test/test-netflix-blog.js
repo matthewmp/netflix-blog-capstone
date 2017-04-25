@@ -138,8 +138,6 @@ describe('Forum API Resource', function(){
 
 	describe('/threads/new-post/:id', function(){
 		it('should create a new post and return it', function(){
-			
-			
 			return chai.request(app)
 			.get('/threads')
 			.then((res => {
@@ -151,8 +149,6 @@ describe('Forum API Resource', function(){
 				console.log('')
 				const ID = res.body.movieThreads[0]._id;	
 				console.log(`ID: ${ID}`)	
-						
-				//const ID = thread._id;
 
 				newPost = {
 					"user": faker.name.findName(),
@@ -172,7 +168,7 @@ describe('Forum API Resource', function(){
 				res.should.have.status(201);
 				res.should.be.json;
 				res.should.be.a('object');
-				//res.body.should.contain.keys('likes', 'user', 'content', '_id', 'comments', 'created')
+				res.body.should.contain.keys('likes', 'user', 'content', '_id', 'comments', 'created')
 		
 			})
 		})
