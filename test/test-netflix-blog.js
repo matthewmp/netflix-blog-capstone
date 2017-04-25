@@ -136,7 +136,7 @@ describe('Forum API Resource', function(){
 		})
 	})
 
-	describe('/threads/new-post/:id', function(){
+	describe('/threads/:id', function(){
 		it('should create a new post and return it', function(){
 			
 			const newPost = {
@@ -154,7 +154,7 @@ describe('Forum API Resource', function(){
 				
 				//console.log(Post: ${JSON.stringify(newPost)})		
 				return chai.request(app)
-				.put(`/threads/new-post/${res.id}`)
+				.put(`/threads/${res.id}`)
 				.send(newPost)
 			}))			
 			.then(res => {				

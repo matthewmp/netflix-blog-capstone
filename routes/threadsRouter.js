@@ -54,7 +54,7 @@ router.post('/threads/new-thread', (req, res) => {
     }));
 })
 
-router.put('/threads/new-post/:id', (req, res) => {
+router.put('/threads/:id', (req, res) => {
   if(!(req.params.id === req.body.id)){
     res.status(400).json({
       error: 'Request Path ID and Request Body ID Must Match'
