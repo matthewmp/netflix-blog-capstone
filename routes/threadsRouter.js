@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const {Threads} = require('../models');
 
 
-router.get('/', (req, res) => {
+router.get('/threads', (req, res) => {
   Threads
   .find()
   .exec()
@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
   })
 })
 
-router.get('/:id', (req, res) => {
+router.get('/threads/:id', (req, res) => {
   Threads
   .findById(req.params.id)
   .exec()
@@ -30,7 +30,7 @@ router.get('/:id', (req, res) => {
   })
 })
 
-router.post('/new-thread', (req, res) => {
+router.post('/threads/new-thread', (req, res) => {
    const requiredFields = ['title', 'posts', 'author'];
   for (let i=0; i<requiredFields.length; i++) {
     const field = requiredFields[i];
@@ -54,7 +54,7 @@ router.post('/new-thread', (req, res) => {
     }));
 })
 
-router.put('/new-post/:id', (req, res) => {
+router.put('/threads/new-post/:id', (req, res) => {
   if(!(req.params.id === req.body.id)){
     res.status(400).json({
       error: 'Request Path ID and Request Body ID Must Match'
