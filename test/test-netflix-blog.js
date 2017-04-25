@@ -70,7 +70,7 @@ describe('Forum API Resource', function(){
 	after(function(){
 		return closeServer();
 	});
-/*
+
 	describe('connect to index.html', function(){
 		it('should receive status 200', function(){		
 			return chai.request(app)		
@@ -135,7 +135,7 @@ describe('Forum API Resource', function(){
 			})
 		})
 	})
-*/
+
 	describe('/threads/new-post/:id', function(){
 		it('should create a new post and return it', function(){
 			
@@ -178,24 +178,6 @@ describe('Forum API Resource', function(){
 		})
 	})
 })
-/*
-return chai.request(app)
-			.get('/threads')
-			.then((res => {
-				const ID = res.body.movieThreads[0]._id;					
-
-				return chai.request(app)
-				.get(`/threads/${ID}`)
-				.then((res => {
-					res.should.have.status(200);					
-					res.body.should.contain.all.keys('_id', 'title', 'author', 'posts', 'date')
-				}))			
-			}))			
-
-		})
-	})
-
-*/
 
 
 

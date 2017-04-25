@@ -72,6 +72,8 @@ header{
 
 
 /* Log In View */
+
+
 form {
   display: none;
 }
@@ -454,7 +456,7 @@ color: #fff;
 .create-post.view, .create-thread.view{
   position: relative;
   display: none;
-  margin: 20px 0 0 50px;
+  margin: 30px 0 30px 10%;
   width: 70%;
   height: 400px;
   background-color: ;
@@ -463,9 +465,9 @@ color: #fff;
 .create-post.view label, .create-thread.view label{
   display: block;
   padding-top: 20px;
-  margin: 0 0 0px 0px;
+  margin-bottom: 30px;
   font-family: 'Passion One';
-  font-size: 2em;
+  font-size: 3em;
   color: #7f0000;
 }
 

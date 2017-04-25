@@ -78,7 +78,7 @@ router.put('/new-post/:id', (req, res) => {
       
     }
 
-    console.log(`Inside put route: ${post}`)
+    console.log(`Inside put route: ${JSON.stringify(post)}`)
 
     Threads
     .findByIdAndUpdate(req.params.id, {$push: {posts: {$each: [post], $position: 0}}},{new: true})
