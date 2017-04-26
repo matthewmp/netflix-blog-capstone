@@ -240,7 +240,7 @@ function showView(screenName, flag){
 
 function getThread(id){  
    let thread = $.grep(state.movieThreads, function(elem, ind){      
-      return  elem._id === id;    
+      return  elem._id == id;    
     });
   return thread;
 }
