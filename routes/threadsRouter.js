@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const {Threads} = require('../models');
 
 
-router.get('/', (req, res) => {
+router.get('/threads', (req, res) => {
   Threads
   .find()
   .exec()
@@ -20,7 +20,7 @@ router.get('/', (req, res) => {
   })
 })
 
-router.get('/:id', (req, res) => {
+router.get('/threads/:id', (req, res) => {
   Threads
   .findById(req.params.id)
   .exec()
@@ -30,7 +30,7 @@ router.get('/:id', (req, res) => {
   })
 })
 
-router.post('/new-thread', (req, res) => {
+router.post('/threads/new-thread', (req, res) => {
    const requiredFields = ['title', 'posts', 'author'];
   for (let i=0; i<requiredFields.length; i++) {
     const field = requiredFields[i];
@@ -54,7 +54,9 @@ router.post('/new-thread', (req, res) => {
     }));
 })
 
-router.put('/new-post/:id', (req, res) => {
+
+
+router.put('/threads/:id', (req, res) => {
   if(!(req.params.id === req.body.id)){
     res.status(400).json({
       error: 'Request Path ID and Request Body ID Must Match'
@@ -62,6 +64,7 @@ router.put('/new-post/:id', (req, res) => {
   }
  
   const requiredFields = ['user', 'content'];
+  console.log(req.params.id)
   for(let i = 0; i < requiredFields.length; i++){
       const field = requiredFields[i];
       if(!(field in req.body)){
@@ -75,16 +78,13 @@ router.put('/new-post/:id', (req, res) => {
       content: req.body.content,
       user: req.body.user,
       likes: 0
-      
     }
 
-    console.log(`Inside put route: ${post}`)
-
     Threads
-    .findByIdAndUpdate(req.params.id, {$push: {posts: {$each: [post], $position: 0}}},{new: true})
+    .findByIdAndUpdate(req.params.id, {$set: {posts: post}}, {new: true})
     .exec()
-    .then(thread => res.status(201).json(thread.posts[0]))//(thread => res.status(201).json(thread.posts[0]))
-    .catch(err => res.status(500).json({message: 'Something went wrong'}));
+    .then(thread => res.status(204).end())
+    .catch(err => res.status(500).json({message: 'Something went wrong'}))
 });
 
 module.exports = router;
