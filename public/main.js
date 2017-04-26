@@ -7,9 +7,10 @@ var state = {
 function _GET_AllThreads(){
   $.ajax({
     dataType: "json",
-    url: "http://localhost:8080/threads",
+    url: "/threads",
     success: setInitialState,
-    type: "GET"
+    type: "GET",
+    //crossDomain: true
   })
 }  
 /*
@@ -121,6 +122,7 @@ function _POST_newPost(id, content){
       url: `/threads/${post.id}`,
       contentType: "application/json"      ,
       type: "PUT",
+     // crossDomain: true,
       data: JSON.stringify(post),
       success: _GET_AllThreads
     })
