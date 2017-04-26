@@ -64,6 +64,7 @@ router.put('/threads/:id', (req, res) => {
   }
  
   const requiredFields = ['user', 'content'];
+  console.log(req.params.id)
   for(let i = 0; i < requiredFields.length; i++){
       const field = requiredFields[i];
       if(!(field in req.body)){
@@ -75,15 +76,16 @@ router.put('/threads/:id', (req, res) => {
     
     const post = {
       content: req.body.content,
-      user: req.body.user
+      user: req.body.user,
+      likes: 0
     }
 
     console.log(`Inside put route: ${JSON.stringify(post)}`)
 
     Threads
-    .findByIdAndUpdate(req.params.id, {$set: {posts: post}})
+    .findByIdAndUpdate(req.params.id, {$set: {posts: post}}, {new: true})
     .exec()
-    .then(thread => res.status(204).end())//res.json(thread.posts[0]))//(thread > res.status(201).json(thread.posts[0]))
+    .then(thread => res.status(204).end())
     .catch(err => res.status(500).json({message: 'Something went wrong'}))
 });
 

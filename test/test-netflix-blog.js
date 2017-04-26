@@ -70,7 +70,7 @@ describe('Forum API Resource', function(){
 	after(function(){
 		return closeServer();
 	});
-/*
+
 	describe('connect to index.html', function(){
 		it('should receive status 200', function(){		
 			return chai.request(app)		
@@ -135,7 +135,7 @@ describe('Forum API Resource', function(){
 			})
 		})
 	})
-	*/
+	
 	describe('/threads/:id', function(){
 		it('should create a new post and return it', function(){
 			
@@ -159,12 +159,13 @@ describe('Forum API Resource', function(){
 			}))			
 			.then(res => {								
 				res.should.have.status(204);
+				
 				return Threads.findById(newPost.id).exec();
 			})
 			.then(function(thread) {
-				console.log(thread)
-			    //thread.user.should.equal(newPost.user);
-			    //thread.content.should.equal(newPost.content);
+				console.log(thread.posts)
+			    thread.posts[0].user.should.equal(newPost.user);
+			    thread.posts[0].content.should.equal(newPost.content);
 			});
 		})
 	})
