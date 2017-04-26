@@ -163,8 +163,8 @@ describe('Forum API Resource', function(){
 			})
 			.then(function(thread) {
 				console.log(thread)
-			    //thread.user.should.equal(newPost.user);
-			    //thread.content.should.equal(newPost.content);
+			    thread.posts[0].user.should.equal(newPost.user);
+			    thread.posts[0].content.should.equal(newPost.content);
 			});
 		})
 	})

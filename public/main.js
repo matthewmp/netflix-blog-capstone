@@ -114,10 +114,11 @@ function _POST_newPost(id, content){
       id: id,
       content: content,
       user: state.user,      
-    }    
+    }   
+    console.log(post) 
 
   $.ajax({
-      url: `/threads/${id}`,
+      url: `/threads/${post.id}`,
       contentType: "application/json"      ,
       type: "PUT",
       data: JSON.stringify(post),
