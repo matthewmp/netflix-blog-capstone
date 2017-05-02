@@ -152,7 +152,7 @@ describe('Forum API Resource', function(){
 				newPost.id = res.id;
 				
 				
-				console.log(`Post: ${JSON.stringify(newPost)}`)		
+				
 				return chai.request(app)
 				.put(`/threads/${res.id}`)
 				.send(newPost)

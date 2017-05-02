@@ -45,24 +45,18 @@ function stampDate(){
 
 function addThread(){  
   let title = $('.create-thread-title').val();
-  let post = $('.thread-content').val();
+  let content = $('.thread-content').val();
 
-  _POST_NewThread(title, post);  
+  _POST_NewThread(title, content);  
   $('.create-thread-title').val('');
   $('.thread-content').val('');
 }
 
-function _POST_NewThread(title, post){
+function _POST_NewThread(title, content){
   let thread = {    
     "title": title,
     "author": state.user,
-    "posts": [
-        {
-          "content": post,
-          "user": state.user,
-          "likes": 0,
-        }
-    ]
+    "content": content
   }
 
   $.ajax({
@@ -102,8 +96,8 @@ function addPost(){
   
     let content = $('.add-post-content').val()
     
-    let id = $('.thread.view').attr('id');    
-    _POST_newPost(id, content);
+    let threadId = $('.thread.view').attr('id');    
+    _POST_newPost(threadId, content);
     // Clear textarea
     $('.add-post-content').val('');
     
@@ -111,16 +105,16 @@ function addPost(){
   
 function _POST_newPost(id, content){  
   let post = {
-      id: id,
+      threadId: id,
       content: content,
       user: state.user,      
     }   
     console.log(post) 
 
   $.ajax({
-      url: `/threads/${post.id}`,
+      url: `/posts/new-post/`,
       contentType: "application/json"      ,
-      type: "PUT",
+      type: "POST",
       data: JSON.stringify(post),
       success: _GET_AllThreads
     })
@@ -151,6 +145,7 @@ function renderIndThreadView(id, state){
 
   // Fill in Thread Title Info
   $('.thread-view-title').text(thread[0].title);
+  $('.thread-view-content').text(thread[0].content)
   $('.thread-creator').html(`Thread Created by: <span class="js-thread-title-author">${thread[0].author}</span>`);
   $('.thread-created').text(`${thread[0].date}`);
 

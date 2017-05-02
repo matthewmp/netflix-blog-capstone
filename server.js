@@ -7,10 +7,11 @@ const morgan = require('morgan');
 const cors = require('cors');
 
 const {PORT, DATABASE_URL} = require('./config');
-const {Threads} = require('./models');
 
 const threadsRouter = require('./routes/threadsRouter');
-const router = require('./routes/threadsRouter')
+const postsRouter = require('./routes/postsRouter');
+const commentsRouter = require('./routes/commentsRouter');
+//const router = require('./routes/threadsRouter')
 
 mongoose.Promise = global.Promise;
 
@@ -19,7 +20,10 @@ app.use(cors());
 app.use(morgan('common'));
 app.use(bodyParser.json());
 app.use(express.static('public'));
-app.use('/', threadsRouter);
+
+app.use('/threads', threadsRouter);
+app.use('/posts', postsRouter);
+app.use('/comments', commentsRouter);
 
 
 let server;
