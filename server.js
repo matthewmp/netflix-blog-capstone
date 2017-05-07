@@ -4,7 +4,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const cors = require('cors');
+//const cors = require('cors');
 
 const {PORT, DATABASE_URL} = require('./config');
 
@@ -14,7 +14,7 @@ const postsRouter = require('./routes/postsRouter');
 mongoose.Promise = global.Promise;
 
 const app = express();
-app.use(cors());
+//app.use(cors());
 app.use(morgan('common'));
 app.use(bodyParser.json());
 app.use(express.static('public'));

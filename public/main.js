@@ -7,9 +7,10 @@ var state = {
 function _GET_AllThreads(){
   $.ajax({
     dataType: "json",
-    url: "http://localhost:8080/threads",
+    url: "/threads",
     success: setInitialState,
-    type: "GET"
+    type: "GET",
+    //crossDomain: true
   })
 }  
 /*
@@ -115,6 +116,7 @@ function _POST_newPost(id, content){
       url: `/posts/new-post/${post.threadId}`,
       contentType: "application/json"      ,
       type: "PUT",
+     // crossDomain: true,
       data: JSON.stringify(post),
       success: _GET_AllThreads
     })
@@ -233,7 +235,7 @@ function showView(screenName, flag){
 
 function getThread(id){  
    let thread = $.grep(state.movieThreads, function(elem, ind){      
-      return  elem._id === id;    
+      return  elem._id == id;    
     });
   return thread;
 }
