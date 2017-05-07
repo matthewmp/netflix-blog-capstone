@@ -91,8 +91,8 @@ describe('Forum API Resource', function(){
 		return closeServer();
 	});
 
-	describe('Testing', function(){
-	it('should receive status 200', function(){	
+	describe('GET /threads', function(){
+	it('should return all threads', function(){	
 			return chai.request(app)
 			.get('/threads')			
 			.then((res) => {	
@@ -106,6 +106,28 @@ describe('Forum API Resource', function(){
 				//res.body.movieThreads.should.have.length.of.at.least(5);
 			});						
 		});		
+	})
+
+	describe('GET /threads/:id', function(){
+		it('should return single thread', function(){
+			return chai.request(app)
+			.get('/threads')
+			.then((res) => {
+				const threadId = res.body.movieThreads[0]._id;
+				const title = res.body.movieThreads[0].title;
+				const author = res.body.movieThreads[0].author;
+				return chai.request(app)
+				.get(`/threads/${threadId}`)
+				.then((res) => {
+					res.body.should.be.a('object');
+					res.body.should.contain.keys('_id', 'title', 'posts', 'date');
+					res.body._id.should.equal(threadId);
+					res.body.title.should.equal(title);
+					res.body.author.should.equal(author);
+					res.body.posts.should.be.a('array');
+				})
+			})
+		})
 	})
 	
 
