@@ -10,8 +10,6 @@ const {PORT, DATABASE_URL} = require('./config');
 
 const threadsRouter = require('./routes/threadsRouter');
 const postsRouter = require('./routes/postsRouter');
-const commentsRouter = require('./routes/commentsRouter');
-//const router = require('./routes/threadsRouter')
 
 mongoose.Promise = global.Promise;
 
@@ -23,8 +21,6 @@ app.use(express.static('public'));
 
 app.use('/threads', threadsRouter);
 app.use('/posts', postsRouter);
-app.use('/comments', commentsRouter);
-
 
 let server;
 

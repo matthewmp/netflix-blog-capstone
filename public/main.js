@@ -107,14 +107,14 @@ function _POST_newPost(id, content){
   let post = {
       threadId: id,
       content: content,
-      user: state.user,      
+      user: state.user     
     }   
     console.log(post) 
 
   $.ajax({
-      url: `/posts/new-post/`,
+      url: `/posts/new-post/${post.threadId}`,
       contentType: "application/json"      ,
-      type: "POST",
+      type: "PUT",
       data: JSON.stringify(post),
       success: _GET_AllThreads
     })

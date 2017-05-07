@@ -4,68 +4,22 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 
 const {Threads} = require('../models/threadModel');
-const {Posts} = require('../models/postsModel');
-const {Comments} = require('../models/commentsModel');
-
 
 router.get('/', (req, res) => {
-  var allThreads =[];
+  /*var allThreads =[];
   var allPosts = [];
-  var allComments = [];
+  var allComments = [];*/
   Threads
   .find()
   .exec()
-  .then(threads => {
-  	 console.log('responding')
-              
-    allThreads = threads.map((thread) => thread.getThread());
-    allThreads.forEach(val => val._id += "");
-  })  
-  .then(()=>{
-    Posts
-    .find()
-    .exec()
-    .then(posts => {      
-      allPosts = posts.map((post) => post.getPost());
-      allPosts.forEach(val => val._id += "");
-    })
-    .then(()=>{
-      Comments
-      .find()
-      .exec()
-      .then(comments =>{
-        allComments = comments.map((comment) => comment.getComment());
-        allComments.forEach(val => val._id += "");
-      })
-      .then(() =>{
-
-        allThreads.forEach(val => {val.posts = []});
-        allPosts.forEach(val => {val.comments = []});
-
-        for(let i = 0; i < allComments.length; i++){
-          for(let k = 0; k < allPosts.length; k++){            
-            if(allComments[i].postId == allPosts[k]._id){              
-              allPosts[k].comments.push(allComments[i]);             
-            }            
-          }
-        }        
-
-        for(let i = 0; i < allPosts.length; i++){
-          for(let k = 0; k < allThreads.length; k++){            
-            if(allPosts[i].threadId == allThreads[k]._id){
-              allThreads[k].posts.push(allPosts[i])
-            }            
-          }
-        }
-        res.json({movieThreads: allThreads})          
-      })
-    })
+  .then(threads => {     
+     res.status(200).json({movieThreads: threads});     
   })
   .catch(err => {
     console.error(err);
-    res.status(500).json({message: 'Internal Server Error'})
+    res.status(500).json({message: 'Internal Server Error'});
   })
-})
+})    
 
 router.get('/:id', (req, res) => {
   Threads
@@ -114,7 +68,7 @@ router.put('/:id', (req, res) => {
   }
  
   const toUpdate = {};
-  const requiredFields = ['title', 'author', 'id'];
+  const requiredFields = ['title', 'author', 'id', 'content'];
   console.log(req.params.id)
   for(let i = 0; i < requiredFields.length; i++){
       const field = requiredFields[i];
@@ -135,7 +89,7 @@ router.put('/:id', (req, res) => {
     Threads
     .findByIdAndUpdate(req.params.id, {$set: toUpdate})
     .exec()
-    .then(thread => res.status(204).end())
+    .then(thread => res.status(204).json(thread.getThread()))
     .catch(err => res.status(500).json({message: 'Something went wrong'}))
 });
 
