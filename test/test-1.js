@@ -95,8 +95,7 @@ describe('Forum API Resource', function(){
 	it('should return all threads', function(){	
 			return chai.request(app)
 			.get('/threads')			
-			.then((res) => {	
-				console.log(res.body.movieThreads.length)			
+			.then((res) => {								
 				res.should.have.status(200);							
 				res.body.should.have.keys('movieThreads');	
 				res.body.movieThreads[0].should.contain.keys('_id', 'title', 'author', 'posts', 'date');
@@ -126,6 +125,28 @@ describe('Forum API Resource', function(){
 					res.body.author.should.equal(author);
 					res.body.posts.should.be.a('array');
 				})
+			})
+		})
+	})
+
+	describe('POST /threads', function(){
+		it('should post a new thread and return that thread', function(){
+			const newThread = {
+				title: "Mocha Test New Thread",
+				author: "Mocha",
+				content: "Mocha Late is my favorite"
+			}
+
+			return chai.request(app)
+			.post('/threads/new-thread')
+			.send(newThread)
+			.then((res) => {
+				res.should.have.status(201);
+				res.should.be.a('object');
+				res.body.should.contain.keys('title', 'author', 'content', '_id', 'date', 'posts');
+				res.body.title.should.equal(newThread.title);
+				res.body.author.should.equal(newThread.author);
+				res.body.content.should.equal(newThread.content);
 			})
 		})
 	})
