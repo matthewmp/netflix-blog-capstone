@@ -150,6 +150,33 @@ describe('Forum API Resource', function(){
 			})
 		})
 	})
+
+	describe('PUT /threads/:id', function(){
+		it('should update existing thread', function(){
+			const updatedThread = {
+				title: "PUTTING",
+				author: "NEW AUTHOR",
+				content: "HERE IS AN EDITED THREAD"
+			}
+
+			return chai.request(app)
+			.get('/threads')
+			.then((res) => {
+				const threadId = res.body.movieThreads[0]._id;
+				updatedThread.id = threadId;
+				return chai.request(app)
+				.put(`/threads/${threadId}`)
+				.send(updatedThread)
+				.then((res) => {
+					res.should.have.status(200);
+					res.body.should.be.a('object');
+					res.body.should.contain.keys('title', 'author', '_id', 'content');					
+				})
+			})
+
+			
+		})
+	})
 	
 
 })
