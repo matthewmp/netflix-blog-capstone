@@ -89,7 +89,7 @@ router.put('/:id', (req, res) => {
     Threads
     .findByIdAndUpdate(req.params.id, {$set: toUpdate})
     .exec()
-    .then(thread => res.status(200).json(thread.getThread()))
+    .then(thread => res.status(201).json(thread.getThread()))
     .catch(err => res.status(500).json({message: 'Something went wrong'}))
 });
 

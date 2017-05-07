@@ -75,12 +75,12 @@ function init_data(){
 describe('Forum API Resource', function(){
 	before(function(){
 		return runServer(TEST_DATABASE_URL);
-	})
+	});
 
 	beforeEach(function(){
 		console.log(`\n\n Initializing Data`);
 		return init_data();
-	})
+	});
 
 	//==================
 	afterEach(function(){		
@@ -90,7 +90,7 @@ describe('Forum API Resource', function(){
 	after(function(){
 		return closeServer();
 	});
-
+/*
 	describe('GET /threads', function(){
 	it('should return all threads', function(){	
 			return chai.request(app)
@@ -105,7 +105,7 @@ describe('Forum API Resource', function(){
 				//res.body.movieThreads.should.have.length.of.at.least(5);
 			});						
 		});		
-	})
+	});
 
 	describe('GET /threads/:id', function(){
 		it('should return single thread', function(){
@@ -124,10 +124,10 @@ describe('Forum API Resource', function(){
 					res.body.title.should.equal(title);
 					res.body.author.should.equal(author);
 					res.body.posts.should.be.a('array');
-				})
-			})
-		})
-	})
+				});
+			});
+		});
+	});
 
 	describe('POST /threads', function(){
 		it('should post a new thread and return that thread', function(){
@@ -147,9 +147,9 @@ describe('Forum API Resource', function(){
 				res.body.title.should.equal(newThread.title);
 				res.body.author.should.equal(newThread.author);
 				res.body.content.should.equal(newThread.content);
-			})
-		})
-	})
+			});
+		});
+	});
 
 	describe('PUT /threads/:id', function(){
 		it('should update existing thread', function(){
@@ -168,18 +168,40 @@ describe('Forum API Resource', function(){
 				.put(`/threads/${threadId}`)
 				.send(updatedThread)
 				.then((res) => {
-					res.should.have.status(200);
+					res.should.have.status(201);
 					res.body.should.be.a('object');
 					res.body.should.contain.keys('title', 'author', '_id', 'content');					
-				})
-			})
+				});
+			});	
+		});
+	});
+	*/
+	describe('PUT /posts/new-post', function(){
+		it('should create and return', function(){
+			return chai.request(app)
+			.get('/threads')
+			.then((res) => {
+				const post = {
+					threadId: res.body.movieThreads[0]._id,
+					user: "NEW USER",
+					content: "NEW POST MADE"
+				}
 
-			
-		})
-	})
-	
+				return chai.request(app)
+				.put(`/posts/new-post/${post.threadId}`)
+				.send(post)
+				.then((res) => {
+					res.body._id.should.equal(post.threadId);
+					res.body.posts.should.be.a('array');
+					res.body.posts[res.body.posts.length - 1].user.should.equal(post.user);
+					res.body.posts[res.body.posts.length - 1].content.should.equal(post.content);
+				});
 
-})
+			});						
+		});
+	});
+
+});
 
 
 

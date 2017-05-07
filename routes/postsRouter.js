@@ -36,9 +36,9 @@ router.put('/new-post/:id', (req, res) => {
     console.log(toUpdate);
 
     Threads
-    .findByIdAndUpdate(req.params.id, {$push: {posts: toUpdate}})
+    .findByIdAndUpdate(req.params.id, {$push: {posts: toUpdate}}, {new: true})
     .exec()
-    .then(post => res.status(204).json(post.getThread()))
+    .then(post => res.status(201).json(post.getThread()))
     .catch(err => res.status(500).json({message: 'Something went wrong'}))
 });
 
