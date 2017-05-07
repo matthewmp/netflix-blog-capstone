@@ -90,7 +90,7 @@ describe('Forum API Resource', function(){
 	after(function(){
 		return closeServer();
 	});
-/*
+
 	describe('GET /threads', function(){
 	it('should return all threads', function(){	
 			return chai.request(app)
@@ -175,7 +175,7 @@ describe('Forum API Resource', function(){
 			});	
 		});
 	});
-	*/
+	
 	describe('PUT /posts/new-post', function(){
 		it('should create and return', function(){
 			return chai.request(app)
@@ -199,6 +199,27 @@ describe('Forum API Resource', function(){
 
 			});						
 		});
+	});
+
+	describe('DELETE /threads/:id', function(){
+		it('should delete thread by id', function(){
+			let threadId;
+			return chai.request(app)
+			.get('/threads')
+			.then((res) => {				
+				threadId = res.body.movieThreads[0]._id;
+				return chai.request(app)
+				.delete(`/threads/${threadId}`)
+			})
+			.then((res) => {
+				return chai.request(app)
+				.get(`/threads`)
+				.then((res) => {					
+					res.body.movieThreads[0]._id.should.not.equal(threadId)
+				})
+			})
+
+		})
 	});
 
 });
