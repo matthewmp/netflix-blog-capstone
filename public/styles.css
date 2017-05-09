@@ -70,6 +70,11 @@ header{
   left: 220px;
 }
 
+.btn-logout{
+  display: none;
+  left: 150px;
+}
+
 
 /* Log In View */
 
@@ -150,7 +155,7 @@ form {
 
 input[class*="inp-"]{
   height: 30px;
-  width: 40%;
+  width: 200px;
 }
 
 .wrong-login{
@@ -186,12 +191,6 @@ nav {
 
 }
 
-.welcome{
-  left: 50px;
-  bottom: 0px;
-  vertical-align: middle;
-}
-
 .nav-btn{
   float: left;
   font-size: 18px;
@@ -199,6 +198,15 @@ nav {
   line-height: 70px;
   font-family: 'Rajdhani';
   color: #fff;
+}
+.welcome{
+  left: 50px;
+  bottom: 0px;
+  vertical-align: middle;
+  font-size: 25px;
+  font-family: 'Roboto';
+  text-shadow: 1px 1px 10px #ff0000;
+
 }
 
 .btn-add-thread:hover, .btn-view-threads:hover, .home:hover{
@@ -214,6 +222,28 @@ nav {
   border: 0px solid #fff;
 }
 
+.btn-search{
+  display: inline-block;
+  background-color: #f00;
+  height: 30px;
+  line-height: 30px;
+  width: 60px;
+  text-align: center;
+  margin-left: -3px;
+  border-radius: 1px;
+  border: 1px solid #ccc;
+  color: #fff;
+  font-family: 'Rajdhani';
+  font-size: 18px;
+  text-shadow: 2px 2px 2px #000;
+  cursor: pointer;
+}
+
+.btn-search:active{
+  background: #7F0000;
+  color: #ff0000;
+}
+
 nav p{
   margin-left: 50px;
 }
@@ -221,7 +251,7 @@ nav p{
 .inp-search{
   display: inline-block; 
   height: 30px;
-  width: 300px;
+  width: 100px;
   margin-top: 17px;
   margin-left: 30px;
   border-style: none;
@@ -313,6 +343,9 @@ color: #fff;
 .thread-view-header{
   margin-left: 10%;
   margin-top: 25px;
+  width: 79%;
+  border: 1px solid black;
+  padding: 20px 0px 10px 10px;
 }
 
 .back{
@@ -332,11 +365,11 @@ color: #fff;
 }
 
 .thread-view-content{
-  margin-top: 30px;
+  margin: 30px 0 30px 0;
   font-family: 'Roboto';
   font-size: 20px;
   color: #7f0000;
-  text-indent: 20px;
+  
 }
 
 .thread-view-creator{
@@ -406,17 +439,11 @@ color: #fff;
   color: #fff;
 }
 
-.add-post-wrapper{
-  margin-top: 10px;
-  margin-bottom: 30px;
-  
-}
-
 .news-wrapper{
   margin-top: 75px;
 }
 
-.btn-add-post, .btn-create-post, .btn-create-thread{
+.btn-add-post, .btn-create-post, .btn-create-thread, .btn-create-comment{
   width: 100px;
   height: 40px;
   border-style: none;
@@ -424,13 +451,6 @@ color: #fff;
   color: #fff;
   font-size: 15px;
   cursor: pointer;
-}
-
-.btn-add-post:active{
-  background-color: rgba(25, 18, 142, 0.57)
-}
-.btn-create-post:active{
-  background-color: rgba(25, 18, 142, 0.57)
 }
 
 .btn-create-thread{
@@ -457,11 +477,15 @@ color: #fff;
   background-color: #7f0000;
 }
 
+.btn-create-comment:active{
+  background-color: #7f0000;
+}
+
 .btn-wrapper{
   margin: 20px 0 20px 0;
 }
 
-.create-post.view, .create-thread.view{
+.create-post.view, .create-thread.view, .edit-thread.view, .create-comment.view, .edit-post.view{
   position: relative;
   display: none;
   margin: 30px 0 30px 10%;
@@ -470,7 +494,7 @@ color: #fff;
   background-color: ;
 }
 
-.create-post.view label, .create-thread.view label{
+.create-post.view label, .create-thread.view label, .edit-thread.view label, .create-comment.view label, .edit-post.view label{
   display: block;
   padding-top: 20px;
   margin-bottom: 30px;
@@ -479,7 +503,7 @@ color: #fff;
   color: #7f0000;
 }
 
-.create-thread-title{
+.create-thread-title, .edit-thread-title{
   width: 80%;
   height: 30px;
 }
@@ -548,7 +572,17 @@ color: #fff;
   height: 30%;
 }
 
-.post-content-wrapper, .news-content-wrapper{
+.post-content-wrapper{
+  overflow: scroll;
+  position: absolute;
+  left: 5%;
+  top: 9%;
+  height: 80%;
+  width: 70%;
+  border-radius: 3px;
+}
+
+.news-content-wrapper{
   overflow: scroll;
   position: absolute;
   left: 25%;
@@ -560,6 +594,7 @@ color: #fff;
 
 .post-content, .news-content{
   margin-top: 30px;
+  height: 30px;
   font-family: 'Roboto';
   font-size: 17px;
   line-height: 22px;
@@ -573,8 +608,8 @@ color: #fff;
 .post-meta{
   
   position: absolute;
-  bottom: 5px;
-  left: 25%;
+  bottom: 0px;
+  left: 5%;
   width: 50%;
 
 }
@@ -590,7 +625,7 @@ color: #fff;
   cursor: pointer;
 }
 
-.btn-comment{
+.btn-comment, .btn-post{
   display: inline-block;
   border: 1px solid red;
   margin-left: 10px;
@@ -604,7 +639,7 @@ color: #fff;
 }
 
 .js-comment{
-    color: #666;
+    color: #000;
     overflow-wrap: break-word;
     margin-top: 40px;
     overflow: scroll;
@@ -614,14 +649,12 @@ color: #fff;
     font-style: oblique;
     letter-spacing: 1px;
     line-height: 23px;
-    font-size: 18px;
+    font-size:22px;
+    background-color: #eee;
   }
 
   .js-comment-user{
     display: block;
-    margin-top: 30px;
-    margin-left: auto;
-    margin-right: auto;
     width: 50%;    
     font-family: 'Roboto';
     font-size: 15px;

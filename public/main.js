@@ -13,20 +13,22 @@ function _GET_AllThreads(){
     //crossDomain: true
   })
 }  
-/*
-function reviewPost(id){
+
+function _GET_ThreadsRenderInd(){
   $.ajax({
     dataType: "json",
-    url: "http://localhost:8080/threads",
-    success: showUpdatedPost,
-    type: "GET"
+    url: "/threads",
+    success: setAndRenderInd,
+    type: "GET",
+    //crossDomain: true
   })
+}  
 
-  function showUpdatedPost(data){
-    setInitialState(data, 'ind', id)
-  }
-} 
-*/
+function setAndRenderInd(data){
+  state.movieThreads = data.movieThreads; 
+  renderIndThreadView(state.threadId, state)
+}
+
 function setInitialState(data){
   state.movieThreads = data.movieThreads; 
   renderMovieThreads(state);
@@ -76,12 +78,64 @@ function _state_NewThreadUpdate(newThread){
   }, 300)  
 }
 */
+
+
+function _PUT_editThread(){
+  let id = $('.edit-thread.view').attr('id');
+  let title = $('.edit-thread-title').val();
+  let author = state.user;
+  let content = $('.edit-thread-content').val();
+
+  let updateThread = {
+    id: id,
+    title: title,
+    author: author,
+    content: content
+  };
+
+  state.threadId = id;
+
+  $.ajax({
+    url: `threads/${id}`,
+    contentType: 'application/json',
+    type: 'PUT',
+    data: JSON.stringify(updateThread),
+    success: _GET_ThreadsRenderInd
+  })
+};
+
+function editPost(postId, threadId){
+  showView('edit-post');
+}
+
+function _PUT_editPost(){
+
+    let editPost = {
+      postId: $('.edit-post.view').attr('id'),
+      user: state.user,
+      content: $('.edit-post-content').val()
+    }
+
+    state.threadId = $('.thread.view').attr('id');
+
+    $.ajax({
+    url: `posts/${editPost.postId}`,
+    contentType: 'application/json',
+    type: 'PUT',
+    data: JSON.stringify(editPost),
+    success: _GET_ThreadsRenderInd
+  })
+};
+
+
+
+
 function renderMovieThreads(state){
 
   // Clear View
   hideAllViews();
   $('.thread-list-items').empty();
-  showView('thread-list');
+  
 
   state.movieThreads.reverse().forEach(function(thread, ind){
     $('.thread-list-items').append(`<article class="js-movie-thread" id=${thread._id}>
@@ -91,6 +145,7 @@ function renderMovieThreads(state){
       <span class="thread-author">${thread.author}</span>      
     </article>`)
   })
+  showView('thread-list');
 }
 
 function addPost(){
@@ -103,22 +158,52 @@ function addPost(){
     $('.add-post-content').val('');
     
 }
+
+function editThread(threadId, content, title){  
+  $('.edit-thread-title').val(title);
+  $('.edit-thread-content').text(content);
+  $('.edit-thread.view').attr('id', threadId)
+  showView('edit-thread')  
+}
+
+function addComment(postId){
+  showView('create-comment');
+  $('.create-comment.view').attr('id', postId)
+}
+
+function createComment(){
+
+  let comment = {
+    postId: $('.create-comment.view').attr('id'),
+    user: state.user,
+    comment: $('.add-comment-content').val()
+  }
+
+  state.threadId = $('.thread.view').attr('id');
+  $.ajax({
+    url: `comments/${comment.postId}`,
+    contentType: 'application/json',
+    type: 'PUT',
+    data: JSON.stringify(comment),
+    success: _GET_ThreadsRenderInd
+  })
+}
   
 function _POST_newPost(id, content){  
   let post = {
       threadId: id,
       content: content,
       user: state.user     
-    }   
-    console.log(post) 
+    }        
 
+  state.threadId = id;  
   $.ajax({
       url: `/posts/new-post/${post.threadId}`,
       contentType: "application/json"      ,
       type: "PUT",
      // crossDomain: true,
       data: JSON.stringify(post),
-      success: _GET_AllThreads
+      success: _GET_ThreadsRenderInd
     })
 }
 
@@ -137,7 +222,8 @@ function _state_NewPostUpdate(id, post){
 function renderIndThreadView(id, state){ 
   let thread = getThread(id);
   hideAllViews();
-  showView('thread');
+  $('.js-btn-edit-thread').remove();
+  
 
   // Add Thread ID to Section id
   $('.thread.view').attr('id', thread[0]._id);
@@ -150,23 +236,23 @@ function renderIndThreadView(id, state){
   $('.thread-view-content').text(thread[0].content)
   $('.thread-creator').html(`Thread Created by: <span class="js-thread-title-author">${thread[0].author}</span>`);
   $('.thread-created').text(`${thread[0].date}`);
-
+  if(thread[0].author === state.user){
+      $('.add-post-wrapper').append(`<button type="button" class="btn-add-post js-btn-edit-thread">Edit</button>`)
+    }
+    else {
+      //
+    }
+  showView('thread');
   // Load Thread Posts
-  thread[0].posts.forEach(function(post){
+  thread[0].posts.forEach(function(post, index){    
+   
     $('.thread-view-title-posts').append(
-        `<article class="post-wrapper" id=${post.id}>
-          <div class="post-user-info">
-            <div class="user-info-name">
-              <p> ${post.user} </p>
-            </div>
-            <div class="user-img-wrapper">
-              <img class="user-img" src="http://santetotal.com/wp-content/uploads/2014/05/default-user.png" />
-            </div>  
-          </div>
+        `<article class="post-wrapper" id=${post._id}>
 
           <div class="post-content-wrapper">
             <div class="post-content-date">
               <p>${post.created}</p>
+              <div class="post-user-name">posted by: ${post.user}</div>
             </div>
             <div class="post-content">${post.content}</div>
           </div>
@@ -174,50 +260,50 @@ function renderIndThreadView(id, state){
           <div class="post-meta">
             <span class="thumb">&#x1F44D;</span>
             <span class="likes">${post.likes}</span>
-            <span class="btn-comment">Comment</span>
+            <span class="btn-comment" id="btn-comment">Comment</span>
           </div>`);
+
+        if(post.user === state.user){
+          $($('.post-meta')[index]).append(`
+              <span class="btn-comment" id="btn-delete">Delete</span>
+              <span class="btn-post" id="btn-edit-post">Edit</span>
+            `)
+        }
 
         if(post.comments.length){
           post.comments.forEach(function(comment){
               $('.thread-view-title-posts').append(`
                 \n            
                 \n
-                <span class="js-comment-user"><span class="by">by:</span> ${comment.user}</span>
+                
                 \n
-              <div class="js-comment">${comment.comment}</div>
+              <div class="js-comment">
+              ${comment.comment}
+                <p class="js-comment-user"><span class="by">by:</span> ${comment.user}</p>
+              </div>
             `)
             });
           
         }
-
-        /*`<article class="js-post" id=${post.id}>
-          <p class="js-post-content">${post.content}</p>
-          </ br>
-          <span class="js-post-created">${post.created}</span>
-          <span class="js-post-likes">Likes: ${post.likes}</span>
-          <span class="js-post-author">Posted By: ${post.user}</span>   
-        </article>`        
-      );*/
-
-    
-
-
-
-  
-      /*
-    // Load Thread Post Comments
-    if(post.comments){
-      post.comments.forEach(function(comm){
-        $(`#${post.id}`).append(
-            `<article class="js-post-comments" id=${comm.id}>
-                <p>${comm.comment}</p>
-                <span class="js-post-likes">Likes: ${comm.likes}</span>
-             </article>`
-          );
-      })
-     // $('.thread-view-title-posts').append('<button class="js-btn-comment">Comment</button>')
-    }*/
   })
+}
+
+function deletePost(postId, threadId){
+  console.log('Deleting POst')
+  let post = {
+    threadId: threadId,
+    postId: postId
+  }
+
+  state.threadId = threadId;
+  $.ajax({
+      url: '/posts',
+      dataType: "json",
+      contentType: "application/json",
+      type: "DELETE",
+      data: JSON.stringify(post),
+      success: _GET_ThreadsRenderInd  
+    })
 }
 
 
@@ -267,15 +353,14 @@ function checkLogin(){
 }
 
 function login(id){
-  //showView('thread-list.view')
-  //hideAllViews();
+  $('.btn-login').hide();
+  $('.signup').hide();
+  $('.btn-logout').fadeIn();
   $('form').hide();
   $('.login-overlay').hide();
   $('.welcome').text(`Welcome ${state.user}`);
   showView('news');
-  // _GET_AllThreads();
-  //renderMovieThreads(state);
-  //renderMovieThreads(state);
+  
 }
 
 // Header Background Pic Slides
@@ -330,6 +415,10 @@ $(function(){
     $('.login-form').fadeIn();
   })
 
+   $('.btn-logout').click(function(){
+      window.location.reload(true);
+   })
+
   $('.home').click(function(){
     showView('news');
   })
@@ -362,6 +451,31 @@ $(function(){
     }    
   });
 
+  $('.thread.view').on('click', '#btn-delete', function(){
+    let postId = $(this).closest('article').attr('id');
+    let threadId = $(this).closest('.thread.view').attr('id');    
+    deletePost(postId, threadId);
+  })
+
+  $('.thread.view').on('click', '#btn-edit-post', function(){
+    let postId = $(this).closest('article').attr('id');
+    $('.edit-post.view').attr('id', postId)
+    
+    editPost();
+  })
+
+  $('.thread-view-header').on('click', '.js-btn-edit-thread', function(){
+    let threadId = $('.thread.view').attr('id');
+    let content = $('.thread-view-content').text();
+    let title = $('.thread-view-title').text();    
+    editThread(threadId, content, title);
+  })
+
+  $('.thread.view').on('click', '.btn-comment', function(){
+    let postId = $(this).closest('article').attr('id');
+    addComment(postId);
+  })
+
   $('.btn-add-post').click(function(){
     showView('create-post.view');
   });
@@ -384,8 +498,23 @@ $(function(){
     
   })
 
+
+
   $('.btn-create-thread').click(function(){
     addThread();
+  })
+
+  $('.btn-create-comment').click(function(){
+    createComment();
+  })
+
+  $('.btn-edit-thread-submit').click(function(){
+
+    _PUT_editThread();
+  })
+
+  $('.btn-edit-post-submit').click(function(){    
+    _PUT_editPost();
   })
 
   // If no user is logged in

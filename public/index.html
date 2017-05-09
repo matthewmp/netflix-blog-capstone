@@ -8,12 +8,15 @@
 		<link href="https://fonts.googleapis.com/css?family=Passion+One" rel="stylesheet">
 		<link rel="stylesheet" type="text/css" href="styles.css">
 		<link rel="stylesheet" type="text/css" href="reset.css">
+		<script src="https://use.fontawesome.com/a06b45edee.js"></script>
 
 	<body>
 		<div class="main-wrapper">	
 			<header>
 				<h1 class="header-title">Netflix Junkie<span class="header-sub-title">A  Netflix Forum</span></h1>
-				<div class="btn-login btn-header">Log In</div><div class="signup btn-header">Sign Up</div>
+				<div class="btn-login btn-header">Log In</div>
+				<div class="signup btn-header">Sign Up</div>
+				<div class="btn-logout btn-header">Log Out</div>
 			</header>
 
 		    <nav>
@@ -22,8 +25,9 @@
 		    	<div class="btn-add-thread nav-btn"> New Thread</div>
 		    	<div class="btn-view-threads nav-btn"> View Threads </div>
 		      	<div class="search-wrapper">	      	
-		        	<p class="lbl-search nav-btn" for="inp-search">Search for your movie or tv show: </p>
-		        	<input class="inp-search" name="inp-search" placeholder="ie. House of Cards"></input>
+		        	
+		        	<input class="inp-search" name="inp-search" placeholder="Search All Threads"></input>
+		        	<div class="btn-search">Search</div>
 		      	</div>
 		    </nav>
 
@@ -158,6 +162,16 @@
 
 			</section>
 
+			<section class="create-comment view">				
+
+				<label for="create-comment-content">Enter Your Comment</label>
+				<textarea name="create-comment-content" rows="20" cols="100" class="add-comment-content"></textarea>
+				<div class="btn-wrapper"><button class="btn-create-comment">Post</button></div>
+				
+				<p class="cancel">Cancel</p>
+
+			</section>
+
 			<section class="create-thread view">				
 
 				<label for="create-thread-title">Enter Thread Title</label>
@@ -165,6 +179,28 @@
 				<label for="create-thread-content">Enter Your Post</label>
 				<textarea name="create-thread-content" rows="6" cols="50" class="thread-content" required></textarea>
 				<div class="btn-wrapper"><button class="btn-create-thread">Submit</button></div>
+				
+				<p class="cancel">Cancel</p>
+
+			</section>
+
+			<section class="edit-thread view">				
+
+				<label for="edit-thread-title">Enter Thread Title</label>
+				<input type="text" name="edit-thread-title" class="edit-thread-title" />
+				<label for="edit-thread-content">Enter Your Post</label>
+				<textarea name="edit-thread-content" rows="6" cols="50" class="edit-thread-content" required></textarea>
+				<div class="btn-wrapper"><button class="btn-edit-thread-submit">Submit</button></div>
+				
+				<p class="cancel">Cancel</p>
+
+			</section>
+
+			<section class="edit-post view">				
+
+				<label for="edit-post-content">Edit Your Post</label>
+				<textarea name="edit-post-content" rows="20" cols="100" class="edit-post-content"></textarea>
+				<div class="btn-wrapper"><button class="btn-edit-post-submit">Submit</button></div>
 				
 				<p class="cancel">Cancel</p>
 

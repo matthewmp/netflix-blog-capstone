@@ -43,7 +43,21 @@ router.put('/new-post/:id', (req, res) => {
 });
 
 
-/*
+router.delete('/', (req, res) => {
+  console.log('Deleting')
+  const threadId = req.body.threadId;
+  const postId = req.body.postId;
+  console.log(`Post: ${postId}, Thread: ${threadId}`);
+  
+  Threads
+  .findByIdAndUpdate(threadId, {$pull: {posts: {_id: postId}}})
+  .exec()
+  .then(() => res.status(204).end()) 
+  .catch(err => res.status(500).json({message: 'Internal server error'}));
+})
+
+
+
 // Edit Existing Post Within Thread
 router.put('/:id', (req, res) => {
 	if(req.params.id !== req.body.postId){
@@ -62,20 +76,18 @@ router.put('/:id', (req, res) => {
 	}
 
 	requiredFields.forEach(field => {
-		if(field in req.body){
-			if(field === 'content'){
-				toUpdate[field] = req.body[field];
-			}
+		if(field in req.body){			
+				toUpdate[field] = req.body[field];			
 		}
 	})
-	console.log(toUpdate);
+	console.log(req.params);
 
 	Threads
-	.findByIdAndUpdate({posts: req.params.postId}, {$set: toUpdate})
+	.findOneAndUpdate({"posts._id": req.params.id}, {"$set": {"posts.$.content": toUpdate.content, "posts.$.user": toUpdate.user}}, {new: true})
 	.exec()
-	.then(post => res.status(204).json(post.getPost()))
+	.then(post => res.status(201).json({message: post}))
 	.catch(err => res.status(500).json({message: 'Something went wrong'}))
 })
-*/
+
 
 module.exports = router;
