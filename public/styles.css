@@ -216,6 +216,7 @@ nav {
 
 
 .search-wrapper{
+  display: none;
   height: 70px;
   width: 80%;
   line-height: 70px;

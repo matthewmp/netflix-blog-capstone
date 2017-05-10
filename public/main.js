@@ -424,6 +424,7 @@ $(function(){
   })
 
   $('.btn-view-threads').click(function(){
+    $('.search-wrapper').show();
     if(state.user){
       _GET_AllThreads();
     }
@@ -531,6 +532,49 @@ $(function(){
     showView('news');
   })
   
+
+  $('.btn-search').click(function(){
+    let str = $('.inp-search').val();
+    searchThreads(str);
+  })
+
+  function searchThreads(str){
+    let threadList = [];
+  
+    state.movieThreads.forEach((thread) => {
+      if(thread.content){
+        if(thread.content.indexOf(str) >= 0){
+          threadList.push(thread);
+        } else {
+          thread.posts.forEach((post) => {
+            if(post.content.indexOf(str) >= 0){
+              threadList.push(thread);
+            }
+          })
+        }
+      }
+      else if(!thread.content){
+        console.log('MISS');
+      }
+    })
+    renderResults(threadList);
+  }
+
+  function renderResults(threadList){
+    hideAllViews();
+  $('.thread-list-items').empty();
+  
+  console.log(threadList)
+  threadList.reverse().forEach(function(thread, ind){
+    $('.search-list-items').append(`<article class="js-movie-thread" id=${thread._id}>
+      <img src="media/film.png">    
+      <p class="thread-title">${thread.title}</p>      
+      <span class="thread-created">${thread.date},</span>
+      <span class="thread-author">${thread.author}</span>      
+    </article>`)
+  })
+  showView('search-list');
+  }
   
   showView('news');
   headerAnimation();
