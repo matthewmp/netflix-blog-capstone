@@ -91,6 +91,8 @@ describe('Forum API Resource', function(){
 		return closeServer();
 	});
 
+	// Thread Tests
+
 	describe('GET /threads', function(){
 	it('should return all threads', function(){	
 			return chai.request(app)
@@ -129,7 +131,7 @@ describe('Forum API Resource', function(){
 		});
 	});
 
-	describe('POST /threads', function(){
+	describe('POST /threads/new-thread', function(){
 		it('should post a new thread and return that thread', function(){
 			const newThread = {
 				title: "Mocha Test New Thread",
@@ -175,7 +177,30 @@ describe('Forum API Resource', function(){
 			});	
 		});
 	});
+
+	describe('DELETE /threads/:id', function(){
+		it('should delete thread by id', function(){
+			let threadId;
+			return chai.request(app)
+			.get('/threads')
+			.then((res) => {				
+				threadId = res.body.movieThreads[0]._id;
+				return chai.request(app)
+				.delete(`/threads/${threadId}`)
+			})
+			.then((res) => {
+				return chai.request(app)
+				.get(`/threads`)
+				.then((res) => {					
+					res.body.movieThreads[0]._id.should.not.equal(threadId)
+				})
+			})
+
+		})
+	});
 	
+	// Posts Tests
+
 	describe('PUT /posts/new-post', function(){
 		it('should create and return', function(){
 			return chai.request(app)
@@ -201,26 +226,104 @@ describe('Forum API Resource', function(){
 		});
 	});
 
-	describe('DELETE /threads/:id', function(){
-		it('should delete thread by id', function(){
-			let threadId;
+	describe('PUT /posts', function(){
+		it('should update existing post', function(){
 			return chai.request(app)
 			.get('/threads')
-			.then((res) => {				
-				threadId = res.body.movieThreads[0]._id;
+			.then((res) =>{
+				// Get a Post's _id to edit
+
+				let postId = res.body.movieThreads[0].posts[0]._id;
+				const editedPost ={
+					postId: postId,
+					user: "Ralph Cramden",
+					content: "The Honey Mooners"
+				};
+
 				return chai.request(app)
-				.delete(`/threads/${threadId}`)
-			})
-			.then((res) => {
-				return chai.request(app)
-				.get(`/threads`)
-				.then((res) => {					
-					res.body.movieThreads[0]._id.should.not.equal(threadId)
+				.put(`/posts/${postId}`)
+				.send(editedPost)
+				.then((res) => {
+
+					let refreshedPost = res.body.thread.posts[0];
+					res.body.thread.posts[0].user.should.equal(editedPost.user);
+					res.body.thread.posts[0]._id.should.equal(editedPost.postId);
+					res.body.thread.posts[0].content.should.equal(editedPost.content);
+					
 				})
 			})
-
 		})
-	});
+	})
+
+	
+
+	describe('DELETE /posts', function(){
+		it('should delete individual post', function(){
+			return chai.request(app)
+			.get('/threads')
+			.then((res) => {
+				// Get Post's Id
+				let threadId = res.body.movieThreads[0]._id;
+				let postId = res.body.movieThreads[0].posts[0]._id;				
+
+				let del = {
+					threadId: threadId,
+					postId: postId
+				};
+								
+				return chai.request(app)
+				.delete('/posts')
+				.send(del)
+				.then((res) => {
+					console.log(`BODY: ${JSON.stringify(res.body)}`)
+
+					return chai.request(app)
+					.get('/threads')
+					.then((res)=>{						
+						res.body.movieThreads[0].posts[0].should.not.equal(threadId)
+					})
+				})
+			})
+		})
+	})
+
+	describe('PUT /comments', function(){
+		it('should create new comment within posts array', function(){
+
+			return chai.request(app)
+			.get('/threads')
+			.then((res)=>{
+				let postId = res.body.movieThreads[0].posts[0]._id;
+				//console.log(`POSTID: ${postId}`)
+				//console.log(`\n\n\nPOST: \n ${JSON.stringify(res.body.movieThreads[0].posts[0], null, 4)} `)
+				let comment = {
+					postId: postId,
+					user: 'Lucy Ball',
+					comment: 'I Love Lucy!'
+				};
+
+				console.log(JSON.stringify(comment))
+				return chai.request(app)
+				.put(`/comments/${comment.postId}`)
+				.send(comment)
+				.then((res)=>{
+					
+					let length = res.body.posts[0].comments.length;
+					let newComment = {
+						user: res.body.posts[0].comments[length - 1].user,
+						comment: res.body.posts[0].comments[length - 1].comment
+					};
+					
+					newComment.user.should.equal(comment.user);
+					newComment.comment.should.equal(comment.comment)
+					
+				})
+
+			})
+
+			
+		})
+	})
 
 });
 

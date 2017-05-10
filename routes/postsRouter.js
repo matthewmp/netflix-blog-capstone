@@ -85,7 +85,7 @@ router.put('/:id', (req, res) => {
 	Threads
 	.findOneAndUpdate({"posts._id": req.params.id}, {"$set": {"posts.$.content": toUpdate.content, "posts.$.user": toUpdate.user}}, {new: true})
 	.exec()
-	.then(post => res.status(201).json({message: post}))
+	.then(thread => res.status(200).json({thread}))
 	.catch(err => res.status(500).json({message: 'Something went wrong'}))
 })
 
