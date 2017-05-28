@@ -4,59 +4,48 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 
 const {Threads} = require('../models/threadModel');
+const {Posts} = require('../models/postModel');
 
 
-// Create New Post Within Existing Thread
-router.put('/new-post/:id', (req, res) => {  
-  if(!(req.params.id === req.body.threadId)){
+// POST a new post for a thread
+router.post('/:threadId', (req, res) =>{
+  if(!(req.params.threadId === req.body.threadId)){
     res.status(400).json({
-      error: 'Request Path ID and Request Body ID Must Match'
+      error: 'Request Path ID and Request Body ID must match.'
     });
   }
- 
-  const toUpdate = {};
-  const requiredFields = ['threadId', 'content', 'user'];
-  console.log(req.params.id)
-  for(let i = 0; i < requiredFields.length; i++){
-      const field = requiredFields[i];
-      if(!(field in req.body)){
-        const message = `Missing \`${field}\` in request body`;
-        console.error(message);
-        return res.status(400).send(message);
-      }
-    }
 
-    requiredFields.forEach(field => {
-      if(field in req.body){
-      	if(field !== 'id'){
-      		toUpdate[field] = req.body[field];	
-      	}        
-      }
-    })
-    console.log(toUpdate);
-
-    Threads
-    .findByIdAndUpdate(req.params.id, {$push: {posts: toUpdate}}, {new: true})
-    .exec()
-    .then(post => res.status(201).json(post.getThread()))
-    .catch(err => res.status(500).json({message: 'Something went wrong'}))
-});
-
-
-router.delete('/', (req, res) => {
-  console.log('Deleting')
-  const threadId = req.body.threadId;
-  const postId = req.body.postId;
-  console.log(`Post: ${postId}, Thread: ${threadId}`);
   
-  Threads
-  .findByIdAndUpdate(threadId, {$pull: {posts: {_id: postId}}})
-  .exec()
-  .then(() => res.status(204).end()) 
-  .catch(err => res.status(500).json({message: 'Internal server error'}));
+  const requiredFields = ['user', 'content', 'threadId'];
+  for(let i = 0; i < requiredFields.length; i++){
+    const field = requiredFields[i];
+    if(!(field in req.body)){
+      const message = `Missing \`${field}\` in request body`;
+      console.error(message);
+      return res.status(400).send(message);
+    }
+  }
+
+  let threadId = req.body.threadId;          
+  let postId;             
+  Posts
+  .create({
+    user: req.body.user,
+    content: req.body.content,
+  })
+  .then((post) => {
+    postId = post._id;
+    res.status(201).json(post);
+    Threads
+    .findByIdAndUpdate(threadId, {$push: {posts: postId}})
+    .then(() => {
+      console.log("Thread ID Loaded")
+    })
+  })
+  .catch(err => {
+    res.status(500).json({error: 'Somethig Went Wrong'})
+  })
 })
-
-
 
 // Edit Existing Post Within Thread
 router.put('/:id', (req, res) => {
@@ -79,13 +68,12 @@ router.put('/:id', (req, res) => {
 		if(field in req.body){			
 				toUpdate[field] = req.body[field];			
 		}
-	})
-	console.log(req.params);
+	})	
 
-	Threads
-	.findOneAndUpdate({"posts._id": req.params.id}, {"$set": {"posts.$.content": toUpdate.content, "posts.$.user": toUpdate.user}}, {new: true})
+	Posts
+	.findByIdAndUpdate(req.body.postId, {$set: toUpdate})
 	.exec()
-	.then(thread => res.status(200).json({thread}))
+	.then(post => res.status(200).json({post}))
 	.catch(err => res.status(500).json({message: 'Something went wrong'}))
 })
 

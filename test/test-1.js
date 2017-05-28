@@ -9,9 +9,12 @@ const should = chai.should();
 
 const {app, runServer, closeServer} = require('../server');
 const {TEST_DATABASE_URL} = require('../config');
+
 const {Threads} = require('../models/threadModel');
+const {Posts} = require('../models/postModel');
+const {Comments} = require('../models/commentModel');
 
-
+var threadArray = [];
 mongoose.Promise = global.Promise;
 
 chai.use(chaiHttp);
@@ -20,44 +23,38 @@ function generateThreadData(){
 	var threads = [];
 	for(var i = 0; i < 5; i++){
 		let thread = {
-			title: `Thread # ${i}`,
-			date: faker.date.recent(),
+			title: `Thread # ${i}`,			
 			author: faker.name.findName(),
-			content: faker.lorem.paragraph(),
-			posts: generatePostData()		
+			content: faker.lorem.paragraph()			
 		}
-		threads.push(thread);
+		threads.push(thread);		
 	}
 	Threads.insertMany(threads);
+	//.then((res) => {console.log(`INSERT RES: ${JSON.stringify(res)}`)})	
 }
 
 function generatePostData(){
 	var posts = [];
 	for(var i = 0; i < 5; i++){
-		let post = {			
-			created: faker.date.recent(),
+		let post = {						
 			user: faker.name.findName(),
-			content: `Post # ${i}`,
-			likes: faker.random.number(),
-			comments: generateCommentData()	
+			content: `Post # ${i}`					
 		}
 		posts.push(post);
 	}
-	return posts;
+	Posts.insertMany(posts);
 }
 
 function generateCommentData(){
 	var comments = [];
 	for(var i = 0; i < 5; i++){
-		let comment = {					
-			created: faker.date.recent(),
+		let comment = {								
 			user: faker.name.findName(),
-			content: `Comment # ${i}`,
-			likes: faker.random.number()		
+			content: `Comment # ${i}`				
 		}	
 	comments.push(comment);	
 	}
-	return comments;
+	Comments.insertMany(comments);
 }
 
 // Drop DB
@@ -78,11 +75,17 @@ describe('Forum API Resource', function(){
 	});
 
 	beforeEach(function(){
-		console.log(`\n\n Initializing Data`);
-		return init_data();
+		generateThreadData();
+	});
+/*
+	beforeEach(function(){
+		generatePostData();
 	});
 
-	//==================
+	beforeEach(function(){
+		generateCommentData();
+	});
+*/
 	afterEach(function(){		
 		return tearDown();
 	});
@@ -93,6 +96,23 @@ describe('Forum API Resource', function(){
 
 	// Thread Tests
 
+
+	describe('Testing DB', function(){
+		it('Tests DB', function(){
+			let res;
+			return chai.request(app)
+			.get('/threads')			
+			.then((_res)=>{
+				res = _res;
+				res.body.movieThreads.should.be.a('array'); 
+				console.log(JSON.stringify(res.body, null, 4))
+			})
+			done();
+		})
+	})
+});
+
+/*
 	describe('GET /threads', function(){
 	it('should return all threads', function(){	
 			return chai.request(app)
@@ -103,8 +123,7 @@ describe('Forum API Resource', function(){
 				res.body.movieThreads[0].should.contain.keys('_id', 'title', 'author', 'posts', 'date');
 				res.body.movieThreads.should.be.a('array');
 				res.body.movieThreads[0].posts.should.be.a('array');
-				res.body.movieThreads[0].posts[0].comments.should.be.a('array');
-				//res.body.movieThreads.should.have.length.of.at.least(5);
+				res.body.movieThreads[0].posts[0].comments.should.be.a('array');				
 			});						
 		});		
 	});
@@ -132,7 +151,7 @@ describe('Forum API Resource', function(){
 	});
 
 	describe('POST /threads/new-thread', function(){
-		it('should post a new thread and return that thread', function(){
+		it('should post a new thread and return that thread', function(){			
 			const newThread = {
 				title: "Mocha Test New Thread",
 				author: "Mocha",
@@ -327,8 +346,7 @@ describe('Forum API Resource', function(){
 
 });
 
-
-
+*/
 
 
 
