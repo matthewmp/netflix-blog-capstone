@@ -144,7 +144,7 @@ function deletePost(postId, threadId){
 
   state.threadId = threadId;
   $.ajax({
-      url: '/posts',
+      url: `/posts/${postId}`,
       dataType: "json",
       contentType: "application/json",
       type: "DELETE",

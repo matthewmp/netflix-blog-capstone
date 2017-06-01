@@ -102,7 +102,7 @@ router.put('/:id', (req, res) => {
     })
 
     Threads
-    .findByIdAndUpdate(req.params.id, {$set: toUpdate})
+    .findByIdAndUpdate(req.params.id, {$set: toUpdate}, {new: true})
     .exec()
     .then(thread => res.status(201).json(thread.getThread()))
     .catch(err => res.status(500).json({message: 'Something went wrong'}))

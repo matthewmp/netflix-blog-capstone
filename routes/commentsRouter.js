@@ -8,6 +8,13 @@ const {Posts} = require('../models/postModel');
 
 
 
+router.get('/', (req, res)=>{
+	Comments.find()
+	.then((comments)=>{
+		res.status(200).json({comments: comments})
+	})
+})
+
 
 router.post('/:postId', (req, res) => {
 	console.log('posting comment')

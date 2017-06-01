@@ -7,6 +7,16 @@ const {Threads} = require('../models/threadModel');
 const {Posts} = require('../models/postModel');
 
 
+// Return All Posts
+router.get('/', (req, res)=>{  
+  Posts
+  .find()
+  .then((posts)=>{
+    res.status(200).json({posts: posts})
+  })
+})
+
+
 // POST a new post for a thread
 router.post('/:threadId', (req, res) =>{
   if(!(req.params.threadId === req.body.threadId)){
@@ -37,7 +47,7 @@ router.post('/:threadId', (req, res) =>{
     postId = post._id;
     res.status(201).json(post);
     Threads
-    .findByIdAndUpdate(threadId, {$push: {posts: postId}})
+    .findByIdAndUpdate(threadId, {$push: {posts: postId}}, {new: true})
     .then(() => {
       console.log("Thread ID Loaded")
     })
@@ -71,11 +81,35 @@ router.put('/:id', (req, res) => {
 	})	
 
 	Posts
-	.findByIdAndUpdate(req.body.postId, {$set: toUpdate})
+	.findByIdAndUpdate(req.body.postId, {$set: toUpdate}, {new: true})
 	.exec()
 	.then(post => res.status(200).json({post}))
 	.catch(err => res.status(500).json({message: 'Something went wrong'}))
 })
+
+// Delete Posts
+
+router.delete('/:postId', (req, res)=>{
+
+  if(req.params.postId !== req.body.postId){
+    res.status(400).json({error: 'Request Path ID Must Match Request Body ID'});
+  }
+
+  Posts
+  .findByIdAndRemove(req.params.postId)
+  .exec()
+  .then(()=>{
+    res.status(204).end()
+  })
+  .catch(err => res.status(500).json({message: 'Internal Server Error'}));
+});
+
+
+
+
+
+
+
 
 
 module.exports = router;
