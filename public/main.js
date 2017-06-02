@@ -339,10 +339,10 @@ function renderMovieThreads(state, threadList){
   }
 
   list.reverse().forEach(function(thread, ind){
-    $('.thread-list-items').append(`<article class="js-movie-thread" id=${thread._id}>
-      <img src="media/film.png">    
+    console.log(thread.author)
+    $('.thread-list-items').append(`<article class="js-movie-thread" id=${thread._id}>      
       <p class="thread-title">${thread.title}</p>      
-      <span class="thread-created">${thread.date},</span>
+      <span class="thread-created">${new Date(thread.date).toLocaleString()},</span>
       <span class="thread-author">${thread.author}</span>      
     </article>`)
   })
@@ -370,7 +370,7 @@ function renderIndThreadView(id, state){
   $('.thread-view-title').text(thread[0].title);
   $('.thread-view-content').text(thread[0].content)
   $('.thread-creator').html(`Thread Created by: <span class="js-thread-title-author">${thread[0].author}</span>`);
-  $('.thread-created').text(`${thread[0].date}`);
+  $('.thread-created').text(`${new Date(thread[0].date).toLocaleString()}`);
   if(thread[0].author === state.user){
       $('.add-post-wrapper').append(`<button type="button" class="btn-add-post js-btn-edit-thread">Edit</button>`)
     }
@@ -386,7 +386,7 @@ function renderIndThreadView(id, state){
 
           <div class="post-content-wrapper">
             <div class="post-content-date">
-              <p>${post.created}</p>
+              <p>${new Date(post.created).toLocaleString()}</p>
               <div class="post-user-name">posted by: ${post.user}</div>
             </div>
             <div class="post-content">${post.content}</div>

@@ -99,6 +99,10 @@ form {
   margin-top: 120px;
 }
 
+.login-form input, .sign-up-form input{
+  background-color: rgba(255, 255, 255, 0.8)
+}
+
 .login.view{
   display: none;
   z-index: 10;
@@ -199,7 +203,7 @@ nav {
   display: none;
   position: relative;
   background-color: #400000;
-  height: 70px; 
+  min-height: 70px; 
 
 }
 
@@ -229,8 +233,7 @@ nav {
 
 .search-wrapper{
   display: none;
-  height: 70px;
-  width: 80%;
+  min-height: 70px;
   line-height: 70px;
   border: 0px solid #fff;
 }
@@ -272,6 +275,7 @@ nav p{
   font-family: 'Roboto', arial, serif;
   font-size: 15px;
   text-indent: 30px;
+  background-color: rgba(255, 255, 255, 0.8);
   color: #111;
 
 }
@@ -287,18 +291,18 @@ p, input{
 }
 
 .movies-label{
-  margin-top: 50px;
   margin-left: 100px;
   margin-bottom: 30px;
-  height: 50px;
+  min-height: 50px;
   color: #400;
   font-size: 45px;
   font-family: 'Ranga', arial, serif;
-  text-shadow: 1px 1px 3px #ff0000;
-
-  
+  text-shadow: 1px 1px 3px #ff0000; 
 }
 
+.movies-label p{
+  margin: 0;
+}
 
 .plus{
   float: right;
@@ -306,8 +310,11 @@ p, input{
 }
 
 .js-movie-thread{
-  margin-bottom: 20px;
+  max-height: 90px;
   margin-left: 50px;
+  max-width: 50%;
+  border-bottom: 1px solid #ccc;
+  overflow: scroll;
 }
 
 .js-movie-thread:hover{
@@ -321,7 +328,7 @@ p, input{
 }
 
 .thread-title{
-  margin-left: 2%;
+  margin: 0;
   padding: 10px;
   border-radius: 3px;
   font-size: 31px;
@@ -343,22 +350,30 @@ p, input{
 
 .thread-author{
 font-family: 'Rajdhani';
-color: #fff;
 }
 
 
 /*   Thread View */
+
+.thread-view-wrapper{
+  max-width: 75%;
+  margin: auto;
+}
 
 .thread.view{
   display: none;
 }
 
 .thread-view-header{
-  margin-left: 10%;
+  margin: auto;
   margin-top: 25px;
   width: 79%;
-  border: 1px solid black;
+  border: 1px solid #ccc;
   padding: 20px 0px 10px 10px;
+}
+
+h1.thread-view-title:first-child{
+  margin-top: 0
 }
 
 .back{
@@ -372,17 +387,18 @@ color: #fff;
 
 .thread-view-title{
   padding-top: 20px;
-  font-family: 'Passion One';
+  font-family: 'Poppins';
   font-size: 45px;  
   color: #400;
 }
 
 .thread-view-content{
-  margin: 30px 0 30px 0;
+  padding: 20px;
   font-family: 'Poppins', sans-serif;
   font-size: 20px;
   color: #222;
   font-weight: 300;
+  line-height: 1.3em;
   
 }
 
@@ -547,6 +563,7 @@ color: #fff;
   margin-bottom: 100px;
   width: 80%;
   height: 300px;
+  background-color: #fff;
 }
 
 .news-wrapper{
@@ -554,8 +571,10 @@ color: #fff;
 }
 
 .post-user-info, .info-info{
+  display: flex;
+  align-items: center;
   border-right: 1px solid #7f0000;
- position: absolute;
+  position: absolute;
   top: 9%;
   width: 20%;
   height: 80%;
@@ -577,8 +596,7 @@ color: #fff;
 }
 
 .news-img{  
-  width: 100%;
-  height: 200px;
+  max-width: 100%;  
 }
 
 .user-img{
@@ -628,14 +646,23 @@ color: #fff;
   word-wrap: break-word;      /* IE */
 }
 
+.post-content-title{
+  font-family: 'Roboto';
+  font-size: 1.5em;
+  color: #222;
+}
+
+.post-user-name{
+  font-family: 'Roboto';
+  font-weight: 600;
+}
+
 .post-meta{
-  
   position: absolute;
   bottom: 0px;
   left: 5%;
   width: 50%;
   bottom: -40px;
-
 }
 
 .thumb{
@@ -658,7 +685,6 @@ color: #fff;
   display: inline-block;
   border: 1px solid #400;
   margin-left: 10px;
-  width: 20%;
   height: 30px;
   line-height: 30px;
   padding: 1px 0 3px 0;

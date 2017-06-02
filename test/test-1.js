@@ -40,8 +40,8 @@ function generateThreadData(){
 		})
 		.catch(err => {
 			rej(err);
-		})
-	})
+		});
+	});
 }
 
 function generatePostData(){
@@ -63,8 +63,8 @@ function generatePostData(){
 		})
 		.catch(err => {
 			rej(new Error('Posts Not Created'))
-		})
-	})
+		});
+	});
 }
 
 function generateCommentData(){
@@ -89,9 +89,9 @@ function generateCommentData(){
 		.lean()
 		.then((postIds)=>{
 			postIdArr = postIds;			
-		})
+		});
 
-	})	
+	});
 }
 
 function getThreadIds(){
@@ -101,8 +101,8 @@ function getThreadIds(){
 		.then((threads)=>{
 			threadIdArr = threads;
 			res(threads)
-		})		
-	})
+		});	
+	});
 }
 
 function getPostIds(){
@@ -112,8 +112,8 @@ function getPostIds(){
 		.then((posts)=>{
 			postIdArr = posts;
 			res(posts)
-		})
-	})
+		});
+	});
 }
 
 function getCommentIds(){
@@ -123,8 +123,8 @@ function getCommentIds(){
 		.then((comments)=>{
 			commentIdArr = comments;
 			res(comments)
-		})
-	})
+		});
+	});
 }
 
 function insertPostIds(){
@@ -135,9 +135,9 @@ function insertPostIds(){
 			.exec()
 			.then((result)=>{
 				res(result)
-			})
+			});
 		}
-	})
+	});
 }
 
 function insertCommentIds(){
@@ -148,9 +148,9 @@ function insertCommentIds(){
 			.exec()
 			.then((result)=>{
 				res(result)
-			})
+			});
 		}
-	})
+	});
 }
 
 // Drop DB
@@ -181,49 +181,49 @@ describe('Forum API Resource', function(){
 		generatePostData()
 		.then(()=>{
 			done()
-		})
+		});
 	});
 
 	beforeEach(function(done){
 		generateCommentData()
 		.then(()=>{
 			done();
-		})
+		});
 	});
 
 	beforeEach(function(done){
 		getThreadIds()
 		.then(()=>{
 			done();
-		})
+		});
 	});
 
 	beforeEach(function(done){
 		getPostIds()
 		.then(()=>{
 			done();
-		})
+		});
 	});
 
 	beforeEach(function(done){
 		getCommentIds()
 		.then(()=>{
 			done();
-		})
+		});
 	});
 
 	beforeEach(function(done){
 		insertPostIds()
 		.then(()=>{
 			done();
-		})
+		});
 	});
 
 	beforeEach(function(done){
 		insertCommentIds()
 		.then(()=>{
 			done();
-		})
+		});
 	});
 
 	afterEach(function(){		
@@ -252,9 +252,9 @@ describe('Forum API Resource', function(){
 				res.body.movieThreads[0].posts[0].comments.should.have.length.of.at.least(1);
 				res.body.movieThreads[0].posts[0].should.contain.keys('_id', 'content', 'user', 'comments', 'likes');
 				res.body.movieThreads[0].posts[0].comments[0].should.contain.keys('_id', 'created', 'user', 'comment', 'likes');
-			})			
-		})
-	})
+			});			
+		});
+	});
 
 
 	describe('GET /threads/:id', function(){
@@ -284,7 +284,7 @@ describe('Forum API Resource', function(){
 
 				});	
 
-			})
+			});
 					
 		});		
 	});
@@ -304,10 +304,10 @@ describe('Forum API Resource', function(){
 				.get(`/threads`)
 				.then((res) => {					
 					res.body.movieThreads[0]._id.should.not.equal(threadId)
-				})
-			})
+				});
+			});
 
-		})
+		});
 	});
 
 	
@@ -409,10 +409,10 @@ describe('Forum API Resource', function(){
 					res.body.post.user.should.equal(editedPost.user);
 					res.body.post._id.should.equal(editedPost.postId);
 					res.body.post.content.should.equal(editedPost.content);										
-				})
-			})
-		})
-	})
+				});
+			});
+		});
+	});
 
 
 
@@ -438,11 +438,11 @@ describe('Forum API Resource', function(){
 					.get('/threads')
 					.then((res)=>{											
 						res.body.movieThreads[0].posts.should.be.empty;
-					})
-				})
-			})
-		})
-	})
+					});
+				});
+			});
+		});
+	});
 	
 
 	// Comments Tests
@@ -491,10 +491,10 @@ describe('Forum API Resource', function(){
 					res.body.likes.count.should.equal(1);
 					res.body.likes.users[0].should.equal('Conan Obrien');
 
-				})
-			})
-		})
-	})
+				});
+			});
+		});
+	});
 
 	describe('POST /likes/:postId', function(){
 		it('should unlike a post', function(){
@@ -511,10 +511,10 @@ describe('Forum API Resource', function(){
 					res.body.should.be.a('object');
 					res.body.likes.count.should.equal(-1);
 					res.body.likes.users.should.be.empty;
-				})
-			})	
-		})
-	})
+				});
+			});	
+		});
+	});
 
 });
 
