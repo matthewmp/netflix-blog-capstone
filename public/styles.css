@@ -1,3 +1,16 @@
+html, body{
+  height: 100%;
+  width: 100%;
+  font-size: 16px;
+  line-height: 1.2
+  color: #222;
+  background: rgba(240,240,240,1)
+}
+
+img{
+  height: auto;
+  width: 100%;
+}
 
 .main-wrapper{
   position: absolute;
@@ -11,7 +24,7 @@ header{
       rgba(200, 0, 0, 0.5), 
       rgba(200, 0, 0, 0.5)
     ),
-    url('media/dd.jpg') no-repeat;
+  url('media/dd.jpg') no-repeat;
   background-size: cover;
   text-align: center;
   height: 500px;
@@ -39,7 +52,7 @@ header{
 
 .btn-header{
   position: absolute;
-  top: 300px;
+  top: 350px;
   border: 1px solid #fff;
   height: 50px;
   width: 100px;
@@ -85,6 +98,10 @@ form {
 
 .login-form, .sign-up-form{
   margin-top: 120px;
+}
+
+.login-form input, .sign-up-form input{
+  background-color: rgba(255, 255, 255, 0.8)
 }
 
 .login.view{
@@ -187,7 +204,7 @@ nav {
   display: none;
   position: relative;
   background-color: #400000;
-  height: 70px; 
+  min-height: 70px; 
 
 }
 
@@ -217,8 +234,7 @@ nav {
 
 .search-wrapper{
   display: none;
-  height: 70px;
-  width: 80%;
+  min-height: 70px;
   line-height: 70px;
   border: 0px solid #fff;
 }
@@ -260,6 +276,7 @@ nav p{
   font-family: 'Roboto', arial, serif;
   font-size: 15px;
   text-indent: 30px;
+  background-color: rgba(255, 255, 255, 0.8);
   color: #111;
 
 }
@@ -275,18 +292,21 @@ p, input{
 }
 
 .movies-label{
-  margin-top: 50px;
-  margin-left: 100px;
-  margin-bottom: 30px;
-  height: 50px;
+  margin: auto;
+  max-width: 80%;
+  padding: 20px;
+  min-height: 50px;
+  text-align: center;
+  background: #fff;
   color: #400;
   font-size: 45px;
   font-family: 'Ranga', arial, serif;
-  text-shadow: 1px 1px 3px #ff0000;
-
-  
+  text-shadow: 1px 1px 3px #ff0000; 
 }
 
+.movies-label p{
+  margin: 0;
+}
 
 .plus{
   float: right;
@@ -294,8 +314,11 @@ p, input{
 }
 
 .js-movie-thread{
-  margin-bottom: 20px;
-  margin-left: 50px;
+  max-height: 90px;
+  margin: auto;
+  max-width: 80%;
+  border-bottom: 1px solid #ccc;
+  overflow: auto;
 }
 
 .js-movie-thread:hover{
@@ -309,7 +332,7 @@ p, input{
 }
 
 .thread-title{
-  margin-left: 2%;
+  margin: 0;
   padding: 10px;
   border-radius: 3px;
   font-size: 31px;
@@ -318,7 +341,7 @@ p, input{
   text-shadow: 1px 1px 1px #000;
 }
 
-.thread-title:hover{
+.js-movie-thread:hover{
   background: rgba(240,0,0,0.2);
 }
 
@@ -331,22 +354,33 @@ p, input{
 
 .thread-author{
 font-family: 'Rajdhani';
-color: #fff;
 }
 
 
 /*   Thread View */
 
+.thread-view-wrapper{
+  max-width: 75%;
+  margin: auto;
+}
+
 .thread.view{
   display: none;
+  background: #fff;
+  height: 100%;
+  padding-top: 10px;
 }
 
 .thread-view-header{
-  margin-left: 10%;
+  margin: auto;
   margin-top: 25px;
   width: 79%;
-  border: 1px solid black;
+  border: 1px solid #ccc;
   padding: 20px 0px 10px 10px;
+}
+
+h1.thread-view-title:first-child{
+  margin-top: 0
 }
 
 .back{
@@ -358,18 +392,27 @@ color: #fff;
   display: none;
 }
 
+.thread-list-items{
+  max-width: 80%;
+  margin: auto;
+  background: #fff;
+  padding-bottom: 30%;
+}
+
 .thread-view-title{
   padding-top: 20px;
-  font-family: 'Passion One';
+  font-family: 'Poppins';
   font-size: 45px;  
   color: #400;
 }
 
 .thread-view-content{
-  margin: 30px 0 30px 0;
-  font-family: 'Roboto';
+  padding: 20px;
+  font-family: 'Poppins', sans-serif;
   font-size: 20px;
-  color: #7f0000;
+  color: #222;
+  font-weight: 300;
+  line-height: 1.3em;
   
 }
 
@@ -397,9 +440,35 @@ color: #fff;
   background-color: #e3eefd;
 }
 
+.js-separate{
+  margin-top: 130px;
+  background: #ccc;
+  height: 1px;
+}
+
 .js-post-content{
   font-family: arial, serif;
   font-size: 30px;  
+}
+
+.js-pc-user{
+  font-weight: 800;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  background: rgba(240,240,240,1);
+  display: inline-block;
+  text-align: center;
+  line-height: 50px;
+  margin-right: 20px;
+  font-size: 1.5em;
+  font-family: 'Poppins';
+  color: #222;
+}
+.js-pc-full-user{
+  font-weight: 600;
+  color: #222;
 }
 
 .js-post-created {
@@ -414,6 +483,8 @@ color: #fff;
   font-size: 13px;
 }
 
+
+
 .js-post-comments{
   width: 50%;
   margin-left: 80px;
@@ -423,16 +494,16 @@ color: #fff;
 }
 
 .js-btn-comment{
-  position: relative;
-    top: -63px;
-    float: right;
-    margin-right: 30px;
-    width: 100px;
-    height: 30px;
-    border-style: none;
-    background-color: azure;
-    font-size: 15px;
-    cursor: pointer;
+  position: relative;  
+  top: -63px;
+  float: right;
+  margin-right: 30px;
+  width: 100px;
+  height: 30px;
+  border-style: none;
+  background-color: azure;
+  font-size: 15px;
+  cursor: pointer;
 }
 
 .js-btn-comment:active{
@@ -440,11 +511,19 @@ color: #fff;
   color: #fff;
 }
 
+.news.view{
+  max-width: 80%;
+  margin: auto;
+  background: #fff;
+  height: 120%;
+  padding-top: 10px;
+}
+
 .news-wrapper{
   margin-top: 75px;
 }
 
-.btn-add-post, .btn-create-post, .btn-create-thread, .btn-create-comment{
+.btn-add-post, .btn-create-post, .btn-create-thread, .btn-create-comment, .btn-edit-thread-submit{
   width: 100px;
   height: 40px;
   border-style: none;
@@ -489,9 +568,11 @@ color: #fff;
 .create-post.view, .create-thread.view, .edit-thread.view, .create-comment.view, .edit-post.view{
   position: relative;
   display: none;
-  margin: 30px 0 30px 10%;
+  background: #fff;
+  padding: 20px;
+  margin: auto;
   width: 70%;
-  height: 400px;
+  min-height: 70%;
   background-color: ;
 }
 
@@ -524,24 +605,43 @@ color: #fff;
 }
 
 
-.post-wrapper, .news-wrapper{
+.news-wrapper{
   border: 1px solid #7f0000;
   border-radius: 3px;
   position: relative;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 30px;
+  margin-top: 40px;
+  margin-bottom: 80px;
   width: 80%;
   height: 300px;
+  background-color: #fff;
 }
 
 .news-wrapper{
   border: none;
 }
 
+.post-wrapper{  
+  border-radius: 3px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 40px;
+  margin-bottom: 80px;
+  width: 80%;
+  min-height: 100px;
+  background-color: #fff;
+}
+.post-wrapper:first-child{
+  margin-top: 100px;
+}  
+
 .post-user-info, .info-info{
+  display: flex;
+  align-items: center;
   border-right: 1px solid #7f0000;
- position: absolute;
+  position: absolute;
   top: 9%;
   width: 20%;
   height: 80%;
@@ -563,24 +663,32 @@ color: #fff;
 }
 
 .news-img{  
-  width: 50%;
-  height: 50%;
-  margin-top: 20%;
+  max-width: 100%;  
 }
 
 .user-img{
   width: 30%;
   height: 30%;
 }
-
+/*
 .post-content-wrapper{
+  margin-top: 20px;
   overflow: scroll;
   position: absolute;
   left: 5%;
   top: 9%;
-  height: 80%;
+  height: 80px;
   width: 70%;
   border-radius: 3px;
+}
+*/
+.news.view h1{
+  text-align: center;
+  margin-top: 30px;
+  color: #ff0000;
+  font-size: 82px;
+  font-family: 'Rajdhani';
+  text-shadow: 2px 1px 1px #130000;
 }
 
 .news-content-wrapper{
@@ -595,7 +703,6 @@ color: #fff;
 
 .post-content, .news-content{
   margin-top: 30px;
-  height: 30px;
   font-family: 'Roboto';
   font-size: 17px;
   line-height: 22px;
@@ -606,13 +713,30 @@ color: #fff;
   word-wrap: break-word;      /* IE */
 }
 
-.post-meta{
-  
-  position: absolute;
-  bottom: 0px;
-  left: 5%;
-  width: 50%;
+.post-content{
+  background: rgb(250,250,250);
+  padding: 20px;
+}
 
+.post-content-title{
+  font-family: 'Roboto';
+  font-size: 1.5em;
+  color: #222;
+}
+
+.post-user-name{
+  font-family: 'Roboto';
+  font-weight: 600;
+}
+
+.post-meta{
+  position: absolute;
+  background: #eee;
+  left: 5%;
+  min-width: 100%;
+  bottom: -100px;
+  border: 1px solid #ccc;
+  padding: 10px;
 }
 
 .thumb{
@@ -626,45 +750,62 @@ color: #fff;
   cursor: pointer;
 }
 
+.thumb-liked{
+  filter: saturate(3);
+  cursor: pointer;
+}
+
 .btn-comment, .btn-post{
   display: inline-block;
-  border: 1px solid red;
+  border: 1px solid #400;
+  padding: 0 5px 0 5px;
   margin-left: 10px;
-  width: 20%;
-  padding: 1px 0 3px 0;
+  height: 30px;
+  line-height: 30px;
   text-align: center;
-  background: #7f0000;
+  font-family: 'Rajdhani', arial, serif;
+  background: #ff0000;
   color: #fff;
   cursor: pointer;
 
 }
 
+.likes{
+  border: none;
+}
+
 .js-comment{
     color: #000;
     overflow-wrap: break-word;
-    margin-top: 40px;
+    margin-top: 30px;
     overflow: scroll;
     width: 50%;
     margin-left: auto;
     margin-right:  auto;
-    font-style: oblique;
-    letter-spacing: 1px;
+    margin-bottom: 30px;    
+    font-style: oblique;    
     line-height: 23px;
-    font-size:22px;
-    background-color: #eee;
+    font-size:1em;    
+    background-color: rgb(250,250,250);
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
   }
 
-  .js-comment-user{
-    display: block;
-    width: 50%;    
-    font-family: 'Roboto';
-    font-size: 15px;
-    color: #ff0000;
-  }
+.thread.view.js-comment:first-child{
+  margin-top: 120px;
+}
 
-  .by{
-    color: #7f0000;
-  }
+.js-comment-user{
+  display: block;
+  width: 50%;    
+  font-family: 'Roboto';
+  font-size: 15px;
+  color: #ff0000;
+}
+
+.by{
+  color: #7f0000;
+}
 
 
 

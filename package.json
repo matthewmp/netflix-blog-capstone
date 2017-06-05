@@ -4,7 +4,8 @@
   "description": "A forum to discuss latest movies and tv shows being watched on netflix.",
   "main": "server.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "start": "nodemon"
   },
   "repository": {
     "type": "git",
@@ -23,11 +24,15 @@
   },
   "homepage": "https://github.com/mmpal78/netflix-blog#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.1",
     "cors": "^2.8.3",
     "express": "^4.15.2",
     "mongoose": "^4.9.5",
-    "morgan": "^1.8.1"
+    "morgan": "^1.8.1",
+    "nodemon": "^1.11.0",
+    "passport": "^0.3.2",
+    "passport-http": "^0.3.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
