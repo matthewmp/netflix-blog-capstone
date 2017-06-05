@@ -24,11 +24,12 @@ function _GET_ThreadsRenderInd(){
   $.ajax({
     dataType: "json",
     url: "/threads",
+    type: "GET", 
     success: function(data){
       state.movieThreads = data.movieThreads; 
       renderIndThreadView(state.threadId, state)
-    },
-    type: "GET",    
+    }
+       
   })
 }  
 
@@ -169,22 +170,6 @@ function like(postId, user){
   })
 }
 
-function unlike(postId, user){
-  let tmpObj = {
-    postId: postId,
-    user: user
-  };
-
-  $.ajax({
-    url: `/likes/unlike/${postId}`,
-    dataType: "json",
-    contentType: "application/json",
-    type: "PUT",
-    data: JSON.stringify(tmpObj),
-    success: _GET_ThreadsRenderInd
-  })
-}
-
 // Login AJAX Requests
 function createUser(){
   let id = $('#new-user-id').val();
@@ -273,7 +258,13 @@ function login(id){
   $('form').hide();
   $('.login-overlay').hide();
   $('.welcome').text(`Welcome ${state.user}`);
-  showView('news');
+
+  if(state.view){
+    _GET_AllThreads();
+    showView('thread-list')
+  } else {
+    showView('news');
+  }
 }
 
 
@@ -328,6 +319,7 @@ function showView(screenName, flag){
 
 // Show All Threads When 'View Threads' is clicked on nav bar 
 function renderMovieThreads(state, threadList){
+  console.log('RENDERING MOVIE THREADS')
   // Clear View
   hideAllViews();
   $('.thread-list-items').empty();
@@ -379,36 +371,43 @@ function renderIndThreadView(id, state){
     }
   showView('thread');
   // Load Thread Posts
-  thread[0].posts.forEach(function(post, index){    
-   
+  thread[0].posts.forEach(function(post, index){  
+
+  
+
     $('.thread-view-title-posts').append(
         `<article class="post-wrapper" id=${post._id}>
 
+          <span class="post-content-date"><span class="js-pc-user">${post.user.slice(0,1)}</span>    <span class="js-pc-full-user">${post.user}</span>  ${new Date(post.created).toLocaleString()}</span>
           <div class="post-content-wrapper">
-            <div class="post-content-date">
-              <p>${new Date(post.created).toLocaleString()}</p>
-              <div class="post-user-name">posted by: ${post.user}</div>
-            </div>
+            
             <div class="post-content">${post.content}</div>
-          </div>
+          </div>                
+          `);
 
-          <div class="post-meta">
-            <span class="thumb">&#x1F44D;</span>
-            <span class="likes">${post.likes.count}</span>
-            <span class="btn-comment" id="btn-comment">Comment</span>
-          </div>`);
+    $('.thread-view-title-posts').append(
+      `<div class="js-separate"></div>`
+    );
+
 
         // Check if liked by user
-        if(post.likes.users.length > 0){
-          post.likes.users.forEach(function(user){
-            console.log(typeof user,  typeof state.user);
-            user = user.trim();
-            sUser = state.user.trim();
-            if(user === sUser){
-              console.log("HIT")
-              $('.thumb').attr('class', 'thumb-liked');
-            }
-          })
+        try{
+          if(post.likes.users.length > 0){
+            post.likes.users.forEach(function(user){              
+              user = user.trim();
+              let sUser = state.user.trim();
+              if(user.trim() === sUser.trim()){
+                
+                console.log(`${post._id}`)
+                $(`#${post._id}`).find('.thumb').addClass('thumb-liked');               
+                //$(`#${post._id}`).find('.thumb').attr('class', '.thumb-liked')
+              } 
+
+              
+            })
+          }
+        } catch(error){
+          console.error(error);
         }
         
 
@@ -419,12 +418,14 @@ function renderIndThreadView(id, state){
             `)
         }
 
+
+        $(`#${post._id}`).find('.thumb').addClass('thumb-liked'); 
+
         if(post.comments.length){
           post.comments.forEach(function(comment){
-              $('.thread-view-title-posts').append(`
+              $('.post-wrapper').append(`
                 \n            
                 \n
-                
                 \n
               <div class="js-comment">
               ${comment.comment}
@@ -433,6 +434,15 @@ function renderIndThreadView(id, state){
             `)
             });          
         }
+
+        $('.post-content-wrapper').append(`
+            <div class="post-meta">
+            <button class="likes"> <span class="thumb">&#x1F44D;</span> </button>
+            <span class="likes">${post.likes.count}</span>
+            <span class="btn-comment" id="btn-comment">Comment</span>
+            
+          </div>  
+          `)
   })
 }
 
@@ -500,7 +510,8 @@ $(function(){
       _GET_AllThreads();
     }
     else {
-      $('.btn-login').click();      
+      $('.btn-login').click(); 
+      state.view = 'threadList';     
     }
   })
 
@@ -553,15 +564,16 @@ $(function(){
   })
 
   // Unlike Post
-  $('.thread.view').on('click', '.thumb-liked', function(e){    
+  $('.thread.view').on('click', '.thumb-liked', function(e){      
     let threadId = $('.thread.view').attr('id');
     let postId = $(this).closest('article').attr('id');    
     let user = state.user;
 
     state.threadId = threadId;
-    unlike(postId, user);
+    like(postId, user);
   })
 
+  
   // Edit Existing Thread Button
   $('.thread-view-header').on('click', '.js-btn-edit-thread', function(){
     let threadId = $('.thread.view').attr('id');

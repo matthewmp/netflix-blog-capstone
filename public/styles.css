@@ -4,6 +4,7 @@ html, body{
   font-size: 16px;
   line-height: 1.2
   color: #222;
+  background: rgba(240,240,240,1)
 }
 
 img{
@@ -291,9 +292,12 @@ p, input{
 }
 
 .movies-label{
-  margin-left: 100px;
-  margin-bottom: 30px;
+  margin: auto;
+  max-width: 80%;
+  padding: 20px;
   min-height: 50px;
+  text-align: center;
+  background: #fff;
   color: #400;
   font-size: 45px;
   font-family: 'Ranga', arial, serif;
@@ -311,10 +315,10 @@ p, input{
 
 .js-movie-thread{
   max-height: 90px;
-  margin-left: 50px;
-  max-width: 50%;
+  margin: auto;
+  max-width: 80%;
   border-bottom: 1px solid #ccc;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .js-movie-thread:hover{
@@ -337,7 +341,7 @@ p, input{
   text-shadow: 1px 1px 1px #000;
 }
 
-.thread-title:hover{
+.js-movie-thread:hover{
   background: rgba(240,0,0,0.2);
 }
 
@@ -362,6 +366,9 @@ font-family: 'Rajdhani';
 
 .thread.view{
   display: none;
+  background: #fff;
+  height: 100%;
+  padding-top: 10px;
 }
 
 .thread-view-header{
@@ -383,6 +390,13 @@ h1.thread-view-title:first-child{
 
 .thread-list-view .back{
   display: none;
+}
+
+.thread-list-items{
+  max-width: 80%;
+  margin: auto;
+  background: #fff;
+  padding-bottom: 30%;
 }
 
 .thread-view-title{
@@ -426,9 +440,35 @@ h1.thread-view-title:first-child{
   background-color: #e3eefd;
 }
 
+.js-separate{
+  margin-top: 130px;
+  background: #ccc;
+  height: 1px;
+}
+
 .js-post-content{
   font-family: arial, serif;
   font-size: 30px;  
+}
+
+.js-pc-user{
+  font-weight: 800;
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  background: rgba(240,240,240,1);
+  display: inline-block;
+  text-align: center;
+  line-height: 50px;
+  margin-right: 20px;
+  font-size: 1.5em;
+  font-family: 'Poppins';
+  color: #222;
+}
+.js-pc-full-user{
+  font-weight: 600;
+  color: #222;
 }
 
 .js-post-created {
@@ -443,6 +483,8 @@ h1.thread-view-title:first-child{
   font-size: 13px;
 }
 
+
+
 .js-post-comments{
   width: 50%;
   margin-left: 80px;
@@ -452,16 +494,16 @@ h1.thread-view-title:first-child{
 }
 
 .js-btn-comment{
-  position: relative;
-    top: -63px;
-    float: right;
-    margin-right: 30px;
-    width: 100px;
-    height: 30px;
-    border-style: none;
-    background-color: azure;
-    font-size: 15px;
-    cursor: pointer;
+  position: relative;  
+  top: -63px;
+  float: right;
+  margin-right: 30px;
+  width: 100px;
+  height: 30px;
+  border-style: none;
+  background-color: azure;
+  font-size: 15px;
+  cursor: pointer;
 }
 
 .js-btn-comment:active{
@@ -469,11 +511,19 @@ h1.thread-view-title:first-child{
   color: #fff;
 }
 
+.news.view{
+  max-width: 80%;
+  margin: auto;
+  background: #fff;
+  height: 120%;
+  padding-top: 10px;
+}
+
 .news-wrapper{
   margin-top: 75px;
 }
 
-.btn-add-post, .btn-create-post, .btn-create-thread, .btn-create-comment{
+.btn-add-post, .btn-create-post, .btn-create-thread, .btn-create-comment, .btn-edit-thread-submit{
   width: 100px;
   height: 40px;
   border-style: none;
@@ -518,9 +568,11 @@ h1.thread-view-title:first-child{
 .create-post.view, .create-thread.view, .edit-thread.view, .create-comment.view, .edit-post.view{
   position: relative;
   display: none;
-  margin: 30px 0 30px 10%;
+  background: #fff;
+  padding: 20px;
+  margin: auto;
   width: 70%;
-  height: 400px;
+  min-height: 70%;
   background-color: ;
 }
 
@@ -553,14 +605,14 @@ h1.thread-view-title:first-child{
 }
 
 
-.post-wrapper, .news-wrapper{
+.news-wrapper{
   border: 1px solid #7f0000;
   border-radius: 3px;
   position: relative;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 100px;
-  margin-bottom: 100px;
+  margin-top: 40px;
+  margin-bottom: 80px;
   width: 80%;
   height: 300px;
   background-color: #fff;
@@ -569,6 +621,21 @@ h1.thread-view-title:first-child{
 .news-wrapper{
   border: none;
 }
+
+.post-wrapper{  
+  border-radius: 3px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 40px;
+  margin-bottom: 80px;
+  width: 80%;
+  min-height: 100px;
+  background-color: #fff;
+}
+.post-wrapper:first-child{
+  margin-top: 100px;
+}  
 
 .post-user-info, .info-info{
   display: flex;
@@ -603,17 +670,18 @@ h1.thread-view-title:first-child{
   width: 30%;
   height: 30%;
 }
-
+/*
 .post-content-wrapper{
+  margin-top: 20px;
   overflow: scroll;
   position: absolute;
   left: 5%;
   top: 9%;
-  height: 80%;
+  height: 80px;
   width: 70%;
   border-radius: 3px;
 }
-
+*/
 .news.view h1{
   text-align: center;
   margin-top: 30px;
@@ -635,7 +703,6 @@ h1.thread-view-title:first-child{
 
 .post-content, .news-content{
   margin-top: 30px;
-  height: 30px;
   font-family: 'Roboto';
   font-size: 17px;
   line-height: 22px;
@@ -644,6 +711,11 @@ h1.thread-view-title:first-child{
   white-space: -pre-wrap;     /* Opera <7 */   
   white-space: -o-pre-wrap;   /* Opera 7 */    
   word-wrap: break-word;      /* IE */
+}
+
+.post-content{
+  background: rgb(250,250,250);
+  padding: 20px;
 }
 
 .post-content-title{
@@ -659,10 +731,12 @@ h1.thread-view-title:first-child{
 
 .post-meta{
   position: absolute;
-  bottom: 0px;
+  background: #eee;
   left: 5%;
-  width: 50%;
-  bottom: -40px;
+  min-width: 100%;
+  bottom: -100px;
+  border: 1px solid #ccc;
+  padding: 10px;
 }
 
 .thumb{
@@ -684,16 +758,20 @@ h1.thread-view-title:first-child{
 .btn-comment, .btn-post{
   display: inline-block;
   border: 1px solid #400;
+  padding: 0 5px 0 5px;
   margin-left: 10px;
   height: 30px;
   line-height: 30px;
-  padding: 1px 0 3px 0;
   text-align: center;
   font-family: 'Rajdhani', arial, serif;
   background: #ff0000;
   color: #fff;
   cursor: pointer;
 
+}
+
+.likes{
+  border: none;
 }
 
 .js-comment{
@@ -704,27 +782,30 @@ h1.thread-view-title:first-child{
     width: 50%;
     margin-left: auto;
     margin-right:  auto;
-    margin-bottom: 30px;
-    padding: 20px;
-    font-style: oblique;
-    letter-spacing: 1px;
+    margin-bottom: 30px;    
+    font-style: oblique;    
     line-height: 23px;
-    font-size:22px;
-    border-radius: 5px;
-    background-color: #eee;
+    font-size:1em;    
+    background-color: rgb(250,250,250);
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
   }
 
-  .js-comment-user{
-    display: block;
-    width: 50%;    
-    font-family: 'Roboto';
-    font-size: 15px;
-    color: #ff0000;
-  }
+.thread.view.js-comment:first-child{
+  margin-top: 120px;
+}
 
-  .by{
-    color: #7f0000;
-  }
+.js-comment-user{
+  display: block;
+  width: 50%;    
+  font-family: 'Roboto';
+  font-size: 15px;
+  color: #ff0000;
+}
+
+.by{
+  color: #7f0000;
+}
 
 
 

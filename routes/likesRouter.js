@@ -7,7 +7,7 @@ const {Posts} = require('../models/postModel');
 
 router.put('/:postId', (req, res) => {
 	if(!(req.params.postId === req.body.postId)){
-		res.status(400).json({
+		return res.status(400).json({
 			error: 'Request Post Id and Request Body Id must match'
 		});
 	}
@@ -19,7 +19,7 @@ router.put('/:postId', (req, res) => {
 		if(!(field in req.body)){
 			const message = `Missing \`${field}\` in Request Body`;
 			console.error(message);
-			res.status(400).send(message);
+			return res.status(400).send(message);
 		}
 	}
 
@@ -31,23 +31,53 @@ router.put('/:postId', (req, res) => {
 
 	
 	const user = req.body.user
-	console.log(user);
 	
-	Posts
-	.findOneAndUpdate(req.body.postId, {$inc: {"likes.count": 1}}, {new: true})
+	Posts.findOne({_id: req.body.postId})
 	.exec()
-	.then((post) =>{
-		Posts
-		.findOneAndUpdate(req.body.postId, {$push: {"likes.users": user}}, {new: true})
-		.exec()
-		.then((post)=>{
-			res.send(post);
-		})
-		.catch(err => res.status(500).json({message: 'Something went wrong'}))
+	.then((result)=>{
+		let repeatUser = false;
+		result.likes.users.forEach(function(val, ind){
+			if(val.trim() === user.trim()){				
+				repeatUser = true;
+			}
+		})		
+
+		if(repeatUser === true){
+			Posts
+			.findOneAndUpdate({_id: req.body.postId}, {$inc: {"likes.count": -1}}, {new: true})
+			.exec()
+			.then((post) =>{
+				Posts
+				.findOneAndUpdate({_id: req.body.postId}, {$pull: {"likes.users": user}}, {new: true})
+				.exec()
+				.then((post)=>{
+					console.log("Line 54");
+					return res.json(post);					
+				})
+				.catch(err => res.status(500).json({message: 'Something went wrong'}))
+			})			
+		}
+			
+
+		else {
+			Posts
+			.findOneAndUpdate({_id: req.body.postId}, {$inc: {"likes.count": 1}}, {new: true})
+			.exec()
+			.then((post) =>{
+				//console.log(`POSTID: \n\n${req.body.postId}`)
+				//console.log(post)
+				Posts
+				.findOneAndUpdate({_id: req.body.postId}, {$push: {"likes.users": user}}, {new: true})
+				.exec()
+				.then((post)=>{
+					console.log("Line 73");
+					return res.json(post);					
+				})
+				.catch(err => res.status(500).json({message: 'Something went wrong'}))
+			})			
+		}
+		
 	})
-
-	
-
 })
 
 
@@ -81,11 +111,11 @@ router.put('/unlike/:postId', (req, res) => {
 	const user = req.body.user
 
 	Posts
-	.findOneAndUpdate(req.body.postId, {$inc: {"likes.count": -1}}, {new: true})
+	.findOneAndUpdate({_id: req.body.postId}, {$inc: {"likes.count": -1}}, {new: true})
 	.exec()
 	.then((post) =>{
 		Posts
-		.findOneAndUpdate(req.body.postId, {$pull: {"likes.users": user}}, {new: true})
+		.findOneAndUpdate({_id: req.body.postId}, {$pull: {"likes.users": user}}, {new: true})
 		.exec()
 		.then((post)=>{
 			res.send(post);
