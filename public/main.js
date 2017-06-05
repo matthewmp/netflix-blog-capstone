@@ -391,7 +391,8 @@ function renderIndThreadView(id, state){
       `<div class="js-separate"></div>`
     );
 
-
+        //TODO -> when there is no `users` in the `post.likes.users` 
+        // this condition is never reached.
         // Check if liked by user
         try{
           if(post.likes.users.length > 0){
