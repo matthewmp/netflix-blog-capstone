@@ -318,8 +318,7 @@ function showView(screenName, flag){
 }
 
 // Show All Threads When 'View Threads' is clicked on nav bar 
-function renderMovieThreads(state, threadList){
-  console.log('RENDERING MOVIE THREADS')
+function renderMovieThreads(state, threadList){  
   // Clear View
   hideAllViews();
   $('.thread-list-items').empty();
@@ -330,8 +329,7 @@ function renderMovieThreads(state, threadList){
     list = state.movieThreads;
   }
 
-  list.reverse().forEach(function(thread, ind){
-    console.log(thread.author)
+  list.reverse().forEach(function(thread, ind){    
     $('.thread-list-items').append(`<article class="js-movie-thread" id=${thread._id}>      
       <p class="thread-title">${thread.title}</p>      
       <span class="thread-created">${new Date(thread.date).toLocaleString()},</span>
@@ -344,6 +342,8 @@ function renderMovieThreads(state, threadList){
 
 // Render Individual Thread When Selected By User
 function renderIndThreadView(id, state){ 
+  let postIdArr = [];
+
   let thread = $.grep(state.movieThreads, function(elem, ind){      
       return  elem._id == id;    
     });
@@ -372,9 +372,6 @@ function renderIndThreadView(id, state){
   showView('thread');
   // Load Thread Posts
   thread[0].posts.forEach(function(post, index){  
-
-  
-
     $('.thread-view-title-posts').append(
         `<article class="post-wrapper" id=${post._id}>
 
@@ -382,68 +379,54 @@ function renderIndThreadView(id, state){
           <div class="post-content-wrapper">
             
             <div class="post-content">${post.content}</div>
-          </div>                
+
+            <div class="post-meta">
+              <button class="likes"> <span class="thumb">&#x1F44D;</span> </button>
+              <span class="likes">${post.likes.count}</span>
+              <span class="btn-comment" id="btn-comment">Comment</span>            
+            </div>  
+          </div> 
+        </article>               
           `);
 
+    // Add divider between Posts
     $('.thread-view-title-posts').append(
       `<div class="js-separate"></div>`
     );
+    
+    // Check to see if current user liked post then change thumbs up class.
+    let match = false;
+    post.likes.users.forEach(function(user){
+      if(user.trim() === state.user.trim()){
+       $(`#${post._id}`).find('.thumb').addClass('thumb-liked');
+      }
+    })
+  
+    if(post.user === state.user){ 
+      let btn_render =  '<span class="btn-comment" id="btn-delete">Delete</span><span class="btn-post" id="btn-edit-post">Edit</span>'   
+      console.log($('.post-meta')[index])
+      $('.post-meta')[index].innerHTML += btn_render;
+    }
+
+    if(post.comments.length){
+      post.comments.forEach(function(comment){
+        console.log(comment);
+          $(`#${post._id}`).append(`
+            \n            
+            \n
+            \n
+          <div class="js-comment">
+          ${comment.comment}
+            <p class="js-comment-user"><span class="by">by:</span> ${comment.user}</p>
+          </div>
+        `)
+        });          
+    }
 
 
-        // Check if liked by user
-        try{
-          if(post.likes.users.length > 0){
-            post.likes.users.forEach(function(user){              
-              user = user.trim();
-              let sUser = state.user.trim();
-              if(user.trim() === sUser.trim()){
-                
-                console.log(`${post._id}`)
-                $(`#${post._id}`).find('.thumb').addClass('thumb-liked');               
-                //$(`#${post._id}`).find('.thumb').attr('class', '.thumb-liked')
-              } 
 
-              
-            })
-          }
-        } catch(error){
-          console.error(error);
-        }
-        
-
-        if(post.user === state.user){
-          $($('.post-meta')[index]).append(`
-              <span class="btn-comment" id="btn-delete">Delete</span>
-              <span class="btn-post" id="btn-edit-post">Edit</span>
-            `)
-        }
-
-
-        $(`#${post._id}`).find('.thumb').addClass('thumb-liked'); 
-
-        if(post.comments.length){
-          post.comments.forEach(function(comment){
-              $('.post-wrapper').append(`
-                \n            
-                \n
-                \n
-              <div class="js-comment">
-              ${comment.comment}
-                <p class="js-comment-user"><span class="by">by:</span> ${comment.user}</p>
-              </div>
-            `)
-            });          
-        }
-
-        $('.post-content-wrapper').append(`
-            <div class="post-meta">
-            <button class="likes"> <span class="thumb">&#x1F44D;</span> </button>
-            <span class="likes">${post.likes.count}</span>
-            <span class="btn-comment" id="btn-comment">Comment</span>
-            
-          </div>  
-          `)
-  })
+  });
+  // End Posts
 }
 
 
