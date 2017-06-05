@@ -344,6 +344,7 @@ function renderMovieThreads(state, threadList){
 
 // Render Individual Thread When Selected By User
 function renderIndThreadView(id, state){ 
+  // TODO -> for your post to get likes attached, you may have to load from the API
   let thread = $.grep(state.movieThreads, function(elem, ind){      
       return  elem._id == id;    
     });
@@ -372,7 +373,8 @@ function renderIndThreadView(id, state){
   showView('thread');
   // Load Thread Posts
   thread[0].posts.forEach(function(post, index){  
-
+    // `post.likes` has an empty users array.
+    console.log('POST', post);
   
 
     $('.thread-view-title-posts').append(
