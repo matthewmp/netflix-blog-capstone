@@ -130,5 +130,5 @@ if(require.main === module){
 };
 
 
-module.exports = {runServer, closeServer, app, passport};
+module.exports = {runServer, closeServer, app};
 
