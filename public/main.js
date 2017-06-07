@@ -501,6 +501,8 @@ $(function(){
 
   // Log Out Button
   $('.btn-logout').click(function(){
+      // lets remove the state from local storage, it will be created fresh after refresh
+      localStorage.removeItem('state');
       window.location.reload(true);
   })
 
