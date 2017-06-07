@@ -2,12 +2,14 @@ const express = require('express');
 const router = express.Router();
 
 const bodyParser = require('body-parser');
-
+const {passport} = require('./userRouter')
 const {Threads} = require('../models/threadModel');
 
 
-router.get('/', (req, res) => {
+router.get('/', (req, res) => { 
 
+
+  console.log(req.user, 'user');
   let threadIdArr = Threads.find();
 
   Threads

@@ -44,37 +44,49 @@ router.put('/:postId', (req, res) => {
 
 		if(repeatUser === true){
 			Posts
-			.findOneAndUpdate({_id: req.body.postId}, {$inc: {"likes.count": -1}}, {new: true})
+			.findOne({_id: req.body.postId})
 			.exec()
 			.then((post) =>{
+
 				Posts
 				.findOneAndUpdate({_id: req.body.postId}, {$pull: {"likes.users": user}}, {new: true})
 				.exec()
 				.then((post)=>{
-					console.log("Line 54");
-					return res.json(post);					
+					var len = post.likes.users.length;
+					console.log("NEW LENGTH: " + len)
+					Posts.findOneAndUpdate({_id: req.body.postId}, {"likes.count": len}, {new: true})
+					.exec()
+					.then((post) => {
+						return res.json(post);	
+					})														
 				})
 				.catch(err => res.status(500).json({message: 'Something went wrong'}))
-			})			
+			})
+			.catch(err => res.status(500).json({message: 'Something went wrong'}))			
 		}
 			
 
 		else {
 			Posts
-			.findOneAndUpdate({_id: req.body.postId}, {$inc: {"likes.count": 1}}, {new: true})
+			.findOne({_id: req.body.postId})
 			.exec()
 			.then((post) =>{
-				//console.log(`POSTID: \n\n${req.body.postId}`)
-				//console.log(post)
+				
 				Posts
 				.findOneAndUpdate({_id: req.body.postId}, {$push: {"likes.users": user}}, {new: true})
 				.exec()
 				.then((post)=>{
-					console.log("Line 73");
-					return res.json(post);					
+					var len = post.likes.users.length;
+					console.log("NEW LENGTH: " + len)
+					Posts.findOneAndUpdate({_id: req.body.postId}, {"likes.count": len}, {new: true})
+					.exec()
+					.then((post)=>{
+						return res.json(post);
+					})					
 				})
 				.catch(err => res.status(500).json({message: 'Something went wrong'}))
-			})			
+			})
+			.catch(err => res.status(500).json({message: 'Something went wrong'}))			
 		}
 		
 	})
