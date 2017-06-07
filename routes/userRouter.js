@@ -35,8 +35,25 @@ const basicStrategy = new BasicStrategy((username, password, callback) => {
 
 });
 
+var user_cache = {};
+
 passport.use(basicStrategy);
+
+passport.serializeUser(function(user, next) {
+  let id = user._id;
+  user_cache[id] = user;
+
+  console.log(`USER: ${user}`)
+  next(null, id);
+});
+
+passport.deserializeUser(function(user, next) {
+  next(null, user_cache[id]);
+});
+
 router.use(passport.initialize());
+
+
 
 router.post('/', (req, res) => {
   if (!req.body) {
@@ -118,9 +135,9 @@ router.get('/', (req, res) => {
 
 
 router.get('/me',
-  passport.authenticate('basic', {session: false}),
+  passport.authenticate('basic', {session: true}),
   (req, res) => res.json({user: req.user.apiRepr()})
 );
 
 
-module.exports = {router};
+module.exports = {router, passport};

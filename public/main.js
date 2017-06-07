@@ -259,7 +259,7 @@ function login(id){
   $('.login-overlay').hide();
   $('.welcome').text(`Welcome ${state.user}`);
 
-  if(state.view){
+  if(state.view === 'thread-list'){
     _GET_AllThreads();
     showView('thread-list')
   } else {
@@ -301,7 +301,7 @@ function headerAnimation(){
     if(count >= picArr.length){
       count = 0;
     }
-    $('header').css('background', `linear-gradient(rgba(255,0,0,0.4),rgba(255,0,0,0.4)),url("media/${picArr[count]}") no-repeat`)
+   // $('header').css('background', `linear-gradient(rgba(255,0,0,0.4),rgba(255,0,0,0.4)),url("media/${picArr[count]}") no-repeat`)
     $('header').css('background-size', 'cover');    
     count++;
   }, 2500)  
@@ -313,8 +313,10 @@ function hideAllViews(){
 }
 
 function showView(screenName, flag){
-  hideAllViews();  
+  hideAllViews();    
+  $('.hb-items').removeClass('hb-items-hide');
   $(`.${screenName}.view`).fadeIn(400);
+  state.view = screenName;
 }
 
 // Show All Threads When 'View Threads' is clicked on nav bar 
@@ -434,6 +436,8 @@ function renderIndThreadView(id, state){
 //----------------Setup & Event Listeners----------------
 $(function(){ 
 
+
+
   hideAllViews();
 
   //----- Login Buttons ------
@@ -508,6 +512,7 @@ $(function(){
     }
     else{
       renderIndThreadView($(this).attr('id'), state);
+      state.threadView = $(this).attr('id');
     }    
   });
 
@@ -545,17 +550,6 @@ $(function(){
     state.threadId = threadId;
     like(postId, user);
   })
-
-  // Unlike Post
-  $('.thread.view').on('click', '.thumb-liked', function(e){      
-    let threadId = $('.thread.view').attr('id');
-    let postId = $(this).closest('article').attr('id');    
-    let user = state.user;
-
-    state.threadId = threadId;
-    like(postId, user);
-  })
-
   
   // Edit Existing Thread Button
   $('.thread-view-header').on('click', '.js-btn-edit-thread', function(){
@@ -573,7 +567,7 @@ $(function(){
 
   // Cancel Adding/Editing Posts, Threads, & Comments Button
   $('.cancel').click(function(){
-    showView('news');
+    renderIndThreadView(`${state.threadView}`, state);
   })
 
  
@@ -612,6 +606,14 @@ $(function(){
 
   //----- Other Buttons -------
 
+  // Show Hamburger nav Menu
+  
+    
+    $('.hb-menu').on('click', function(e){
+      $('.hb-items').toggleClass('hb-items-hide');
+      e.preventDefault();
+    })
+
   // View Threads Button in Nav if No User is Logged In
   $('.thread-list-items').click(function(e){
     if(!(state.user)){
@@ -634,10 +636,14 @@ $(function(){
   })
 
   // Setup Initial View
+
   showView('news');
   headerAnimation();
 
   // Position Login Overlay
   $('.login-overlay').height($(document).height())
+
+  // Set Initial View
+  state.view = 'news';
 
 });
