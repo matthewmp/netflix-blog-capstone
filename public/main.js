@@ -1,9 +1,34 @@
 
+// TODO -> this state is one that gets lost every time you refresh the page!
 var state = {
   movieThreads: []
 }
 
+// attempt to get state in the local storage
+var lsState = localStorage.getItem('state');
 
+if (!lsState){
+  // unfortunately localStorage cannot store non-string/numeric data types
+  // We stringify it; if this state doesn't exist we setup my our proverbial one
+  saveToStorage(state); 
+} else {
+  state = JSON.parse(localStorage.getItem('state'));
+}
+
+// a utility method to save into localStorage
+function saveToStorage(state){
+  localStorage.setItem('state', JSON.stringify(state)); 
+}
+
+function retrieveStateFromStorage(){
+  var lsState = localStorage.getItem('state');
+  if (lsState){
+      return JSON.parse(lsState);
+  } else {
+    console.log("Missing!")
+    saveToStorage(state); // just set it up
+  }  
+}
 //-------------- AJAX Requests------------------
 
 // Get All Threads & Render List of Threads
@@ -13,6 +38,7 @@ function _GET_AllThreads(){
     url: "/threads",
     success: function(data){
       state.movieThreads = data.movieThreads; 
+      saveToStorage(state); // persist
       renderMovieThreads(state);
     },
     type: "GET",    
@@ -26,7 +52,9 @@ function _GET_ThreadsRenderInd(){
     url: "/threads",
     type: "GET", 
     success: function(data){
+
       state.movieThreads = data.movieThreads; 
+      saveToStorage(state);
       renderIndThreadView(state.threadId, state)
     }
        
@@ -191,6 +219,8 @@ function createUser(){
     success: function(data){     
       if(data.username){
         state.user = data.username;
+        // store the user
+        saveToStorage(state);
         login(state.user)
       }
     },
@@ -216,6 +246,7 @@ function checkLogin(){
             if(data.user.username){
               let user = data.user.username;
               state.user = user;
+              saveToStorage(state);
               login(user);
             }
         }
