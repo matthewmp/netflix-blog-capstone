@@ -15,6 +15,11 @@ if (!lsState){
   state = JSON.parse(localStorage.getItem('state'));
 }
 
+/// Assume that at this stage  of the program, state is logged in.
+if (state.user){
+  login();
+}
+
 // a utility method to save into localStorage
 function saveToStorage(state){
   localStorage.setItem('state', JSON.stringify(state)); 
@@ -35,6 +40,7 @@ function retrieveStateFromStorage(){
 function _GET_AllThreads(){
   $.ajax({
     dataType: "json",
+    headers: { "Authorization": "Basic " + btoa(state.user + ":" + state.password) },
     url: "/threads",
     success: function(data){
       state.movieThreads = data.movieThreads; 
@@ -49,6 +55,7 @@ function _GET_AllThreads(){
 function _GET_ThreadsRenderInd(){
   $.ajax({
     dataType: "json",
+    headers: { "Authorization": "Basic " + btoa(state.user + ":" + state.password) },
     url: "/threads",
     type: "GET", 
     success: function(data){
@@ -219,6 +226,7 @@ function createUser(){
     success: function(data){     
       if(data.username){
         state.user = data.username;
+        state.password = pass
         // store the user
         saveToStorage(state);
         login(state.user)
@@ -246,6 +254,7 @@ function checkLogin(){
             if(data.user.username){
               let user = data.user.username;
               state.user = user;
+              state.password = pass;
               saveToStorage(state);
               login(user);
             }
