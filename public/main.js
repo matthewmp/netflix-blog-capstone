@@ -609,7 +609,11 @@ $(function(){
 
   // Cancel Adding/Editing Posts, Threads, & Comments Button
   $('.cancel').click(function(){
-    renderIndThreadView(`${state.threadView}`, state);
+    if(state.threadView){
+      renderIndThreadView(`${state.threadView}`, state);
+    } else {
+      _GET_AllThreads();
+    }
   })
 
  

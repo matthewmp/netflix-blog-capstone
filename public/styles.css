@@ -842,3 +842,12 @@ h1.thread-view-title:first-child{
   background: rgba(255,0,0,0.73);
   width: 100%;
 }
+
+footer{
+  z-index: 300;
+  position: absolute;
+  bottom: 0;
+  height: 180px;
+  max-width: 100%;
+  background: #eee;
+}

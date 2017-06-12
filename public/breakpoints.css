@@ -31,6 +31,9 @@
 
   .hb-nav{
     display: block;
+    position: fixed;
+    z-index: 1;
+    width: 100%;
   }
 
   .hb-menu{
@@ -50,6 +53,10 @@
 
   .hb-items-hide{
     display: block;
+  }
+
+  .head-title{
+    margin-top: 70px;
   }
 
   .news.view h1{
@@ -138,7 +145,10 @@
 
   .header-title{
     position: static;
-  }    
+    font-size: 350%;  
+    margin-top: 70px;
+  }
+  
 
   .header-btn-wrapper{
     margin: auto;
@@ -183,8 +193,10 @@
   }
 
   .header-title{
-    font-size: 350%;
+    font-size: 350%;  
+    margin-top: 70px;
   }
+  
 
   .news.view h1{
     font-size: 2.5em;

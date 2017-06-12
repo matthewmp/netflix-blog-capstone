@@ -165,9 +165,16 @@ function init_data(){
 	generateThreadData();
 }
 
+// Login
+
+
 describe('Forum API Resource', function(){
 	before(function(){
 		return runServer(TEST_DATABASE_URL);
+	});
+
+	before(function(){
+		login()
 	});
 
 	beforeEach(function(done){
