@@ -7,15 +7,24 @@ html, body{
   background: rgba(240,240,240,1)
 }
 
+a{
+  text-decoration: underline;
+  color: #ddd;
+}
+a:hover{
+  color: #ff0000;
+}
+
 img{
   height: auto;
   width: 100%;
 }
 
 .main-wrapper{
-  position: absolute;
+  position: relative;
   width: 100%;
   height: 100%;
+  padding-bottom: 50px;
 }
 
 .hb-nav{
@@ -509,6 +518,8 @@ h1.thread-view-title:first-child{
   color: #fff;
 }
 
+
+
 .news.view{
   display: table;
   min-width: 80%;
@@ -518,9 +529,6 @@ h1.thread-view-title:first-child{
   padding-top: 10px;
 }
 
-.news-wrapper{
-  margin-top: 75px;
-}
 
 .btn-add-post, .btn-create-post, .btn-create-thread, .btn-create-comment, .btn-edit-thread-submit, .btn-edit-post-submit{
   width: 100px;
@@ -597,7 +605,7 @@ h1.thread-view-title:first-child{
 
 
 .news-wrapper{
-  border: 1px solid #7f0000;
+  border: none;
   border-radius: 3px;
   position: relative;
   margin-left: auto;
@@ -605,13 +613,11 @@ h1.thread-view-title:first-child{
   margin-top: 40px;
   margin-bottom: 80px;
   width: 80%;
-  height: 300px;
+  min-height: 300px;
   background-color: #fff;
 }
 
-.news-wrapper{
-  border: none;
-}
+
 
 .post-wrapper{  
   border-radius: 3px;
@@ -686,15 +692,15 @@ h1.thread-view-title:first-child{
   text-align: center;
   margin-top: 30px;
   color: #ff0000;
-  font-size: 82px;
-  font-family: 'Rajdhani';
+  font-size: 3em;
+  font-family: 'Poppins';
   text-shadow: 2px 1px 1px #130000;
 }
 
 .news-content-wrapper{
-  overflow: scroll;
-
-  position: absolute;
+  margin-top: 1em;
+  overflow: auto;
+  position: relative;
   left: 25%;
   top: 9%;
   height: 80%;
@@ -844,10 +850,24 @@ h1.thread-view-title:first-child{
 }
 
 footer{
-  z-index: 300;
-  position: absolute;
+  z-index: 11;
+  position: fixed;
   bottom: 0;
-  height: 180px;
-  max-width: 100%;
-  background: #eee;
+  height: 60px;
+  min-width: 100%;
+  background: #400000;
 }
+
+footer ul {
+  margin: 0;
+}
+
+footer li{
+  display: inline-block;
+  color: #ddd;
+  font-family: 'Poppins';
+  line-height: 60px;
+  padding-right: 30px;
+  letter-spacing: 1px;
+}
+

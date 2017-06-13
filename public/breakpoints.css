@@ -2,19 +2,22 @@
 
 @media only screen and (max-width: 650px){
   .news-wrapper{
-    margin-bottom: 55%;
+    margin-bottom: 1em;
   }
 
   .news-content-wrapper{
     position: relative;
     width: 100%;
     left: 0;
-    margin-top: -50px;
   }
 
 }
 
 @media only screen and (max-width: 775px){
+
+  .main-wrapper{
+    height: auto;
+  }
 
   .view{
     min-width: 100%;
@@ -31,7 +34,6 @@
 
   .hb-nav{
     display: block;
-    position: fixed;
     z-index: 1;
     width: 100%;
   }
@@ -93,7 +95,7 @@
   }
 
   .news-wrapper{
-    margin-bottom: 35%;
+    margin-bottom: 1em;
   }
 
   .news-content-wrapper{
@@ -121,13 +123,17 @@
   .thread-view-wrapper, .thread-list-items, .movies-label{
     min-width: 100%;
   }
+
+  footer{
+    position: relative;
+  }
 }
 
 
 @media only screen and (max-width: 480px){
 
   .hb-nav{
-    z-index: 2;
+    z-index: 13;
   }
 
   .title-container{
@@ -199,11 +205,11 @@
   
 
   .news.view h1{
-    font-size: 2.5em;
+    font-size: 2em;
   }
 
   .news-wrapper{
-    margin-bottom: 55%;
+    margin-bottom: 1em;
   }
 
   .post-meta{

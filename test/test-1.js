@@ -13,6 +13,7 @@ const {TEST_DATABASE_URL} = require('../config');
 const {Threads} = require('../models/threadModel');
 const {Posts} = require('../models/postModel');
 const {Comments} = require('../models/commentModel');
+const {User} = require('../models/userModel')
 
 var threadArray = [];
 mongoose.Promise = global.Promise;
@@ -153,6 +154,13 @@ function insertCommentIds(){
 	});
 }
 
+function createUser(){
+	User.create({
+		username: 'Matt',
+		password: 'matt'
+	})
+}
+
 // Drop DB
 function tearDown(){
 	console.warn('Deleting DB');
@@ -165,16 +173,11 @@ function init_data(){
 	generateThreadData();
 }
 
-// Login
-
+createUser();
 
 describe('Forum API Resource', function(){
 	before(function(){
 		return runServer(TEST_DATABASE_URL);
-	});
-
-	before(function(){
-		login()
 	});
 
 	beforeEach(function(done){

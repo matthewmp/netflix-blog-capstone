@@ -310,22 +310,25 @@ function login(id){
 
 // Return a list of threads that match users search
 function searchThreads(str){
+  console.log(str);
+  var rg = new RegExp(str, 'i');
   let threadList = [];
 
   state.movieThreads.forEach((thread) => {
     if(thread.content){
-      if(thread.content.indexOf(str) >= 0 || thread.title.indexOf(str) >= 0){
+      if(thread.content.match(rg) || thread.title.match(rg)){
         threadList.push(thread);
+        console.log(`Str: ${str}, Rg: ${rg}`)
       } else {
         thread.posts.forEach((post) => {
-          if(post.content.indexOf(str) >= 0){
+          if(post.content.match(rg)){
             threadList.push(thread);
           }
         })
       }
     }
-    else if(!thread.content){
-      console.log('MISS');
+    else {
+      console.log('No Results Found ');
     }
   })
   renderMovieThreads(state, threadList);
@@ -357,6 +360,7 @@ function showView(screenName, flag){
   $('.hb-items').removeClass('hb-items-hide');
   $(`.${screenName}.view`).fadeIn(400);
   state.view = screenName;
+  //$('footer').css({top: $(document).height() - $('footer').height()})
 }
 
 // Show All Threads When 'View Threads' is clicked on nav bar 
