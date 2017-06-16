@@ -38,6 +38,10 @@ img{
   height: 80px;
 }
 
+.hb-inp-search{
+  color: #fff;
+}
+
 .line{
   height: 3px;
   width: 60px;
@@ -246,7 +250,7 @@ nav {
   border: 0px solid #fff;
 }
 
-.btn-search{
+.btn-search, .hb-btn-search{
   display: inline-block;
   background-color: #f00;
   height: 30px;
@@ -850,10 +854,10 @@ h1.thread-view-title:first-child{
 }
 
 footer{
+  font-size: 0.6em;
   z-index: 11;
   position: fixed;
   bottom: 0;
-  height: 60px;
   min-width: 100%;
   background: #400000;
 }
@@ -866,7 +870,7 @@ footer li{
   display: inline-block;
   color: #ddd;
   font-family: 'Poppins';
-  line-height: 60px;
+  line-height: 30px;
   padding-right: 30px;
   letter-spacing: 1px;
 }

@@ -5,11 +5,39 @@ const bodyParser = require('body-parser');
 // const { passport } = require('../server');
 const { Threads } = require('../models/threadModel');
 
-
+// Returns All Threads.
 router.get('/', passport.authenticate('basic', { session: true }), (req, res) => {
+  getThreads(req, res);
+});
 
 
-  console.log(req.user, 'user');
+// Returns Individual Thread By Id.
+router.get('/:id', (req, res) => {
+  getThreadById(req, res);
+});
+
+
+// Creates New Thread.
+router.post('/new-thread', (req, res) => {
+  createThread(req, res);
+});
+
+
+// Edit Thread.
+router.put('/:id', (req, res) => {
+  editThread(req, res);
+});
+
+// Delete Thread.
+router.delete('/:id', (req, res) => {
+  deleteThread(req, res)
+})
+
+
+/*   HTTP Request Functions   */
+
+// Get All Threads.
+function getThreads(req, res){
   let threadIdArr = Threads.find();
 
   Threads
@@ -31,9 +59,10 @@ router.get('/', passport.authenticate('basic', { session: true }), (req, res) =>
         res.json({ movieThreads: docs });
       })
     })
-})
+}
 
-router.get('/:id', (req, res) => {
+//Returns Individual thread by ID.
+function getThreadById(req, res){
   Threads
     .findById(req.params.id)
     .lean()
@@ -49,9 +78,11 @@ router.get('/:id', (req, res) => {
         res.json(thread);
       })
     })
-})
+}
 
-router.post('/new-thread', (req, res) => {
+
+// Creates New Thread.
+function createThread(req, res){
   const requiredFields = ['title', 'author', 'content'];
   for (let i = 0; i < requiredFields.length; i++) {
     const field = requiredFields[i];
@@ -75,11 +106,10 @@ router.post('/new-thread', (req, res) => {
       console.error(err);
       res.status(500).json({ error: 'Something went wrong' });
     });
-})
+}
 
-
-
-router.put('/:id', (req, res) => {
+// Edit Thread.
+function editThread(req, res){
   if (!(req.params.id === req.body.id)) {
     res.status(400).json({
       error: 'Request Path ID and Request Body ID Must Match'
@@ -108,16 +138,16 @@ router.put('/:id', (req, res) => {
     .exec()
     .then(thread => res.status(201).json(thread.getThread()))
     .catch(err => res.status(500).json({ message: 'Something went wrong' }))
-});
+}
 
-router.delete('/:id', (req, res) => {
+// Delete Thread. 
+function deleteThread(req, res){
   Threads
     .findByIdAndRemove(req.params.id)
     .exec()
     .then(() => res.status(204).end())
     .catch(err => res.status(500).json({ message: 'Internal server error' }));
-})
-
+}
 
 module.exports = router;
 

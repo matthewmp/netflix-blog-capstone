@@ -7,16 +7,29 @@ const {Comments} = require('../models/commentModel');
 const {Posts} = require('../models/postModel');
 
 
-
+// Get All Comments.
 router.get('/', (req, res)=>{
+	getComments(req, res);
+})
+
+// Post Comment
+router.post('/:postId', (req, res) => {
+	postComment(req, res);
+})
+
+
+/*  HTTP Request Functions  */
+
+// Get All Comments
+function getComments(req, res){
 	Comments.find()
 	.then((comments)=>{
 		res.status(200).json({comments: comments})
 	})
-})
+}
 
-
-router.post('/:postId', (req, res) => {
+// Post Comment
+function postComment(req, res){
 	console.log('posting comment')
 	if(!(req.params.postId === req.body.postId) || (req.params.postId === undefined)){
 		res.status(400).json({message: 'Request Path and Body IDs Must Match'});
@@ -43,7 +56,6 @@ router.post('/:postId', (req, res) => {
     .catch(err => {
     	res.status(500).json({error: err})
   	})
-})
-
+}
 
 module.exports = router;

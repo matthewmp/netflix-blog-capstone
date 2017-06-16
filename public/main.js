@@ -685,8 +685,16 @@ $(function(){
     searchThreads(str);
   })
 
-  // Setup Initial View
+  // Search Button Hamburger Menu
+  $('.hb-btn-search').click(function(){
+    let str = $('.hb-inp-search').val();
+    console.log(`Search Str: ${str}`);
+    searchThreads(str);
 
+  })
+    
+
+  // Setup Initial View
   showView('news');
   headerAnimation();
 
