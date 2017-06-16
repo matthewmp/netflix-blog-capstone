@@ -38,6 +38,7 @@ router.delete('/:id', (req, res) => {
 
 // Get All Threads.
 function getThreads(req, res){
+  console.log('Inside')
   let threadIdArr = Threads.find();
 
   Threads
@@ -150,6 +151,7 @@ function deleteThread(req, res){
 }
 
 module.exports = router;
+exports.getThreads = getThreads;
 
 
 
