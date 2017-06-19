@@ -8,5 +8,5 @@ exports.TEST_DATABASE_URL = (
 	'mongodb://localhost/test-netflix-app'
 	);
 
-exports.PORT = process.env.PORT || 8080;
+exports.PORT = process.env.PORT || 8180;
 

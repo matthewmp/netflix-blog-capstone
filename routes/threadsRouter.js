@@ -7,13 +7,21 @@ const { Threads } = require('../models/threadModel');
 
 // Returns All Threads.
 router.get('/', passport.authenticate('basic', { session: true }), (req, res) => {
-  getThreads(req, res);
+  getThreads()
+  .then((allThreads)=>{
+    res.json({movieThreads: allThreads}); 
+  })
+  //.catch(err => )
+  
 });
 
 
 // Returns Individual Thread By Id.
 router.get('/:id', (req, res) => {
-  getThreadById(req, res);
+  getThreadById(req.params.id)
+  .then((thread) => {
+    res.json({thread});
+  })
 });
 
 
@@ -37,35 +45,45 @@ router.delete('/:id', (req, res) => {
 /*   HTTP Request Functions   */
 
 // Get All Threads.
-function getThreads(req, res){
-  console.log('Inside')
-  let threadIdArr = Threads.find();
+function getThreads(){
+  //let threadIdArr = Threads.find();
 
-  Threads
-    .find()
-    .lean()
-    .populate({ path: 'posts' })
-    .populate({ path: 'posts.comments' })
+    return new Promise(function(resolve, reject){
 
-    .exec(function (err, docs) {
+    Threads
+      .find()
+      .lean()
+      .populate({ path: 'posts' })
+      .populate({ path: 'posts.comments' })
 
-      var options = {
-        path: 'posts.comments',
-        model: 'comments'
-      };
+      .exec(function (err, docs) {
 
-      if (err) return res.json(500);
+        var options = {
+          path: 'posts.comments',
+          model: 'comments'
+        };
 
-      Threads.populate(docs, options, function (err, threads) {
-        res.json({ movieThreads: docs });
-      })
-    })
+        if(err) reject(err);
+
+        Threads.populate(docs, options, function (err, threads) {
+          //
+        })
+        .then(threads => {
+          resolve(threads);
+        })
+        .catch(err =>{
+          reject(err);
+        });
+      });
+    });
 }
 
 //Returns Individual thread by ID.
-function getThreadById(req, res){
-  Threads
-    .findById(req.params.id)
+function getThreadById(id){
+  console.log(`ID: ${id}`)
+  return new Promise(function(resolve, reject){
+    Threads
+    .findById(id)
     .lean()
     .populate({ path: 'posts' })
     .exec(function (err, docs) {
@@ -76,9 +94,17 @@ function getThreadById(req, res){
 
       if (err) return res.json(500);
       Threads.populate(docs, options, function (err, thread) {
-        res.json(thread);
+        //
+      })
+      .then(thread => {
+        resolve(thread);
+      })
+      .catch(err => {
+        reject(err);
       })
     })
+  })
+  
 }
 
 
@@ -150,8 +176,14 @@ function deleteThread(req, res){
     .catch(err => res.status(500).json({ message: 'Internal server error' }));
 }
 
-module.exports = router;
-exports.getThreads = getThreads;
+
+
+
+module.exports = {
+  router,
+  getThreads
+}
+
 
 
 

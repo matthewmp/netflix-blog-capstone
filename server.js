@@ -77,7 +77,7 @@ app.use(express.static('public'));
 
 
 app.use('/users/', usersRouter);
-app.use('/threads', threadsRouter);
+app.use('/threads', threadsRouter.router);
 app.use('/posts', postsRouter);
 app.use('/comments', commentsRouter);
 app.use('/likes', likesRouter);

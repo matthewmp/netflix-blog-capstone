@@ -1,5 +1,6 @@
 'use strict'
 
+const chaiProm = require('chai-as-promised');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const faker = require('faker');
@@ -24,7 +25,7 @@ let threadIdArr = [];
 let postIdArr = [];
 let commentIdArr = [];
 
-const thread = require('../routes/threadsRouter');
+const threadsRouter = require('../routes/threadsRouter');
 
 function generateThreadData(){
 	return new Promise(function(res, rej){
@@ -242,13 +243,13 @@ describe('Forum API Resource', function(){
 	// Thread Tests
 	describe('/threads', function(){
 		it('returns all threads', function(){
-			let res;
+			 threadsRouter.getThreads().should.eventually.be.fullfilled;
+    		})
 			//return chai.request(app)
 			//.get('/threads')			
 
 
-			var x = thread.getThreads;
-			console.log(`Threads: ${x}`)
+			
 			//.then((_res)=>{
 				//res = _res;				
 				//res.should.have.status(200);				
@@ -525,7 +526,7 @@ describe('Forum API Resource', function(){
 		});
 	});
 */
-});
+//});
 
 
 
