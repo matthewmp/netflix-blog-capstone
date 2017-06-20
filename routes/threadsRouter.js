@@ -181,7 +181,8 @@ function deleteThread(req, res){
 
 module.exports = {
   router,
-  getThreads
+  getThreads,
+  getThreadById
 }
 
 

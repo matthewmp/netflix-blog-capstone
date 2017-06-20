@@ -19,7 +19,7 @@ const {User} = require('../models/userModel')
 var threadArray = [];
 mongoose.Promise = global.Promise;
 
-chai.use(chaiHttp);
+chai.use(chaiProm);
 
 let threadIdArr = [];
 let postIdArr = [];
@@ -243,28 +243,45 @@ describe('Forum API Resource', function(){
 	// Thread Tests
 	describe('/threads', function(){
 		it('returns all threads', function(){
-			 threadsRouter.getThreads().should.eventually.be.fullfilled;
-    		})
-			//return chai.request(app)
-			//.get('/threads')			
-
-
+			return threadsRouter.getThreads()
+			.then(function(threads){
+			 	threads.should.have.length(5);
+			 	threads.should.be.a('array');
+			 	threads[0].should.contain.keys('_id', 'title', 'content', 'author', 'posts');
+			 	threads[0].posts.should.be.a('array');
+			 	threads[0].posts[0].comments.should.be.a('array');
+			 	threads[0].posts.should.have.length.of.at.least(1);
+			 	threads[0].posts[0].comments.should.have.length.of.at.least(1);
+			 	threads[0].posts[0].should.contain.keys('_id', 'content', 'user', 'comments', 'likes');
+			 	threads[0].posts[0].comments[0].$toObject(true).should.contain.keys('_id', 'created', 'user', 'comment', 'likes');
+			})
+    	})
 			
-			//.then((_res)=>{
-				//res = _res;				
-				//res.should.have.status(200);				
-				//res.body.movieThreads.should.be.a('array'); 
-				// res.body.movieThreads.should.have.length.of.at.least(5);
-				// res.body.movieThreads[0].should.contain.keys('_id', 'title', 'content', 'author', 'posts');
-				// res.body.movieThreads[0].posts.should.be.a('array');							
-				// res.body.movieThreads[0].posts[0].comments.should.be.a('array');
-				// res.body.movieThreads[0].posts.should.have.length.of.at.least(1);
-				// res.body.movieThreads[0].posts[0].comments.should.have.length.of.at.least(1);
-				// res.body.movieThreads[0].posts[0].should.contain.keys('_id', 'content', 'user', 'comments', 'likes');
-				// res.body.movieThreads[0].posts[0].comments[0].should.contain.keys('_id', 'created', 'user', 'comment', 'likes');
-			});			
-		});
-	//});
+	});	
+
+	describe('GET /threads/:id', function(){
+		it('should return single thread by id', function(){	
+			return threadsRouter.getThreads()
+			.then(function(threads){
+				let threadId = threads[0]._id;
+
+				return threadsRouter.getThreadById()
+				.then(function(thread){
+					thread.should.contain.keys('_id', 'title', 'author', 'posts', 'content');
+				})
+			})
+
+
+		})
+
+	})
+
+
+
+
+
+});
+
 
 /*
 	describe('GET /threads/:id', function(){
