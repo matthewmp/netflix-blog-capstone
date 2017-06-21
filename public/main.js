@@ -1,5 +1,4 @@
 
-// TODO -> this state is one that gets lost every time you refresh the page!
 var state = {
   movieThreads: []
 }
@@ -8,8 +7,6 @@ var state = {
 var lsState = localStorage.getItem('state');
 
 if (!lsState){
-  // unfortunately localStorage cannot store non-string/numeric data types
-  // We stringify it; if this state doesn't exist we setup my our proverbial one
   saveToStorage(state); 
 } else {
   state = JSON.parse(localStorage.getItem('state'));
@@ -134,7 +131,6 @@ function _PUT_editPost(){
     success: _GET_ThreadsRenderInd
   })
 };
-
 
 function createComment(){
   let comment = {
@@ -350,7 +346,6 @@ function headerAnimation(){
   }, 2500)  
 }
 
-
 function hideAllViews(){
   $('.view').hide();
 }
@@ -384,7 +379,6 @@ function renderMovieThreads(state, threadList){
   })
   showView('thread-list');
 }
-
 
 // Render Individual Thread When Selected By User
 function renderIndThreadView(id, state){ 
@@ -468,9 +462,6 @@ function renderIndThreadView(id, state){
         `)
         });          
     }
-
-
-
   });
   // End Posts
 }
@@ -479,9 +470,6 @@ function renderIndThreadView(id, state){
 
 //----------------Setup & Event Listeners----------------
 $(function(){ 
-
-
-
   hideAllViews();
 
   //----- Login Buttons ------
@@ -547,7 +535,6 @@ $(function(){
       state.view = 'threadList';     
     }
   })
-
 
   //--- Event Delegation Listeners ----
 
@@ -619,7 +606,6 @@ $(function(){
       _GET_AllThreads();
     }
   })
-
  
   //----- Add/Edit Buttons ------
 
@@ -657,8 +643,6 @@ $(function(){
   //----- Other Buttons -------
 
   // Show Hamburger nav Menu
-  
-    
     $('.hb-menu').on('click', function(e){
       $('.hb-items').toggleClass('hb-items-hide');
       e.preventDefault();
@@ -692,7 +676,6 @@ $(function(){
     searchThreads(str);
 
   })
-    
 
   // Setup Initial View
   showView('news');
@@ -703,5 +686,4 @@ $(function(){
 
   // Set Initial View
   state.view = 'news';
-
 });

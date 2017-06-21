@@ -7,5 +7,6 @@ const commentSchema = mongoose.Schema({
 	created: {type: Date, default: Date.now},
 	likes: {type: Number, default: 0}
 });
+
 const Comments  = mongoose.model('comments', commentSchema);
 module.exports = {Comments};

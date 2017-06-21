@@ -1,9 +1,13 @@
-const passport = require('passport');
+
 const express = require('express');
 const mongoose = require('mongoose');
+
+const passport = require('passport');
+const BasicStrategy = require('passport-http').BasicStrategy;
+
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const BasicStrategy = require('passport-http').BasicStrategy;
+
 const {PORT, DATABASE_URL} = require('./config');
 const { User } = require('./models/userModel');
 const {router: usersRouter} = require('./users');
@@ -78,9 +82,9 @@ app.use(express.static('public'));
 
 app.use('/users/', usersRouter);
 app.use('/threads', threadsRouter.router);
-app.use('/posts', postsRouter);
-app.use('/comments', commentsRouter);
-app.use('/likes', likesRouter);
+app.use('/posts', postsRouter.router);
+app.use('/comments', commentsRouter.router);
+app.use('/likes', likesRouter.router);
 
 
 app.use('*', function(req, res) {

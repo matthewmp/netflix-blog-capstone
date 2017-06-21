@@ -6,41 +6,16 @@ const bodyParser = require('body-parser');
 const {Threads} = require('../models/threadModel');
 const {Posts} = require('../models/postModel');
 
-
 // Return All Posts
 router.get('/', (req, res)=>{  
-  getPosts(req, res);
+  getPosts()
+  .then((posts)=>{
+    res.json(posts);
+  })
 });
-
 
 // Add a new post to a thread
 router.post('/:threadId', (req, res) =>{
-  addPost(req, res);
-});
-
-// Edit Existing Post Within Thread
-router.put('/:id', (req, res) => {
-	editPost(req, res);
-});
-
-// Delete Post
-router.delete('/:postId', (req, res)=>{
-  deletePost(req, res);
-});
-
-/*   HTTP Request Functions   */
-
-// Return All Posts.
-function getPosts(req, res){
-  Posts
-  .find()
-  .then((posts)=>{
-    res.status(200).json({posts: posts})
-  })
-}
-
-// Add New Post to Thread.
-function addPost(req, res){
   if(!(req.params.threadId === req.body.threadId)){
     res.status(400).json({
       error: 'Request Path ID and Request Body ID must match.'
@@ -57,29 +32,16 @@ function addPost(req, res){
     }
   }
 
-  let threadId = req.body.threadId;          
-  let postId;             
-  Posts
-  .create({
-    user: req.body.user,
-    content: req.body.content,
-  })
-  .then((post) => {
-    postId = post._id;
-    res.status(201).json(post);
-    Threads
-    .findByIdAndUpdate(threadId, {$push: {posts: postId}}, {new: true})
-    .then(() => {
-      console.log("Thread ID Loaded")
-    })
-  })
-  .catch(err => {
-    res.status(500).json({error: 'Somethig Went Wrong'})
-  })
-}
+  let threadId = req.body.threadId;            
 
-// Edit Existing Post in Thread.
-function editPost(req, res){
+  addPost(req, threadId)
+  .then((response) =>{
+    res.json(response);
+  });
+});
+
+// Edit Existing Post Within Thread
+router.put('/:id', (req, res) => {
   if(req.params.id !== req.body.postId){
     res.status(400).json({error: 'Request Path ID Must Match Request Body ID'});
   }
@@ -101,27 +63,97 @@ function editPost(req, res){
     }
   })  
 
-  Posts
-  .findByIdAndUpdate(req.body.postId, {$set: toUpdate}, {new: true})
-  .exec()
-  .then(post => res.status(200).json({post}))
-  .catch(err => res.status(500).json({message: 'Something went wrong'}))
-}
+	editPost(req, toUpdate)
+  .then((response)=>{
+    res.json(response);
+  });
+});
 
 // Delete Post
-function deletePost(req, res){
+router.delete('/:postId', (req, res)=>{
   if(req.params.postId !== req.body.postId){
     res.status(400).json({error: 'Request Path ID Must Match Request Body ID'});
   }
 
-  Posts
-  .findByIdAndRemove(req.params.postId)
-  .exec()
-  .then(()=>{
-    res.status(204).end()
+  deletePost(req)
+  .then((response)=>{
+    res.json(response);
   })
-  .catch(err => res.status(500).json({message: 'Internal Server Error'}));
+});
+
+/*   HTTP Request Functions   */
+
+// Return All Posts.
+function getPosts(){
+  return new Promise(function(resolve, reject){
+    Posts
+    .find()
+    .then((posts)=>{
+      resolve(posts);
+    })
+    .catch((err)=>{
+      reject(err);
+    })
+  })
+}
+
+// Add New Post to Thread.
+function addPost(req, threadId){
+  return new Promise(function(resolve, reject){
+    let postId;
+
+    Posts
+    .create({
+      user: req.body.user,
+      content: req.body.content,
+    })
+    .then((post) => {
+      postId = post._id;
+      
+      Threads
+      .findByIdAndUpdate(threadId, {$push: {posts: postId}}, {new: true})
+      .then((response) => {
+        resolve(response);
+      })
+    })
+    .catch(err => {
+      reject(err);
+    })
+  });
+}
+
+// Edit Existing Post in Thread.
+function editPost(req, toUpdate){
+  return new Promise(function(resolve, reject){
+
+    Posts
+    .findByIdAndUpdate(req.body.postId, {$set: toUpdate}, {new: true})
+    .exec()
+    .then((response)=>{
+      resolve(response);
+    })
+    .catch(err => reject(err));
+  });
+}
+
+// Delete Post
+function deletePost(req){
+  return new Promise(function(resolve, reject){
+    Posts
+    .findByIdAndRemove(req.params.postId)
+    .exec()
+    .then((response)=>{
+      resolve('Deleted Post');
+    })
+    .catch(err => reject(err));
+  });
 }
 
 
-module.exports = router;
+module.exports = {
+  router,
+  addPost,
+  getPosts,
+  editPost,
+  deletePost
+};

@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const passport = require('passport');
 const bodyParser = require('body-parser');
-// const { passport } = require('../server');
+
 const { Threads } = require('../models/threadModel');
 
 // Returns All Threads.
@@ -10,9 +10,7 @@ router.get('/', passport.authenticate('basic', { session: true }), (req, res) =>
   getThreads()
   .then((allThreads)=>{
     res.json({movieThreads: allThreads}); 
-  })
-  //.catch(err => )
-  
+  })  
 });
 
 
@@ -24,23 +22,58 @@ router.get('/:id', (req, res) => {
   })
 });
 
-
 // Creates New Thread.
 router.post('/new-thread', (req, res) => {
-  createThread(req, res);
-});
+  let newThread = {
+    title: req.body.title,
+    author: req.body.author,
+    content: req.body.content
+  }
 
+  createThread(newThread)
+  .then((thread)=>{
+    res.json(thread);
+  })
+});
 
 // Edit Thread.
 router.put('/:id', (req, res) => {
-  editThread(req, res);
+   if (!(req.params.id === req.body.id)) {
+    res.status(400).json({
+      error: 'Request Path ID and Request Body ID Must Match'
+    });
+  }
+
+  const toUpdate = {};
+  const requiredFields = ['title', 'author', 'id', 'content'];
+  for (let i = 0; i < requiredFields.length; i++) {
+    const field = requiredFields[i];
+    if (!(field in req.body)) {
+      const message = `Missing \`${field}\` in request body`;
+      console.error(message);
+      return res.status(400).send(message);
+    }
+  }
+
+  requiredFields.forEach(field => {
+    if (field in req.body) {
+      toUpdate[field] = req.body[field];
+    }
+  })
+
+  editThread(toUpdate)
+  .then((response)=>{
+    res.json(response)
+  })
 });
 
 // Delete Thread.
 router.delete('/:id', (req, res) => {
-  deleteThread(req, res)
+  deleteThread(req.params.id)
+  .then((response)=>{
+    res.json({message: 'Deleted Thread'})
+  })
 })
-
 
 /*   HTTP Request Functions   */
 
@@ -79,8 +112,7 @@ function getThreads(){
 }
 
 //Returns Individual thread by ID.
-function getThreadById(id){
-  console.log(`ID: ${id}`)
+function getThreadById(id){  
   return new Promise(function(resolve, reject){
     Threads
     .findById(id)
@@ -109,71 +141,66 @@ function getThreadById(id){
 
 
 // Creates New Thread.
-function createThread(req, res){
-  const requiredFields = ['title', 'author', 'content'];
-  for (let i = 0; i < requiredFields.length; i++) {
-    const field = requiredFields[i];
-    if (!(field in req.body)) {
-      const message = `Missing \`${field}\` in request body`;
-      console.error(message);
-      return res.status(400).send(message);
-    }
-  }
+function createThread(req){
 
-  Threads
-    .create({
-      title: req.body.title,
-      author: req.body.author,
-      content: req.body.content
-    })
-    .then(thread => {
-      res.status(201).json(thread)
-    })
-    .catch(err => {
-      console.error(err);
-      res.status(500).json({ error: 'Something went wrong' });
-    });
+  return new Promise(function(resolve, reject){
+
+    const requiredFields = ['title', 'author', 'content'];
+    for (let i = 0; i < requiredFields.length; i++) {
+      const field = requiredFields[i];
+      if (!(field in req)) {
+        const message = `Missing \`${field}\` in request body`;
+        console.error(message);
+        return message;
+      }
+    }
+  
+    Threads
+      .create({
+        title: req.title,
+        author: req.author,
+        content: req.content
+      })
+      .then(thread => {
+        resolve(thread);
+      })
+      .catch(err => {
+        reject(err);
+      });
+  });
 }
 
 // Edit Thread.
-function editThread(req, res){
-  if (!(req.params.id === req.body.id)) {
-    res.status(400).json({
-      error: 'Request Path ID and Request Body ID Must Match'
-    });
-  }
+function editThread(toUpdate){
 
-  const toUpdate = {};
-  const requiredFields = ['title', 'author', 'id', 'content'];
-  for (let i = 0; i < requiredFields.length; i++) {
-    const field = requiredFields[i];
-    if (!(field in req.body)) {
-      const message = `Missing \`${field}\` in request body`;
-      console.error(message);
-      return res.status(400).send(message);
-    }
-  }
-
-  requiredFields.forEach(field => {
-    if (field in req.body) {
-      toUpdate[field] = req.body[field];
-    }
-  })
+  return new Promise(function(resolve, reject){
 
   Threads
-    .findByIdAndUpdate(req.params.id, { $set: toUpdate }, { new: true })
-    .exec()
-    .then(thread => res.status(201).json(thread.getThread()))
-    .catch(err => res.status(500).json({ message: 'Something went wrong' }))
+    .findByIdAndUpdate(toUpdate.id, { $set: toUpdate }, { new: true })    
+    .then((thread) => {
+      resolve(thread);
+    })
+    .catch((err) => {
+      reject(err);
+    });
+  });
 }
 
 // Delete Thread. 
-function deleteThread(req, res){
-  Threads
-    .findByIdAndRemove(req.params.id)
-    .exec()
-    .then(() => res.status(204).end())
-    .catch(err => res.status(500).json({ message: 'Internal server error' }));
+function deleteThread(id){
+
+  return new Promise(function(resolve, reject){
+
+    Threads
+      .findByIdAndRemove(id)
+      .exec()
+      .then((response)=>{
+        resolve(response);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+    });
 }
 
 
@@ -182,7 +209,10 @@ function deleteThread(req, res){
 module.exports = {
   router,
   getThreads,
-  getThreadById
+  getThreadById,
+  deleteThread,
+  createThread,
+  editThread
 }
 
 

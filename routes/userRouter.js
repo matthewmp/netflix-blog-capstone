@@ -9,31 +9,6 @@ const router = express.Router();
 
 router.use(jsonParser);
 
-
-// // NB: at time of writing, passport uses callbacks, not promises
-// const basicStrategy = new BasicStrategy((username, password, callback) => {
-//   let user;
-//   User
-//     .findOne({ username: username })
-//     .exec()
-//     .then(_user => {
-//       user = _user;
-//       if (!user) {
-//         return callback(null, false, { message: 'Incorrect username' });
-//       }
-//       return user.validatePassword(password);
-//     })
-//     .then(isValid => {
-//       if (!isValid) {
-//         return isValid.callback(null, false, { message: 'Incorrect password' });
-//       }
-//       else {
-//         return callback(null, user)
-//       }
-//     })
-// });
-
-
 router.post('/', (req, res) => {
   if (!req.body) {
     return res.status(400).json({ message: 'No request body' });
@@ -97,21 +72,6 @@ router.post('/', (req, res) => {
       res.status(500).json({ message: 'Internal server error' })
     });
 });
-
-// // never expose all your users like below in a prod application
-// // we're just doing this so we have a quick way to see
-// // if we're creating users. keep in mind, you can also
-// // verify this in the Mongo shell.
-// router.get('/', (req, res) => {
-//   return User
-//     .find()
-//     .exec()
-//     .then(users => res.json(users.map(user => user.apiRepr())))
-//     .catch(err => console.log(err) && res.status(500).json({ message: 'Internal server error' }));
-// });
-
-
-
 
 router.get('/me',
   passport.authenticate('basic', { session: true }),

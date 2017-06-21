@@ -47,7 +47,6 @@ img{
   width: 60px;
   background: #fff;
   margin: 15px auto 0px auto;
-
 }
 
 header{
@@ -118,10 +117,7 @@ header{
   left: 150px;
 }
 
-
 /* Log In View */
-
-
 form {
   display: none;
 }
@@ -142,8 +138,6 @@ form {
   left: 0;
   top: 700px;
 }
-
-
 
 .x-wrapper{
   position: relative;
@@ -172,7 +166,6 @@ form {
     margin-top: 50px;   
     margin-bottom: 30px;  
     text-shadow: 2px 2px 20px #000;                                   
-
 }
 
 .inp-login, .label-login{
@@ -217,7 +210,6 @@ nav {
   position: relative;
   background-color: #400000;
   min-height: 70px; 
-
 }
 
 .nav-btn{
@@ -228,20 +220,19 @@ nav {
   font-family: 'Rajdhani';
   color: #fff;
 }
+
 .welcome{  
   bottom: 0px;
   vertical-align: middle;
   font-size: 25px;
   font-family: 'Roboto';
   text-shadow: 1px 1px 10px #ff0000;
-
 }
 
 .btn-add-thread:hover, .btn-view-threads:hover, .home:hover{
   cursor: pointer;
   color: red;
 }
-
 
 .search-wrapper{
   display: none;
@@ -289,7 +280,6 @@ nav p{
   text-indent: 30px;
   background-color: rgba(255, 255, 255, 0.8);
   color: #111;
-
 }
 
 p, input{
@@ -367,9 +357,7 @@ p, input{
 font-family: 'Rajdhani';
 }
 
-
 /*   Thread View */
-
 .thread-view-wrapper{
   max-width: 75%;
   margin: auto;
@@ -621,8 +609,6 @@ h1.thread-view-title:first-child{
   background-color: #fff;
 }
 
-
-
 .post-wrapper{  
   border-radius: 3px;
   position: relative;
@@ -634,6 +620,7 @@ h1.thread-view-title:first-child{
   min-height: 100px;
   background-color: #fff;
 }
+
 .post-wrapper:first-child{
   margin-top: 100px;
 }  
@@ -647,6 +634,7 @@ h1.thread-view-title:first-child{
   width: 20%;
   height: 80%;
 }
+
 .info-info{
   display: flex;
   align-items: center;
@@ -667,9 +655,7 @@ h1.thread-view-title:first-child{
   margin-left: auto;
   margin-right: auto;
   margin-top: 30px;
-  text-align: center;
-  
-  
+  text-align: center; 
 }
 
 .news-img{  
@@ -680,18 +666,7 @@ h1.thread-view-title:first-child{
   width: 30%;
   height: 30%;
 }
-/*
-.post-content-wrapper{
-  margin-top: 20px;
-  overflow: scroll;
-  position: absolute;
-  left: 5%;
-  top: 9%;
-  height: 80px;
-  width: 70%;
-  border-radius: 3px;
-}
-*/
+
 .news.view h1{
   text-align: center;
   margin-top: 30px;
@@ -710,7 +685,6 @@ h1.thread-view-title:first-child{
   height: 80%;
   width: 70%;
   border-radius: 3px;
-
 }
 
 .post-content, .news-content{
@@ -778,7 +752,6 @@ h1.thread-view-title:first-child{
   background: #ff0000;
   color: #fff;
   cursor: pointer;
-
 }
 
 .likes{
@@ -816,10 +789,6 @@ h1.thread-view-title:first-child{
 .by{
   color: #7f0000;
 }
-
-
-
-
 
 .login-wrapper{  
   position: absolute;  

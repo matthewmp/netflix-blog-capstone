@@ -5,23 +5,14 @@ const bodyParser = require('body-parser');
 
 const {Posts} = require('../models/postModel');
 
-
 // Like/Unlike Post
 router.put('/:postId', (req, res) => {
-	likeUnlike(req, res);
-});
-
-
-/* HTTP Request Function */
-
-function likeUnlike(req, res){
 	if(!(req.params.postId === req.body.postId)){
 		return res.status(400).json({
 			error: 'Request Post Id and Request Body Id must match'
 		});
 	}
-
-	const update = {};
+	
 	const requiredFileds = ['user', 'postId'];
 	for(let i = 0; i < requiredFileds.length; i++){
 		field = requiredFileds[i];
@@ -32,73 +23,80 @@ function likeUnlike(req, res){
 		}
 	}
 
-	requiredFileds.forEach((field) => {
-		if(field in req.body){
-			update[field] = req.body[field];
-		}
+	likeUnlike(req)
+	.then((resp)=>{
+		res.json(resp);
 	})
+});
 
-	
-	const user = req.body.user
-	
-	Posts.findOne({_id: req.body.postId})
-	.exec()
-	.then((result)=>{
-		let repeatUser = false;
-		result.likes.users.forEach(function(val, ind){
-			if(val.trim() === user.trim()){				
-				repeatUser = true;
-			}
-		})		
 
-		if(repeatUser === true){
-			Posts
-			.findOne({_id: req.body.postId})
-			.exec()
-			.then((post) =>{
+/* HTTP Request Function */
 
+function likeUnlike(req){		
+	return new Promise(function(resolve, reject){
+		const user = req.body.user
+		
+		Posts.findOne({_id: req.body.postId})
+		.exec()
+		.then((result)=>{
+			let repeatUser = false;
+			result.likes.users.forEach(function(val, ind){
+				if(val.trim() === user.trim()){				
+					repeatUser = true;
+				}
+			})		
+
+			if(repeatUser === true){
 				Posts
-				.findOneAndUpdate({_id: req.body.postId}, {$pull: {"likes.users": user}}, {new: true})
+				.findOne({_id: req.body.postId})
 				.exec()
-				.then((post)=>{
-					var len = post.likes.users.length;
-					console.log("NEW LENGTH: " + len)
-					Posts.findOneAndUpdate({_id: req.body.postId}, {"likes.count": len}, {new: true})
-					.exec()
-					.then((post) => {
-						return res.json(post);	
-					})														
-				})
-				.catch(err => res.status(500).json({message: 'Something went wrong'}))
-			})
-			.catch(err => res.status(500).json({message: 'Something went wrong'}))			
-		}
-			
+				.then((post) =>{
 
-		else {
-			Posts
-			.findOne({_id: req.body.postId})
-			.exec()
-			.then((post) =>{
-				
-				Posts
-				.findOneAndUpdate({_id: req.body.postId}, {$push: {"likes.users": user}}, {new: true})
-				.exec()
-				.then((post)=>{
-					var len = post.likes.users.length;
-					console.log("NEW LENGTH: " + len)
-					Posts.findOneAndUpdate({_id: req.body.postId}, {"likes.count": len}, {new: true})
+					Posts
+					.findOneAndUpdate({_id: req.body.postId}, {$pull: {"likes.users": user}}, {new: true})
 					.exec()
 					.then((post)=>{
-						return res.json(post);
-					})					
-				})
-				.catch(err => res.status(500).json({message: 'Something went wrong'}))
-			})
-			.catch(err => res.status(500).json({message: 'Something went wrong'}))			
-		}
-		
-	})
+						var len = post.likes.users.length;
+						console.log("NEW LENGTH: " + len)
+						Posts.findOneAndUpdate({_id: req.body.postId}, {"likes.count": len}, {new: true})
+						.exec()
+						.then((post) => {
+							resolve(post);	
+						})
+						.catch((err)=>{
+							reject(err);
+						})														
+					});
+				});
+			}				
+			else {
+				Posts
+				.findOne({_id: req.body.postId})
+				.exec()
+				.then((post) =>{
+					
+					Posts
+					.findOneAndUpdate({_id: req.body.postId}, {$push: {"likes.users": user}}, {new: true})
+					.exec()
+					.then((post)=>{
+						var len = post.likes.users.length;
+						console.log("NEW LENGTH: " + len)
+						Posts.findOneAndUpdate({_id: req.body.postId}, {"likes.count": len}, {new: true})
+						.exec()
+						.then((post)=>{
+							resolve(post);
+						})
+						.catch((err)=>{
+							reject(err);
+						})					
+					});					
+				});
+			}			
+		});
+	});
 }
 
-module.exports = router;
+module.exports = {
+	router,
+	likeUnlike
+};

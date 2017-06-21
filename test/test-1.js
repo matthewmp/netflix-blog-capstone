@@ -1,10 +1,8 @@
 'use strict'
 
-const chaiProm = require('chai-as-promised');
 const chai = require('chai');
-const chaiHttp = require('chai-http');
-const faker = require('faker');
 const mongoose = require('mongoose');
+const faker = require('faker');
 
 const should = chai.should();
 
@@ -19,13 +17,14 @@ const {User} = require('../models/userModel')
 var threadArray = [];
 mongoose.Promise = global.Promise;
 
-chai.use(chaiProm);
-
 let threadIdArr = [];
 let postIdArr = [];
 let commentIdArr = [];
 
 const threadsRouter = require('../routes/threadsRouter');
+const postsRouter = require('../routes/postsRouter');
+const commentsRouter = require('../routes/commentsRouter');
+const likesRouter = require('../routes/likesRouter');
 
 function generateThreadData(){
 	return new Promise(function(res, rej){
@@ -157,19 +156,16 @@ function insertCommentIds(){
 	});
 }
 
-
 // Drop DB
 function tearDown(){
 	console.warn('Deleting DB');
 	return mongoose.connection.dropDatabase();
 }
 
-
 // Load Initial Array Data
 function init_data(){
 	generateThreadData();
 }
-
 
 describe('Forum API Resource', function(){
 	before(function(){
@@ -254,312 +250,234 @@ describe('Forum API Resource', function(){
 			 	threads[0].posts[0].comments.should.have.length.of.at.least(1);
 			 	threads[0].posts[0].should.contain.keys('_id', 'content', 'user', 'comments', 'likes');
 			 	threads[0].posts[0].comments[0].$toObject(true).should.contain.keys('_id', 'created', 'user', 'comment', 'likes');
-			})
-    	})
-			
+			});
+    	});			
 	});	
 
 	describe('GET /threads/:id', function(){
 		it('should return single thread by id', function(){	
 			return threadsRouter.getThreads()
 			.then(function(threads){
-				let threadId = threads[0]._id;
+				const threadId = threads[0]._id;				
+				const title = threads[0].title;
+				const author = threads[0].author;				
+				const content = threads[0].content;
 
-				return threadsRouter.getThreadById()
+				return threadsRouter.getThreadById(threadId)
 				.then(function(thread){
 					thread.should.contain.keys('_id', 'title', 'author', 'posts', 'content');
-				})
-			})
+					thread.should.be.a('object');
+					thread.posts.should.be.a('array');
+					thread.posts.should.have.length.of.at.least(1);
+					thread.posts[0].comments.should.have.length.of.at.least(1);
+					thread.posts[0].comments.should.be.a('array')
+					thread.title.should.equal(title);
+					thread.author.should.equal(author);					
+					thread.content.should.equal(content);
 
-
-		})
-
-	})
-
-
-
-
-
-});
-
-
-/*
-	describe('GET /threads/:id', function(){
-	it('should return single thread by id', function(){	
-			
-			return chai.request(app)
-			.get('/threads')
-			.then((res)=>{
-				const threadId = res.body.movieThreads[0]._id;
-				const title = res.body.movieThreads[0].title;
-				const author = res.body.movieThreads[0].author;				
-				const content = res.body.movieThreads[0].content;				
-
-				return chai.request(app)
-				.get(`/threads/${threadId}`)			
-				.then((res) => {													
-					res.should.have.status(200);											
-					res.body.should.contain.keys('_id', 'title', 'author', 'posts', 'content');
-					res.body.should.be.a('object');					
-					res.body.posts.should.be.a('array');
-					res.body.posts.should.have.length.of.at.least(1);
-					res.body.posts[0].comments.should.have.length.of.at.least(1);
-					res.body.posts[0].comments.should.be.a('array');	
-					res.body.title.should.equal(title);
-					res.body.author.should.equal(author);					
-					res.body.content.should.equal(content);
-
-				});	
-
+				});
 			});
-					
-		});		
+		});
 	});
 
 	describe('DELETE /threads/:id', function(){
 		it('should delete thread by id', function(){
-			let threadId;
-			return chai.request(app)
-			.get('/threads')
-			.then((res) => {				
-				threadId = res.body.movieThreads[0]._id;
-				return chai.request(app)
-				.delete(`/threads/${threadId}`)
-			})
-			.then((res) => {
-				return chai.request(app)
-				.get(`/threads`)
-				.then((res) => {					
-					res.body.movieThreads[0]._id.should.not.equal(threadId)
+			return threadsRouter.getThreads()
+			.then((threads)=>{
+				let threadId = threads[0]._id;
+
+				return threadsRouter.deleteThread(threadId)
+				.then((response)=>{					
+					return threadsRouter.getThreads()
+					.then((response)=>{
+						response[0]._id.should.not.equal(threadId)
+					});
 				});
 			});
-
 		});
 	});
 
-	
+
 	describe('POST /threads/new-thread', function(){
-		it('should post a new thread and return that thread', function(){			
+		it('should post a new thread and return that thread', function(){	
 			const newThread = {
 				title: "Mocha Test New Thread",
 				author: "Mocha",
 				content: "Mocha Late is my favorite"
 			}
 
-			return chai.request(app)
-			.post('/threads/new-thread')
-			.send(newThread)
-			.then((res) => {
-				res.should.have.status(201);
-				res.should.be.a('object');
-				res.body.should.contain.keys('title', 'author', 'content', '_id', 'date', 'posts');
-				res.body.title.should.equal(newThread.title);
-				res.body.author.should.equal(newThread.author);
-				res.body.content.should.equal(newThread.content);
+			return threadsRouter.createThread(newThread)
+			.then((thread)=>{
+				thread.should.be.a('object');
+				thread.$toObject(true).should.contain.keys('title', 'author', 'content', '_id', 'date', 'posts');
+				thread.title.should.equal(newThread.title);
+				thread.author.should.equal(newThread.author);
+				thread.content.should.equal(newThread.content);
 			});
 		});
 	});
 
-
 	describe('PUT /threads/:id', function(){
 		it('should update existing thread', function(){
-			const updatedThread = {
+			let updatedThread = {
 				title: "PUTTING",
 				author: "NEW AUTHOR",
 				content: "HERE IS AN EDITED THREAD"
 			}
 
-			return chai.request(app)
-			.get('/threads')
-			.then((res) => {
-				const threadId = res.body.movieThreads[0]._id;
-				updatedThread.id = threadId;
-				return chai.request(app)
-				.put(`/threads/${threadId}`)
-				.send(updatedThread)
-				.then((res) => {
-					res.should.have.status(201);
-					res.body.should.be.a('object');
-					res.body.should.contain.keys('title', 'author', '_id', 'content');
-					res.body.title.should.equal(updatedThread.title);
-					res.body.author.should.equal(updatedThread.author);
-					res.body.content.should.equal(updatedThread.content);					
+			return threadsRouter.getThreads()
+			.then((thread)=>{
+				const threadId = thread[0]._id;
+				updatedThread.id = threadId;				
+				return threadsRouter.editThread(updatedThread)
+				.then((thread)=>{										
+					thread.should.be.a('object');
+					thread.$toObject(true).should.contain.keys('title', 'author', '_id', 'content');
+					thread.title.should.equal(updatedThread.title);
+					thread.author.should.equal(updatedThread.author);
+					thread.content.should.equal(updatedThread.content);	
 				});
-			});	
+			});
 		});
 	});
 
-	
-
 	// Posts Tests
+	describe('Get /posts', function(){
+		it('should return all posts', function(){
+			return postsRouter.getPosts()
+			.then((posts)=>{				
+				posts.should.be.a('array');
+				posts.should.have.length(5);
+				posts[0].$toObject(true).should.contain.keys('_id', 'user', 'content', 'likes', 'created');
+			});
+		});
+	});
+
 	describe('POST /posts', function(){
 		it('should create and return', function(){
-			return chai.request(app)
-			.get('/threads')
-			.then((res) => {
-				const post = {
-					threadId: res.body.movieThreads[0]._id,
+			return threadsRouter.getThreads()
+			.then((threads)=>{
+				const post = {};
+				post.body ={
+					threadId: threads[0]._id,
 					user: "NEW USER",
 					content: "NEW POST MADE"
 				}
-				
-				return chai.request(app)
-				.post(`/posts/${post.threadId}`)
-				.send(post)
-				.then((res) => {										
-					res.should.have.status(201);
-					res.body.should.be.a('object');
-					res.body.user.should.equal(post.user);
-					res.body.content.should.equal(post.content);					
-				});
 
-			});						
+				return postsRouter.addPost(post, post.body.threadId)
+				.then((response)=>{
+					return threadsRouter.getThreadById(response._id)
+					.then((res)=>{
+						res.posts.should.be.a('array');
+						res.posts.should.have.length(2);
+						res.posts[1].user.should.equal('NEW USER');//
+						res.posts[1].content.should.equal('NEW POST MADE');
+					})
+				});
+			});
 		});
 	});
 
 	describe('PUT /posts', function(){
 		it('should update existing post', function(){
-			return chai.request(app)
-			.get('/threads')
-			.then((res) =>{
-				let postId = res.body.movieThreads[0].posts[0]._id;
-				const editedPost ={
-					postId: postId,
+			return threadsRouter.getThreads()
+			.then((threads)=>{
+				let postId = threads[0].posts[0]._id;
+				let editedPost ={					
 					user: "Ralph Cramden",
-					content: "The Honey Mooners"
+					content: "The Honey Mooners",
+					body: {postId: postId}					
 				};
+				editedPost.body.postId = postId;
+				return postsRouter.editPost(editedPost, editedPost)
+				.then((response)=>{
+					response.user.should.equal(editedPost.user);					
+					response.content.should.equal(editedPost.content);										
 
-				return chai.request(app)
-				.put(`/posts/${postId}`)
-				.send(editedPost)
-				.then((res) => {					
-					res.body.post.user.should.equal(editedPost.user);
-					res.body.post._id.should.equal(editedPost.postId);
-					res.body.post.content.should.equal(editedPost.content);										
 				});
 			});
 		});
 	});
-
-
 
 	describe('DELETE /posts', function(){
 		it('should delete individual post', function(){
-			return chai.request(app)
-			.get('/threads')
-			.then((res) => {
-				// Get Post's Id				
-				let threadId = res.body.movieThreads[0]._id;
-				let postId = res.body.movieThreads[0].posts[0]._id;				
-
-				let del = {
-					threadId: threadId,
-					postId: postId
-				};
-								
-				return chai.request(app)
-				.delete(`/posts/${postId}`)
-				.send(del)
-				.then((res) => {					
-					return chai.request(app)
-					.get('/threads')
-					.then((res)=>{											
-						res.body.movieThreads[0].posts.should.be.empty;
-					});
-				});
-			});
-		});
-	});
-	
-
-	// Comments Tests
-	describe('POST /comments', function(){
-		it('should create new comment within posts array', function(){
-
-			return chai.request(app)
-			.get('/threads')
-			.then((res)=>{
+			return threadsRouter.getThreads()
+			.then((post)=>{
 				
-				let postId = res.body.movieThreads[0].posts[0]._id;				
-				let comment = {
-					postId: postId,
-					user: 'Lucy Ball',
-					comment: 'I Love Lucy!'
-				};
-				  
-				return chai.request(app)
-				.post(`/comments/${comment.postId}`)
-				.send(comment)
-				.then((res)=>{	
-					res.should.have.status(201);
-					res.body.should.be.a('object');	
-					res.body.user.should.equal(comment.user);
-					res.body.comment.should.equal(comment.comment);																	
-				});
-			});			
-		});
-	});
+				let del = {
+					params: {postId: post[0]._id}					
+				}
 
-
-
-	describe('POST /likes/:postId', function(){
-		it('should like a post', function(){
-			return chai.request(app)
-			.get('/threads')
-			.then((res)=>{
-				let postId = res.body.movieThreads[0].posts[0]._id;
-				let like = {postId: postId, user: 'Conan Obrien'};
-
-				return chai.request(app)
-				.put(`/likes/${postId}`)
-				.send(like)
-				.then((res)=>{
-					res.body.should.be.a('object');
-					res.body.likes.count.should.equal(1);
-					res.body.likes.users[0].should.equal('Conan Obrien');
-
-				});
-			});
-		});
-	});
-
-	describe('POST /likes/:postId', function(){
-		it('should unlike a post', function(){
-			return chai.request(app)
-			.get('/threads')
-			.then((res)=>{
-				let postId = res.body.movieThreads[0].posts[0]._id;
-				let like = {postId: postId, user: 'Conan Obrien'};
-
-				return chai.request(app)
-				.put(`/likes/unlike/${postId}`)
-				.send(like)
-				.then((res)=>{
-					res.body.should.be.a('object');
-					res.body.likes.count.should.equal(-1);
-					res.body.likes.users.should.be.empty;
+				return postsRouter.deletePost(del)
+				.then((response)=>{					
+					response.should.equal('Deleted Post')
 				});
 			});	
 		});
 	});
-*/
-//});
 
+	// Comments Tests
+	describe('GET /comments', function(){
+		it('should return all comments', function(){
+			return commentsRouter.getComments()
+			.then((comments)=>{
+				comments.should.be.a('array');
+				comments.should.have.length(5);
+				comments[0].$toObject(true).should.contain.keys('_id', 'user', 'comment', 'likes', 'created')
+			});
+		});
+	});
 
+	describe('POST /comments', function(){
+		it('should create new comment', function(){
+			return threadsRouter.getThreads()
+			.then((threads)=>{
 
+				let comment = {
+					body: {
+						postId: threads[0].posts[0]._id,
+						user: 'Lucy Ball',
+						comment: 'I Love Lucy!'	
+					}
+				};
 
+				return commentsRouter.postComment(comment)
+				.then((response)=>{
+					response.should.be.a('object');
+					response.$toObject(true).should.contain.keys('user', 'comment', '_id', 'likes', 'created');
+					response.user.should.equal(comment.body.user);
+					response.comment.should.equal(comment.body.comment);					
+				});				
+			});
+		});
+	});
 
+	describe('POST /likes/:postId', function(){
+		it('should like a post', function(){
+			return threadsRouter.getThreads()
+			.then((threads)=>{
+				let like = {
+					body: {
+						postId: threads[0].posts[0]._id,
+						user: 'Conan Obrien'
+					}
+				};
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+				return likesRouter.likeUnlike(like)
+				.then((response)=>{					
+					response.likes.count.should.equal(1);
+					response.likes.users.should.be.a('array');
+					response.likes.users[0].should.equal('Conan Obrien');
+				})
+				.then(()=>{
+					return likesRouter.likeUnlike(like)
+					.then((response)=>{						
+						response.likes.count.should.equal(0);
+						response.likes.users.should.be.a('array');
+						response.likes.users.should.have.length(0);
+					})
+				})
+			});
+		});
+	});
+});
