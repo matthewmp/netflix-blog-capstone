@@ -1,0 +1,10 @@
+{"_id":{"$oid":"59408054e4bd2c5fc0ff33e4"},"user":"Joe","comment":"Yo, Zoom was scary!","likes":0,"created":{"$date":"2017-06-14T00:16:20.846Z"},"__v":0}
+{"_id":{"$oid":"5940807be4bd2c5fc0ff33e6"},"user":"Barry","comment":"Scary? More like ugly!","likes":0,"created":{"$date":"2017-06-14T00:16:59.361Z"},"__v":0}
+{"_id":{"$oid":"594080e3e4bd2c5fc0ff33e9"},"user":"HR","comment":"Totally right!  All 3 seasons rocked!  I need some coffee.","likes":0,"created":{"$date":"2017-06-14T00:18:43.963Z"},"__v":0}
+{"_id":{"$oid":"5940810fe4bd2c5fc0ff33ea"},"user":"Barry","comment":"Hey HR! Are you feeling ok.","likes":0,"created":{"$date":"2017-06-14T00:19:27.611Z"},"__v":0}
+{"_id":{"$oid":"5943c21f111eab097f79eecd"},"user":"Matt","comment":"adsf","likes":0,"created":{"$date":"2017-06-16T11:33:51.818Z"},"__v":0}
+{"_id":{"$oid":"5943c223111eab097f79eece"},"user":"Matt","comment":"adsfasdf","likes":0,"created":{"$date":"2017-06-16T11:33:55.729Z"},"__v":0}
+{"_id":{"$oid":"5943c227111eab097f79eecf"},"user":"Matt","comment":"adsfasdfadsf","likes":0,"created":{"$date":"2017-06-16T11:33:59.325Z"},"__v":0}
+{"_id":{"$oid":"5943c22b111eab097f79eed0"},"user":"Matt","comment":"adsfasdfadsfadsf","likes":0,"created":{"$date":"2017-06-16T11:34:03.512Z"},"__v":0}
+{"_id":{"$oid":"59447d497a3bf80adf5a5fea"},"user":"Matt","comment":"adsf","likes":0,"created":{"$date":"2017-06-17T00:52:25.274Z"},"__v":0}
+{"_id":{"$oid":"59447d537a3bf80adf5a5fec"},"user":"Matt","comment":"adsf","likes":0,"created":{"$date":"2017-06-17T00:52:35.814Z"},"__v":0}

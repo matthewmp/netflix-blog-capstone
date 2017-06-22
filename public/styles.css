@@ -758,6 +758,10 @@ h1.thread-view-title:first-child{
   border: none;
 }
 
+.likes:hover{
+  cursor: pointer;
+}
+
 .js-comment{
     color: #000;
     overflow-wrap: break-word;
