@@ -289,13 +289,15 @@ function login(id) {
   $('.btn-logout').fadeIn();
   $('form').hide();
   $('.login-overlay').hide();
+  $('header').fadeOut();
   $('.welcome').text('Welcome ' + state.user);
 
   if (state.view === 'thread-list') {
     _GET_AllThreads();
     showView('thread-list');
   } else {
-    showView('news');
+     _GET_AllThreads();
+    showView('thread-list');
   }
 }
 

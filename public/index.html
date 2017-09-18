@@ -24,19 +24,28 @@
 				<div class="welcome nav-btn"></div>
 				<div class="hb-items">
 			    	
-			    	<div class="home nav-btn">Home</div>
+			    	<!-- <div class="home nav-btn">Home</div> -->
 			    	<div class="btn-add-thread nav-btn"> New Thread</div>
 			    	<div class="btn-view-threads nav-btn"> View Threads </div>
 			      	<div class="search-wrapper">	
-			     	      	
-		        	
-			        	<input class="hb-inp-search" name="inp-search" placeholder="Search All Threads"></input>
+			        	<input class="hb-inp-search" name="inp-search" placeholder="Search All Threads" />
 			        	<div class="hb-btn-search">Search</div>
 			        </div> 	
 		      	</div>
 		    </nav>	
 
-		<!-- End Hamburger -->    
+		<!-- End Hamburger -->  
+
+		<nav class="main-nav">
+		    	<div class="welcome nav-btn"></div>
+		    	<!-- <div class="home nav-btn">Home</div> -->
+		    	<div class="btn-add-thread nav-btn"> New Thread</div>
+		    	<div class="btn-view-threads nav-btn"> View Threads </div>
+		      	
+		      	<div class="btn-logout">Log Out</div>
+		    </nav>
+
+  
 
 			<header>
 				<div class="title-container">			
@@ -44,25 +53,13 @@
 					<div class="header-btn-wrapper">
 						<div class="btn-login btn-header">Log In</div>
 						<div class="signup btn-header">Sign Up</div>
-						<div class="btn-logout btn-header">Log Out</div>
 					</div>	
 				</div>	
 			</header>
 
-		    <nav class="main-nav">
-		    	<div class="welcome nav-btn"></div>
-		    	<div class="home nav-btn">Home</div>
-		    	<div class="btn-add-thread nav-btn"> New Thread</div>
-		    	<div class="btn-view-threads nav-btn"> View Threads </div>
-		      	<div class="search-wrapper">	      	
-		        	
-		        	<input class="inp-search" name="inp-search" placeholder="Search All Threads"></input>
-		        	<div class="btn-search">Search</div>
-		      	</div>
-		    </nav>
-
+		    
 		  <!-- Info View -->
-			<section class="news view">
+			<!-- <section class="news view">
 			<h1> Top 3 Rated Shows </h1>
 			  	<article class="news-wrapper">
 			  		<div class="info-info">			  		
@@ -113,7 +110,7 @@
 			    		</div>
 			  		</div>
 		  		</article>
-		  	</section>
+		  	</section> -->
 	  
 	  
 
@@ -131,7 +128,7 @@
 			  			<input type="text" placeholder="User I.D." id="user-id" class="inp-login" required="">
 			  			<input type="password" class="inp-login" id="password" placeholder="Password" required="">
 
-			  			<button type="submit" class="btn-submit-login">Submit</button>
+			  			<button type="submit" class="btn-login">Submit</button>
 
 			  			<div class="wrong-login">
 			  				<p>User Name or Password is Incorrect</p>
@@ -144,7 +141,7 @@
 						<input type="text" name="create-user-id" class="inp-login" id="new-user-id" placeholder="Create ID" required>	
 						<input type="password" name="create-user-password" class="inp-login" id="new-user-password" placeholder="Password"required>
 
-						<button type="submit" class="btn-submit-create">Submit</button>
+						<button type="submit" class="btn-create">Submit</button>
 						<p class="or-login or">Log In</p>
 					</form>  	
 				</div>	
@@ -152,9 +149,13 @@
 			</div>		   
 
 			  <!--  Thread List View -->
-		    <section class="thread-list view"> 		    	
+		    <section class="thread-list view"> 
+		    <div class="search-wrapper">	      	
+	        		<input class="inp-search" name="inp-search" placeholder="Search All Threads" />
+	        		<div class="btn-search">Search</div>
+		      	</div>		    	
 		        <div class="movies-label">
-		        	<p>Latest Conversations</p>	       
+		        	<p>All Threads</p>	       
 		      	</div>
 
 		      	<div class="thread-list-items"></div>		     
@@ -176,7 +177,6 @@
 			<div class="thread-view-wrapper">
 				<section class="thread view">
 					<div class="thread-view-header">
-
 						<h1 class="thread-view-title"> </h1>
 						<p class="thread-view-content"></p>
 						<div>

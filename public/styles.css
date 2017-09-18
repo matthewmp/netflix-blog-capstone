@@ -58,7 +58,7 @@ header{
   url('media/dd.jpg') no-repeat;
   background-size: cover;
   text-align: center;
-  height: 500px;
+  min-height: 100%;
 }
 
 .header-title{
@@ -80,8 +80,6 @@ header{
 }
 
 .btn-header{
-  position: absolute;
-  top: 350px;
   border: 1px solid #fff;
   height: 50px;
   width: 100px;
@@ -104,8 +102,26 @@ header{
   color: #fff;
 }
 
+.signup{
+  position: absolute;
+  top: 350px;
+}
+
 .btn-login.btn-header{
   left: 100px;
+  position: absolute;
+  top: 350px;
+  border: 1px solid #fff;
+  height: 50px;
+  width: 100px;
+  text-align: center;
+  line-height: 50px;
+  color: #fff;
+  background-color: #ff0000;
+  font-family: 'Righteous';
+  font-size: 20px;
+  text-shadow: 2px 2px 10px #000;
+  cursor: pointer;
 }
 
 .signup.btn-header{
@@ -114,7 +130,13 @@ header{
 
 .btn-logout{
   display: none;
-  left: 150px;
+  float: right;
+  color: #fff;
+  font-family: 'Passion One';
+  font-size: 20px;
+  margin-right: 30px;
+  line-height: 70px;
+  cursor: pointer;
 }
 
 /* Log In View */
@@ -205,10 +227,22 @@ button[class*="btn-submit"]{
     border: 2px solid #fff;
 }
 
+.btn-login, .btn-create{
+    border-style: none;
+    cursor: pointer;
+    width: 120px;
+    height: 40px;
+    font-size: 18px;
+    font-family: 'Passion One';
+    color: #ff0000;
+    background: #fff;
+    border: 2px solid #fff;
+}
+
 nav {
   display: none;
   position: relative;
-  background-color: #400000;
+  background-color: #111;
   min-height: 70px; 
 }
 
@@ -226,7 +260,7 @@ nav {
   vertical-align: middle;
   font-size: 25px;
   font-family: 'Roboto';
-  text-shadow: 1px 1px 10px #ff0000;
+  text-shadow: 1px 1px 20px #fff;
 }
 
 .btn-add-thread:hover, .btn-view-threads:hover, .home:hover{
@@ -282,7 +316,7 @@ nav p{
   color: #111;
 }
 
-p, input{
+input{
   display: inline-block;
 }
 
@@ -301,8 +335,7 @@ p, input{
   background: #fff;
   color: #400;
   font-size: 45px;
-  font-family: 'Ranga', arial, serif;
-  text-shadow: 1px 1px 3px #ff0000; 
+  font-family: 'Roboto';
 }
 
 .movies-label p{
@@ -322,11 +355,6 @@ p, input{
   overflow: auto;
 }
 
-.js-movie-thread:hover{
-  cursor: pointer;
-
-}
-
 .js-movie-thread img{
   width: 50px;
   vertical-align: middle;  
@@ -338,23 +366,23 @@ p, input{
   border-radius: 3px;
   font-size: 31px;
   font-family: 'Rajdhani';
-  color: #ff0000;
-  text-shadow: 1px 1px 1px #000;
 }
 
 .js-movie-thread:hover{
-  background: rgba(240,0,0,0.2);
+  background: rgba(209, 209, 209, 0.2);
+  cursor: pointer;
 }
 
 .thread-created{
  margin-right: 10px;
  margin-left: 20px;
  font-family: 'Roboto';
- color: #ff0000;
+ color: #b8b8b8;
 }
 
 .thread-author{
-font-family: 'Rajdhani';
+  font-family: 'Rajdhani';
+  color: #ff0000;
 }
 
 /*   Thread View */
@@ -808,8 +836,8 @@ h1.thread-view-title:first-child{
   margin-right: auto;
   top: -500px;
   background: linear-gradient(
-    rgba(255,0,0,0.4),
-    rgba(255,0,0,0.4)
+    rgba(0,0,0,0.8),
+    rgba(0,0,0,0.8)
   ),
     url('media/hoc.jpg') no-repeat;
   background-size: cover;
@@ -822,7 +850,7 @@ h1.thread-view-title:first-child{
   top: 0;
   right: 0;
   left: 0;
-  background: rgba(255,0,0,0.73);
+  background: rgba(0, 0, 0, 0.73);
   width: 100%;
 }
 
