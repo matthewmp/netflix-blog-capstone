@@ -35,9 +35,10 @@ function retrieveStateFromStorage() {
 
 // Get All Threads & Render List of Threads
 function _GET_AllThreads() {
+
   $.ajax({
     dataType: "json",
-    headers: { "Authorization": "Basic " + btoa(state.user + ":" + state.password) },
+    // headers: { "Authorization": "Basic " + btoa(state.user + ":" + state.password) },
     url: "/threads",
     success: function success(data) {
       state.movieThreads = data.movieThreads;
@@ -290,6 +291,7 @@ function login(id) {
   $('form').hide();
   $('.login-overlay').hide();
   $('header').fadeOut();
+  $('.nav-title').fadeIn();
   $('.welcome').text('Welcome ' + state.user);
 
   if (state.view === 'thread-list') {
@@ -328,30 +330,16 @@ function searchThreads(str) {
 
 //---------------Render Functions-------------------
 
-// Header Background Pic Slider
-function headerAnimation() {
-  var picArr = ['luke-cage-bullets.gif', 'hoc2.jpg', 'ironfist.jpeg', 'bb.jpg', 'dd.jpg'];
-  var count = 0;
-  var interval = setInterval(function () {
-    if (count >= picArr.length) {
-      count = 0;
-    }
-    // $('header').css('background', `linear-gradient(rgba(255,0,0,0.4),rgba(255,0,0,0.4)),url("media/${picArr[count]}") no-repeat`)
-    $('header').css('background-size', 'cover');
-    count++;
-  }, 2500);
-}
-
 function hideAllViews() {
   $('.view').hide();
 }
 
 function showView(screenName, flag) {
   hideAllViews();
+  //$('header').fadeOut();
   $('.hb-items').removeClass('hb-items-hide');
   $('.' + screenName + '.view').fadeIn(400);
   state.view = screenName;
-  //$('footer').css({top: $(document).height() - $('footer').height()})
 }
 
 // Show All Threads When 'View Threads' is clicked on nav bar 
@@ -424,7 +412,7 @@ function renderIndThreadView(id, state) {
     if (post.comments.length) {
       post.comments.forEach(function (comment) {
         console.log(comment);
-        $('#' + post._id).append('\n            \n            \n            \n\n            \n\n          <div class="js-comment">\n          ' + comment.comment + '\n            <p class="js-comment-user"><span class="by">by:</span> ' + comment.user + '</p>\n          </div>\n        ');
+        $('#' + post._id).append('\n\n\n\n\n\n\n<div class="js-comment">\n' + comment.comment + '\n<p class="js-comment-user"><span class="by">by:</span> ' + comment.user + '</p>\n</div>\n');
       });
     }
   });
@@ -439,39 +427,49 @@ $(function () {
 
   // Header Login Button
   $('.btn-login').click(function () {
-    $('.login-form').show();
-    $('.login-overlay').fadeIn();
-    showView('login');
-  }
+      $('.login-form').show();
+      $('.login-overlay').fadeIn();
+      $('.login-form').fadeIn();
+      showView('login');
+    }
+  );
 
   // Header Sign Up Button
-  );$('.signup').click(function () {
-    $('.login-overlay').fadeIn();
-    $('.sign-up-form').fadeIn();
-    showView('login');
-  }
+  $('.signup').click(function () {
+      $('.login-overlay').fadeIn();
+      $('.sign-up-form').fadeIn();
+      showView('login');
+    }
+  );
 
   // Switch between Login & Sign Up Forms When In Login View
-  );$('.or-signup').click(function () {
-    $('.login-form').hide();
-    $('.sign-up-form').fadeIn();
-  }
+  $('.or-signup').click(function () {
+      $('.login-form').hide();
+      $('.sign-up-form').fadeIn();
+    }
+  );
 
   // Switch between Login & Sign Up Forms When In Login View
-  );$('.or-login').click(function () {
-    $('.sign-up-form').hide();
-    $('.login-form').fadeIn();
-  }
+  $('.or-login').click(function () {
+      $('.sign-up-form').hide();
+      $('.login-form').fadeIn();
+    }
+  );
 
   // Log Out Button
-  );$('.btn-logout').click(function () {
-    // lets remove the state from local storage, it will be created fresh after refresh
+  $('.btn-logout').click(function () {
+      localStorage.removeItem('state');
+      window.location.reload(true);
+    }
+  );
+
+  $('.hb-btn-logout').click(function(){
     localStorage.removeItem('state');
     window.location.reload(true);
-  }
+  })
 
   // Submit Login Form
-  );$('.login-form').submit(function (e) {
+  $('.login-form').submit(function (e) {
     e.preventDefault();
     checkLogin();
   });
@@ -484,26 +482,26 @@ $(function () {
 
   // Home Nav Button
   $('.home').click(function () {
-    showView('news');
-  }
+      showView('news');
+    }
+  );
 
   // View Threads Nav Button
-  );$('.btn-view-threads').click(function () {
-    $('.search-wrapper').show();
-    if (state.user) {
+  $('.btn-view-threads').click(function () {
+      $('.search-wrapper').show();
+      
       _GET_AllThreads();
-    } else {
-      $('.btn-login').click();
       state.view = 'threadList';
-    }
-  }
 
+    
+    }
+  );
   //--- Event Delegation Listeners ----
 
   // Render Indivual Thread if User is Logged In
-  );$('.thread-list-items').on('click', '.js-movie-thread', function () {
+ $('.thread-list-items').on('click', '.js-movie-thread', function () {
     if (!state.user) {
-      showView('login');
+      $('.btn-login').click();
     } else {
       renderIndThreadView($(this).attr('id'), state);
       state.threadView = $(this).attr('id');
@@ -512,136 +510,151 @@ $(function () {
 
   // Delet Post Button
   $('.thread.view').on('click', '#btn-delete', function () {
-    var postId = $(this).closest('article').attr('id');
-    var threadId = $(this).closest('.thread.view').attr('id');
-    deletePost(postId, threadId);
-  }
+      var postId = $(this).closest('article').attr('id');
+      var threadId = $(this).closest('.thread.view').attr('id');
+      deletePost(postId, threadId);
+    }
+  );
 
   // Post Butotn to show 'create-post view'
-  );$('.btn-add-post').click(function () {
+  $('.btn-add-post').click(function () {
     showView('create-post.view');
   });
 
   // Submit New Post Button
   $('.btn-create-post').click(function () {
-    addPost();
-  }
+      addPost();
+    }
+  );
 
   // Edit Post Button
-  );$('.thread.view').on('click', '#btn-edit-post', function () {
-    var postId = $(this).closest('article').attr('id');
-    $('.edit-post.view').attr('id', postId);
+  $('.thread.view').on('click', '#btn-edit-post', function () {
+      var postId = $(this).closest('article').attr('id');
+      $('.edit-post.view').attr('id', postId);
 
-    showView('edit-post');
-  }
+      showView('edit-post');
+    }
+  );
 
   // Like (thumbs up) Post
-  );$('.thread.view').on('click', '.likes', function (e) {
-    var threadId = $('.thread.view').attr('id');
-    var postId = $(this).closest('article').attr('id');
-    var user = state.user;
-    console.log(threadId, postId, user);
-    state.threadId = threadId;
-    like(postId, user);
-  }
+  $('.thread.view').on('click', '.likes', function (e) {
+      var threadId = $('.thread.view').attr('id');
+      var postId = $(this).closest('article').attr('id');
+      var user = state.user;
+      console.log(threadId, postId, user);
+      state.threadId = threadId;
+      like(postId, user);
+    }
+  );
 
   // Edit Existing Thread Button
-  );$('.thread-view-header').on('click', '.js-btn-edit-thread', function () {
-    var threadId = $('.thread.view').attr('id');
-    var content = $('.thread-view-content').text();
-    var title = $('.thread-view-title').text();
-    editThread(threadId, content, title);
-  }
+  $('.thread-view-header').on('click', '.js-btn-edit-thread', function () {
+      var threadId = $('.thread.view').attr('id');
+      var content = $('.thread-view-content').text();
+      var title = $('.thread-view-title').text();
+      editThread(threadId, content, title);
+    }
+  );
 
   // Add Comment Button
-  );$('.thread.view').on('click', '.btn-comment', function () {
-    var postId = $(this).closest('article').attr('id');
-    addComment(postId);
-  }
+  $('.thread.view').on('click', '.btn-comment', function () {
+      var postId = $(this).closest('article').attr('id');
+      addComment(postId);
+    }
+  );
 
   // Cancel Adding/Editing Posts, Threads, & Comments Button
-  );$('.cancel').click(function () {
-    if (state.threadView) {
-      renderIndThreadView('' + state.threadView, state);
-    } else {
-      _GET_AllThreads();
+  $('.cancel').click(function () {
+      if (state.threadView) {
+        renderIndThreadView('' + state.threadView, state);
+      } else {
+        _GET_AllThreads();
+      }
     }
-  }
-
+  );
   //----- Add/Edit Buttons ------
 
   // New Thread Button in Nav
-  );$('.btn-add-thread').click(function () {
-    if (state.user) {
-      showView('create-thread');
-    } else {
-      $('.btn-login').click();
+  $('.btn-add-thread').click(function () {
+      if (state.user) {
+        showView('create-thread');
+      } else {
+        $('.btn-login').click();
+      }
     }
-  }
+  );
 
   // Submit New Thread Button
-  );$('.btn-create-thread').click(function () {
-    addThread();
-  }
+  $('.btn-create-thread').click(function () {
+      addThread();
+    }
+  );
 
   // Submit New Comment Button
-  );$('.btn-create-comment').click(function () {
-    createComment();
-  }
+  $('.btn-create-comment').click(function () {
+      createComment();
+    }
+  );
 
   // Submit Edit to Thread Button
-  );$('.btn-edit-thread-submit').click(function () {
-    _PUT_editThread();
-  }
+  $('.btn-edit-thread-submit').click(function () {
+      _PUT_editThread();
+    }
+  );
 
   // Submit Edit to Post Button
-  );$('.btn-edit-post-submit').click(function () {
-    _PUT_editPost();
-  }
-
+  $('.btn-edit-post-submit').click(function () {
+      _PUT_editPost();
+    }
+  );
   //----- Other Buttons -------
 
   // Show Hamburger nav Menu
-  );$('.hb-menu').on('click', function (e) {
-    $('.hb-items').toggleClass('hb-items-hide');
-    e.preventDefault();
-  }
+  $('.hb-menu').on('click', function (e) {
+      $('.hb-items').toggleClass('hb-items-hide');
+      e.preventDefault();
+    }
+  );
 
   // View Threads Button in Nav if No User is Logged In
-  );$('.thread-list-items').click(function (e) {
-    if (!state.user) {
-      e.stopPropagation();
-      showView('login');
+  $('.thread-list-items').click(function (e) {
+      if (!state.user) {
+        e.stopPropagation();
+        showView('login');
+      }
     }
-  }
+  );
 
   // X Button to Close Login/Sign Up Form
-  );$('.x-wrapper').click(function () {
-    $('form').fadeOut();
-    $('.login-overlay').fadeOut();
-    showView('news');
-  }
+  $('.x-wrapper').click(function () {
+      $('form').fadeOut();
+      $('.login-overlay').fadeOut();
+      showView('main');
+    }
+  );
 
   // Search Button
-  );$('.btn-search').click(function () {
+  $('#search-form').submit(function (e) {
+    e.preventDefault();
     var str = $('.inp-search').val();
     searchThreads(str);
-  }
+    }
+  );
 
   // Search Button Hamburger Menu
-  );$('.hb-btn-search').click(function () {
-    var str = $('.hb-inp-search').val();
-    console.log('Search Str: ' + str);
-    searchThreads(str);
-  }
+  $('.hb-btn-search').click(function () {
+      var str = $('.hb-inp-search').val();
+      console.log('Search Str: ' + str);
+      searchThreads(str);
+    }
+  );
 
   // Setup Initial View
-  );showView('news');
-  headerAnimation();
+  showView('main');
 
   // Position Login Overlay
-  $('.login-overlay').height($(document).height()
-
+  $('.login-overlay').height($(document).height());
+  
   // Set Initial View
-  );state.view = 'news';
+  state.view = 'main';
 });

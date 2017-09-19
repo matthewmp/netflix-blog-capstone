@@ -29,6 +29,7 @@ img{
 
 .hb-nav{
   display: none;
+  max-height: 350px;
 }
 
 .hb-menu{
@@ -42,6 +43,16 @@ img{
   color: #fff;
 }
 
+.hb-items{
+  background: #111;
+  height: 350px;
+}
+
+.hb-search{
+  text-align: left !important;
+  margin-left: 30px !important;
+}
+
 .line{
   height: 3px;
   width: 60px;
@@ -52,23 +63,30 @@ img{
 header{
   position: relative;
   background:  linear-gradient(
-      rgba(200, 0, 0, 0.5), 
-      rgba(200, 0, 0, 0.5)
+      rgba(0, 0, 0, 0.6), 
+      rgba(0, 0, 0, 0.6)
     ),
   url('media/dd.jpg') no-repeat;
   background-size: cover;
+  background-position-x: 30%;
   text-align: center;
   min-height: 100%;
 }
 
-.header-title{
+.title-container{
+  width: 100%;
+  margin: 0px;
   position: absolute;
+  top: 20%;
+  left: 30%;
+  transform: translate(-50%, -50%);
+}
+
+.header-title{
   font-family: 'Londrina Outline', cursive;
   text-shadow: 2px 2px 20px #000;
   color: #fff;
   font-size: 450%; 
-  top: 130px;
-  left: 2%; 
 }
 
 .header-sub-title{
@@ -80,6 +98,7 @@ header{
 }
 
 .btn-header{
+  display: inline-block;
   border: 1px solid #fff;
   height: 50px;
   width: 100px;
@@ -102,14 +121,9 @@ header{
   color: #fff;
 }
 
-.signup{
-  position: absolute;
-  top: 350px;
-}
-
 .btn-login.btn-header{
+  display: inline-block;
   left: 100px;
-  position: absolute;
   top: 350px;
   border: 1px solid #fff;
   height: 50px;
@@ -124,15 +138,11 @@ header{
   cursor: pointer;
 }
 
-.signup.btn-header{
-  left: 220px;
-}
-
 .btn-logout{
   display: none;
   float: right;
   color: #fff;
-  font-family: 'Passion One';
+  font-family: 'Roboto';
   font-size: 20px;
   margin-right: 30px;
   line-height: 70px;
@@ -140,12 +150,10 @@ header{
 }
 
 /* Log In View */
-form {
-  display: none;
-}
 
 .login-form, .sign-up-form{
   margin-top: 120px;
+  display: none;
 }
 
 .login-form input, .sign-up-form input{
@@ -181,7 +189,6 @@ form {
 }
 
 .login-signup-title{
-
     color: #fff;
     font-family: 'Righteous';
     font-size: 25px;
@@ -216,27 +223,27 @@ input[class*="inp-"]{
 }
 
 button[class*="btn-submit"]{
-   border-style: none;
-    width: 120px;
-    height: 40px;
-    font-size: 18px;
-    font-family: 'Passion One';    
-    color: #fff;
-    text-shadow: 1px 1px 1px #ff0000;
-    background: #400;
-    border: 2px solid #fff;
+  border-style: none;
+  width: 120px;
+  height: 40px;
+  font-size: 18px;
+  font-family: 'Passion One';    
+  color: #fff;
+  text-shadow: 1px 1px 1px #ff0000;
+  background: #400;
+  border: 2px solid #fff;
 }
 
 .btn-login, .btn-create{
-    border-style: none;
-    cursor: pointer;
-    width: 120px;
-    height: 40px;
-    font-size: 18px;
-    font-family: 'Passion One';
-    color: #ff0000;
-    background: #fff;
-    border: 2px solid #fff;
+  border-style: none;
+  cursor: pointer;
+  width: 120px;
+  height: 40px;
+  font-size: 18px;
+  font-family: 'Passion One';
+  color: #111;
+  background: #fff;
+  border: 2px solid #fff;
 }
 
 nav {
@@ -244,6 +251,16 @@ nav {
   position: relative;
   background-color: #111;
   min-height: 70px; 
+}
+
+.nav-title{
+  display: none;
+  font-size: 30px;
+  font-family: 'Londrina Outline', cursive;
+  color: #fff;
+  float: left;
+  line-height: 70px;
+  padding-left: 30px;
 }
 
 .nav-btn{
@@ -269,7 +286,7 @@ nav {
 }
 
 .search-wrapper{
-  display: none;
+  text-align: center;
   min-height: 70px;
   line-height: 70px;
   border: 0px solid #fff;
@@ -288,8 +305,19 @@ nav {
   color: #fff;
   font-family: 'Rajdhani';
   font-size: 18px;
-  text-shadow: 2px 2px 2px #000;
   cursor: pointer;
+}
+
+.hb-btn-logout{
+  float: left;
+  color: #fff;
+  font-family: 'Roboto';
+  font-size: 20px;
+  margin-right: 30px;
+  line-height: 70px;
+  cursor: pointer;
+  float: left;
+  margin-left: 30px;
 }
 
 .btn-search:active{
@@ -386,6 +414,11 @@ input{
 }
 
 /*   Thread View */
+
+#search-form{
+  display: block !important;
+}
+
 .thread-view-wrapper{
   max-width: 75%;
   margin: auto;
@@ -430,7 +463,7 @@ h1.thread-view-title:first-child{
   padding-top: 20px;
   font-family: 'Poppins';
   font-size: 45px;  
-  color: #400;
+  color: #111;
 }
 
 .thread-view-content{
@@ -484,7 +517,7 @@ h1.thread-view-title:first-child{
   border-radius: 50%;
   width: 50px;
   height: 50px;
-  background: #ff0000;
+  background: #111;
   display: inline-block;
   text-align: center;
   line-height: 50px;
@@ -565,7 +598,6 @@ h1.thread-view-title:first-child{
   margin: 10px 0 0 0; /**/
   font-family: 'Passion One';
   font-size: 23px;
-  text-shadow: 2px 2px 1px #000; 
 }
 
 .btn-create-thread:active{
@@ -599,9 +631,9 @@ h1.thread-view-title:first-child{
   display: block;
   padding-top: 20px;
   margin-bottom: 30px;
-  font-family: 'Passion One';
-  font-size: 3em;
-  color: #7f0000;
+  font-family: 'Roboto';
+  font-size: 2em;
+  color: #111;
 }
 
 .create-thread-title, .edit-thread-title{
@@ -836,10 +868,11 @@ h1.thread-view-title:first-child{
   margin-right: auto;
   top: -500px;
   background: linear-gradient(
-    rgba(0,0,0,0.8),
-    rgba(0,0,0,0.8)
+    rgba(0, 0, 0, 0.51),     
+    rgba(0, 0, 0, 0.92)   
   ),
     url('media/hoc.jpg') no-repeat;
+
   background-size: cover;
   background-position-x: -100px;
 }
@@ -855,16 +888,17 @@ h1.thread-view-title:first-child{
 }
 
 footer{
+  text-align: center;
   font-size: 0.6em;
   z-index: 11;
   position: fixed;
   bottom: 0;
   min-width: 100%;
-  background: #400000;
+  background: #111;
 }
 
 footer ul {
-  margin: 0;
+  padding: 0;
 }
 
 footer li{

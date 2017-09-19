@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const { Threads } = require('../models/threadModel');
 
 // Returns All Threads.
-router.get('/', passport.authenticate('basic', { session: true }), (req, res) => {
+router.get('/', (req, res) => {
   getThreads()
   .then((allThreads)=>{
     res.json({movieThreads: allThreads}); 

@@ -25,37 +25,43 @@
 				<div class="hb-items">
 			    	
 			    	<!-- <div class="home nav-btn">Home</div> -->
-			    	<div class="btn-add-thread nav-btn"> New Thread</div>
 			    	<div class="btn-view-threads nav-btn"> View Threads </div>
-			      	<div class="search-wrapper">	
+			    	<div class="btn-add-thread nav-btn"> New Thread</div>
+			      	<div class="search-wrapper hb-search">	
 			        	<input class="hb-inp-search" name="inp-search" placeholder="Search All Threads" />
 			        	<div class="hb-btn-search">Search</div>
-			        </div> 	
+			        </div> 
+			        <div class="hb-btn-logout nav-btn">Log Out</div>	
 		      	</div>
 		    </nav>	
 
 		<!-- End Hamburger -->  
 
 		<nav class="main-nav">
-		    	<div class="welcome nav-btn"></div>
-		    	<!-- <div class="home nav-btn">Home</div> -->
-		    	<div class="btn-add-thread nav-btn"> New Thread</div>
-		    	<div class="btn-view-threads nav-btn"> View Threads </div>
-		      	
-		      	<div class="btn-logout">Log Out</div>
-		    </nav>
+			<div class="nav-title">Netflix Junkie</div>
+	    	<div class="welcome nav-btn"></div>
+	    	<!-- <div class="home nav-btn">Home</div> -->
+	    	<div class="btn-view-threads nav-btn"> View Threads </div>
+	    	<div class="btn-add-thread nav-btn"> New Thread</div>
+	      	<div class="btn-logout">Log Out</div>
+	    </nav>
 
   
 
-			<header>
-				<div class="title-container">			
-					<h1 class="header-title">Netflix Junkie<span class="header-sub-title">A  Netflix Forum</span></h1>
-					<div class="header-btn-wrapper">
-						<div class="btn-login btn-header">Log In</div>
-						<div class="signup btn-header">Sign Up</div>
-					</div>	
+		<header class="main view">
+			<div class="title-container">			
+				<h1 class="header-title">
+					Netflix Junkie
+					<span class="header-sub-title">
+						A  Netflix Forum
+					</span>
+				</h1>
+				<div class="header-btn-wrapper">
+					<div class="btn-login btn-header">Log In</div>
+					<div class="signup btn-header">Sign Up</div>
 				</div>	
-			</header>
+			</div>	
+		</header>
 
 		    
 		  <!-- Info View -->
@@ -112,14 +118,9 @@
 		  		</article>
 		  	</section> -->
 	  
-	  
-
-
-
-
-		  <!-- Log In View -->
-		  <div class="login-overlay">
-			  <section class="login view">
+	  <!-- Log In View -->
+	 	<div class="login-overlay">
+		  	<section class="login view">
 			  	<div class="login-wrapper">
 			  	<div class="x-wrapper"><div class="x-close">&#x2716;</div></div>
 			  		<form class="login-form">
@@ -145,15 +146,17 @@
 						<p class="or-login or">Log In</p>
 					</form>  	
 				</div>	
-			  </section>
-			</div>		   
+		  	</section>
+		</div>		   
 
-			  <!--  Thread List View -->
+			<!--  Thread List View -->
 		    <section class="thread-list view"> 
-		    <div class="search-wrapper">	      	
+		    <div class="search-wrapper">	
+		    	<form id="search-form">
 	        		<input class="inp-search" name="inp-search" placeholder="Search All Threads" />
-	        		<div class="btn-search">Search</div>
-		      	</div>		    	
+	        		<button class="btn-search" type="submit">Search</button>
+	        	</form>
+		    </div>		    	
 		        <div class="movies-label">
 		        	<p>All Threads</p>	       
 		      	</div>
@@ -170,10 +173,10 @@
 
 		      	<div class="search-list-items"></div>		     
 		    </section>
-			
+		
 			
 	  
-		<!-- Thread View -->
+			<!-- Thread View -->
 			<div class="thread-view-wrapper">
 				<section class="thread view">
 					<div class="thread-view-header">
@@ -194,7 +197,7 @@
 			</div>	
 
 
-				<!-- Add Post View -->
+			<!-- Add Post View -->
 			<section class="create-post view">				
 
 				<label for="create-post-content">Enter Your Post</label>
