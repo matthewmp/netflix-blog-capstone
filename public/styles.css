@@ -119,14 +119,7 @@ header{
   cursor: pointer;
 }
 
-.btn-header:hover{
-  background: #7F0000;
-  color: #ff0000;
-}
 
-.btn-header:active{
-  color: #fff;
-}
 
 .btn-login.btn-header{
   display: inline-block;
@@ -158,6 +151,25 @@ header{
   font-size: 20px;
   line-height: 10px;
   font-family: 'Righteous';
+}
+
+.btn-header:hover, .btn-login:hover{
+  background: #7F0000;
+  color: #ff0000;
+}
+
+.btn-header:active{
+  color: #fff;
+}
+
+.btn-topics:hover{
+  border: 3px solid #222;
+  color: #222;
+  background: #fff;
+}
+
+.btn-topics:active{
+  color: #ff0000;
 }
 
 .btn-logout{
@@ -276,6 +288,7 @@ nav {
 }
 
 .nav-title{
+  cursor: pointer;
   font-size: 30px;
   font-family: 'Londrina Outline', cursive;
   color: #fff;

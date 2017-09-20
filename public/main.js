@@ -495,13 +495,16 @@ $(function () {
   // View Threads Nav Button
   $('.btn-view-threads').click(function () {
       $('.search-wrapper').show();
-      
       _GET_AllThreads();
       state.view = 'threadList';
-
-    
     }
   );
+
+  // Go to main view
+  $('.nav-title').click(function(e){
+    showView('main');
+  })
+
   //--- Event Delegation Listeners ----
 
   // Render Indivual Thread if User is Logged In
