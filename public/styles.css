@@ -46,7 +46,7 @@ img{
 .hb-items{
   position: absolute;
   top: 60px;
-  width: 50%;
+  width: 100%;
   background: #111;
   height: 350px;
 }
@@ -162,11 +162,11 @@ header{
 
 .btn-logout{
   display: none;
-  float: right;
+  float: left;
   color: #fff;
   font-family: 'Rajdhani';
   font-size: 20px;
-  margin-right: 30px;
+  margin-left: 30px;
   line-height: 70px;
   cursor: pointer;
 }
@@ -276,7 +276,6 @@ nav {
 }
 
 .nav-title{
-  display: none;
   font-size: 30px;
   font-family: 'Londrina Outline', cursive;
   color: #fff;
@@ -295,7 +294,8 @@ nav {
 }
 
 .welcome{  
-  bottom: 0px;
+  float: right;
+  margin-right: 30px;
   vertical-align: middle;
   font-size: 25px;
   font-family: 'Roboto';

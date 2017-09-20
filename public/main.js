@@ -27,7 +27,6 @@ function retrieveStateFromStorage() {
   if (lsState) {
     return JSON.parse(lsState);
   } else {
-    console.log("Missing!");
     saveToStorage(state); // just set it up
   }
 }
@@ -169,7 +168,6 @@ function _POST_newPost(id, content) {
 }
 
 function deletePost(postId, threadId) {
-  console.log('Deleting POst');
   var post = {
     threadId: threadId,
     postId: postId
@@ -313,7 +311,6 @@ function searchThreads(str) {
     if (thread.content) {
       if (thread.content.match(rg) || thread.title.match(rg)) {
         threadList.push(thread);
-        console.log('Str: ' + str + ', Rg: ' + rg);
       } else {
         thread.posts.forEach(function (post) {
           if (post.content.match(rg)) {
@@ -387,36 +384,39 @@ function renderIndThreadView(id, state) {
   } else {
     //
   }
+  
   showView('thread');
+
   // Load Thread Posts
-  thread[0].posts.forEach(function (post, index) {
-    $('.thread-view-title-posts').append('<article class="post-wrapper" id=' + post._id + '>\n\n          <span class="post-content-date"><span class="js-pc-user">' + post.user.slice(0, 1) + '</span>    <span class="js-pc-full-user">' + post.user + '</span>  ' + new Date(post.created).toLocaleString() + '</span>\n          <div class="post-content-wrapper">\n            \n            <div class="post-content">' + post.content + '</div>\n\n            <div class="post-meta">\n              <button class="likes"> <span class="thumb">&#x1F44D;</span> </button>\n              <span class="likes">' + post.likes.count + '</span>\n              <span class="btn-comment" id="btn-comment">Comment</span>            \n            </div>  \n          </div> \n        </article>               \n          ');
+  if(thread[0].posts.length){
+    thread[0].posts.forEach(function (post, index) {
+      $('.thread-view-title-posts').append('<article class="post-wrapper" id=' + post._id + '>\n\n          <span class="post-content-date"><span class="js-pc-user">' + post.user.slice(0, 1) + '</span>    <span class="js-pc-full-user">' + post.user + '</span>  ' + new Date(post.created).toLocaleString() + '</span>\n          <div class="post-content-wrapper">\n            \n            <div class="post-content">' + post.content + '</div>\n\n            <div class="post-meta">\n              <button class="likes"> <span class="thumb">&#x1F44D;</span> </button>\n              <span class="likes">' + post.likes.count + '</span>\n              <span class="btn-comment" id="btn-comment">Comment</span>            \n            </div>  \n          </div> \n        </article>               \n          ');
 
-    // Add divider between Posts
-    $('.thread-view-title-posts').append('<div class="js-separate"></div>');
+      // Add divider between Posts
+      $('.thread-view-title-posts').append('<div class="js-separate"></div>');
 
-    // Check to see if current user liked post then change thumbs up class.
-    var match = false;
-    post.likes.users.forEach(function (user) {
-      if (user.trim() === state.user.trim()) {
-        $('#' + post._id).find('.thumb').addClass('thumb-liked');
+      // Check to see if current user liked post then change thumbs up class.
+      var match = false;
+      post.likes.users.forEach(function (user) {
+        if (user.trim() === state.user.trim()) {
+          $('#' + post._id).find('.thumb').addClass('thumb-liked');
+        }
+      });
+
+      if (post.user === state.user) {
+        var btn_render = '<span class="btn-comment" id="btn-delete">Delete</span><span class="btn-post" id="btn-edit-post">Edit</span>';
+        $('.post-meta')[index].innerHTML += btn_render;
+      }
+
+      if (post.comments.length) {
+        post.comments.forEach(function (comment) {
+          $('#' + post._id).append('\n\n\n\n\n\n\n<div class="js-comment">\n' + comment.comment + '\n<p class="js-comment-user"><span class="by">by:</span> ' + comment.user + '</p>\n</div>\n');
+        });
       }
     });
-
-    if (post.user === state.user) {
-      var btn_render = '<span class="btn-comment" id="btn-delete">Delete</span><span class="btn-post" id="btn-edit-post">Edit</span>';
-      console.log($('.post-meta')[index]);
-      $('.post-meta')[index].innerHTML += btn_render;
-    }
-
-    if (post.comments.length) {
-      post.comments.forEach(function (comment) {
-        console.log(comment);
-        $('#' + post._id).append('\n\n\n\n\n\n\n<div class="js-comment">\n' + comment.comment + '\n<p class="js-comment-user"><span class="by">by:</span> ' + comment.user + '</p>\n</div>\n');
-      });
-    }
-  });
+  }
   // End Posts
+  showView('thread');
 }
 
 //----------------Setup & Event Listeners----------------
@@ -506,12 +506,8 @@ $(function () {
 
   // Render Indivual Thread if User is Logged In
  $('.thread-list-items').on('click', '.js-movie-thread', function () {
-    if (!state.user) {
-      $('.btn-login').click();
-    } else {
-      renderIndThreadView($(this).attr('id'), state);
-      state.threadView = $(this).attr('id');
-    }
+    renderIndThreadView($(this).attr('id'), state);
+    state.threadView = $(this).attr('id');
   });
 
   // Delet Post Button
@@ -524,8 +520,12 @@ $(function () {
 
   // Post Butotn to show 'create-post view'
   $('.btn-add-post').click(function () {
-    showView('create-post.view');
-    $('.create-post-form').fadeIn();
+    if (!state.user) {
+      $('.btn-login').click();
+    } else {
+      showView('create-post.view');
+      $('.create-post-form').fadeIn();
+    }
   });
 
   // Submit New Post Button
@@ -546,14 +546,16 @@ $(function () {
 
   // Like (thumbs up) Post
   $('.thread.view').on('click', '.likes', function (e) {
+    if(state.user){  
       var threadId = $('.thread.view').attr('id');
       var postId = $(this).closest('article').attr('id');
       var user = state.user;
-      console.log(threadId, postId, user);
       state.threadId = threadId;
       like(postId, user);
+    } else {
+      $('.btn-login').click();
     }
-  );
+  });
 
   // Edit Existing Thread Button
   $('.thread-view-header').on('click', '.js-btn-edit-thread', function () {
@@ -566,8 +568,12 @@ $(function () {
 
   // Add Comment Button
   $('.thread.view').on('click', '.btn-comment', function () {
-      var postId = $(this).closest('article').attr('id');
-      addComment(postId);
+      if(state.user){
+        var postId = $(this).closest('article').attr('id');
+        addComment(postId);
+      } else {
+        $('.btn-login').click();
+      }
     }
   );
 
@@ -646,7 +652,6 @@ $(function () {
 
   // Search Button
   $('#search-form').submit(function (e) {
-    console.log('searching');
     e.preventDefault();
     var str = $('.inp-search').val();
     searchThreads(str);
@@ -657,7 +662,6 @@ $(function () {
   $('.hb-search-form').submit(function (e) {
     e.preventDefault();
     var str = $('.hb-inp-search').val();
-    console.log('Search Str: ' + str);
     searchThreads(str);
     }
   );
