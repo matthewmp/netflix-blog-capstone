@@ -163,9 +163,7 @@ header{
 }
 
 .btn-topics:hover{
-  border: 3px solid #222;
-  color: #222;
-  background: #fff;
+  color: #ff0000;
 }
 
 .btn-topics:active{
