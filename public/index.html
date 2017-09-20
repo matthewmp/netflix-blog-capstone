@@ -28,8 +28,10 @@
 			    	<div class="btn-view-threads nav-btn"> View Threads </div>
 			    	<div class="btn-add-thread nav-btn"> New Thread</div>
 			      	<div class="search-wrapper hb-search">	
-			        	<input class="hb-inp-search" name="inp-search" placeholder="Search All Threads" />
-			        	<div class="hb-btn-search">Search</div>
+			      		<form class="hb-search-form">
+				        	<input class="hb-inp-search" name="inp-search" placeholder="Search All Threads" />
+				        	<button class="hb-btn-search">Search</button>
+						</form>				        	
 			        </div> 
 			        <div class="hb-btn-logout nav-btn">Log Out</div>	
 		      	</div>
@@ -60,6 +62,7 @@
 					<div class="btn-login btn-header">Log In</div>
 					<div class="signup btn-header">Sign Up</div>
 				</div>	
+				<div class="btn-topics">View Topics</div>
 			</div>	
 		</header>
 
@@ -199,34 +202,36 @@
 
 			<!-- Add Post View -->
 			<section class="create-post view">				
-
-				<label for="create-post-content">Enter Your Post</label>
-				<textarea name="create-post-content" rows="6" cols="50" class="add-post-content"></textarea>
-				<div class="btn-wrapper"><button class="btn-create-post">Post</button></div>
-				
-				<p class="cancel">Cancel</p>
-
+				<form class="create-post-form">
+					<label for="create-post-content">Enter Your Post</label>
+					<textarea name="create-post-content" rows="6" cols="50" class="add-post-content" required></textarea>
+					<div class="btn-wrapper"><button class="btn-create-post" type="submit">Post</button></div>
+					
+					<p class="cancel">Cancel</p>
+				</form>
 			</section>
 
 			<section class="create-comment view">				
-
-				<label for="create-comment-content">Enter Your Comment</label>
-				<textarea name="create-comment-content" rows="6" cols="50" class="add-comment-content"></textarea>
-				<div class="btn-wrapper"><button class="btn-create-comment">Post</button></div>
-				
-				<p class="cancel">Cancel</p>
+				<form class="create-comment-form">
+					<label for="create-comment-content">Enter Your Comment</label>
+					<textarea name="create-comment-content" rows="6" cols="50" class="add-comment-content" required></textarea>
+					<div class="btn-wrapper"><button class="btn-create-comment" type="submit">Post</button></div>
+					
+					<p class="cancel">Cancel</p>
+				</form>
 
 			</section>
 
 			<section class="create-thread view">				
-
-				<label for="create-thread-title">Enter Thread Title</label>
-				<input type="text" name="create-thread-title" class="create-thread-title" />
-				<label for="create-thread-content">Enter Your Post</label>
-				<textarea name="create-thread-content" rows="6" cols="50" class="thread-content" required></textarea>
-				<div class="btn-wrapper"><button class="btn-create-thread">Submit</button></div>
-				
-				<p class="cancel">Cancel</p>
+				<form class="create-thread-form">
+					<label for="create-thread-title">Enter Thread Title</label>
+					<input type="text" name="create-thread-title" class="create-thread-title" required/>
+					<label for="create-thread-content">Enter Your Post</label>
+					<textarea name="create-thread-content" rows="6" cols="50" class="thread-content" required></textarea>
+					<div class="btn-wrapper"><button class="btn-create-thread" type="submit">Submit</button></div>
+					
+					<p class="cancel">Cancel</p>
+				</form>	
 
 			</section>
 

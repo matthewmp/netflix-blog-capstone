@@ -279,6 +279,7 @@ function editThread(threadId, content, title) {
 function addComment(postId) {
   showView('create-comment');
   $('.create-comment.view').attr('id', postId);
+  $('.create-comment-form').fadeIn();
 }
 
 //--------------State Management Functions---------------------
@@ -288,7 +289,7 @@ function login(id) {
   $('.btn-login').hide();
   $('.signup').hide();
   $('.btn-logout').fadeIn();
-  $('form').hide();
+  //$('form').hide();
   $('.login-overlay').hide();
   $('header').fadeOut();
   $('.nav-title').fadeIn();
@@ -305,7 +306,6 @@ function login(id) {
 
 // Return a list of threads that match users search
 function searchThreads(str) {
-  console.log(str);
   var rg = new RegExp(str, 'i');
   var threadList = [];
 
@@ -336,7 +336,7 @@ function hideAllViews() {
 
 function showView(screenName, flag) {
   hideAllViews();
-  //$('header').fadeOut();
+  
   $('.hb-items').removeClass('hb-items-hide');
   $('.' + screenName + '.view').fadeIn(400);
   state.view = screenName;
@@ -431,6 +431,7 @@ $(function () {
       $('.login-overlay').fadeIn();
       $('.login-form').fadeIn();
       showView('login');
+      $('header').show()
     }
   );
 
@@ -439,6 +440,7 @@ $(function () {
       $('.login-overlay').fadeIn();
       $('.sign-up-form').fadeIn();
       showView('login');
+      $('header').show()
     }
   );
 
@@ -455,6 +457,10 @@ $(function () {
       $('.login-form').fadeIn();
     }
   );
+
+  $('.btn-topics').click(function(){
+    _GET_AllThreads();
+  })
 
   // Log Out Button
   $('.btn-logout').click(function () {
@@ -519,10 +525,12 @@ $(function () {
   // Post Butotn to show 'create-post view'
   $('.btn-add-post').click(function () {
     showView('create-post.view');
+    $('.create-post-form').fadeIn();
   });
 
   // Submit New Post Button
-  $('.btn-create-post').click(function () {
+  $('.create-post-form').submit(function (e) {
+      e.preventDefault();
       addPost();
     }
   );
@@ -578,20 +586,24 @@ $(function () {
   $('.btn-add-thread').click(function () {
       if (state.user) {
         showView('create-thread');
+        $('.create-thread-form').fadeIn()
       } else {
         $('.btn-login').click();
+        $('header').show()
       }
     }
   );
 
   // Submit New Thread Button
-  $('.btn-create-thread').click(function () {
+  $('.create-thread-form').submit(function (e) {
+      e.preventDefault();
       addThread();
     }
   );
 
   // Submit New Comment Button
-  $('.btn-create-comment').click(function () {
+  $('.create-comment-form').submit(function (e) {
+      e.preventDefault();
       createComment();
     }
   );
@@ -627,7 +639,6 @@ $(function () {
 
   // X Button to Close Login/Sign Up Form
   $('.x-wrapper').click(function () {
-      $('form').fadeOut();
       $('.login-overlay').fadeOut();
       showView('main');
     }
@@ -635,17 +646,19 @@ $(function () {
 
   // Search Button
   $('#search-form').submit(function (e) {
+    console.log('searching');
     e.preventDefault();
     var str = $('.inp-search').val();
     searchThreads(str);
     }
   );
 
-  // Search Button Hamburger Menu
-  $('.hb-btn-search').click(function () {
-      var str = $('.hb-inp-search').val();
-      console.log('Search Str: ' + str);
-      searchThreads(str);
+  //Search Button Hamburger Menu
+  $('.hb-search-form').submit(function (e) {
+    e.preventDefault();
+    var str = $('.hb-inp-search').val();
+    console.log('Search Str: ' + str);
+    searchThreads(str);
     }
   );
 
