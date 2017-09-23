@@ -633,6 +633,7 @@ $(function () {
   // Show Hamburger nav Menu
   $('.hb-menu').on('click', function (e) {
       $('.hb-items').toggleClass('hb-items-hide');
+      $('.hb-menu').toggleClass('active', 5000);
       e.preventDefault();
     }
   );
@@ -674,6 +675,8 @@ $(function () {
 
   // Position Login Overlay
   $('.login-overlay').height($(document).height());
+
+
   
   // Set Initial View
   state.view = 'main';
