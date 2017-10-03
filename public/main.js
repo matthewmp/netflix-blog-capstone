@@ -427,6 +427,7 @@ $(function () {
 
   // Header Login Button
   $('.btn-login').click(function () {
+    $('.sign-up-form').hide();
       $('.login-form').show();
       $('.login-overlay').fadeIn();
       $('.login-form').fadeIn();
@@ -437,10 +438,11 @@ $(function () {
 
   // Header Sign Up Button
   $('.signup').click(function () {
-      $('.login-overlay').fadeIn();
-      $('.sign-up-form').fadeIn();
-      showView('login');
-      $('header').show()
+    $('.login-form').hide();
+    $('.login-overlay').fadeIn();
+    $('.sign-up-form').fadeIn();
+    showView('login');
+    $('header').show()
     }
   );
 
