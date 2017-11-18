@@ -49,16 +49,6 @@ const basicStrategy = new BasicStrategy((username, password, callback) => {
 
 
 passport.use(basicStrategy);
-// passport.use(new BasicStrategy(
-//   function(userid, password, done) {
-//     User.findOne({ username: userid }, function (err, user) {
-//       if (err) { return done(err); }
-//       if (!user) { return done(null, false); }
-//       if (!user.verifyPassword(password)) { return done(null, false); }
-//       return done(null, user);
-//     });
-//   }
-// ));
 
 passport.serializeUser(function (user, next) {
   let id = user._id;

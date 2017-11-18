@@ -966,13 +966,13 @@ h1.thread-view-title:first-child{
   margin-right: auto;
   top: -500px;
   background: linear-gradient(
-    rgba(0, 0, 0, 0.51),     
+    rgba(0, 0, 0, 0.65),     
     rgba(0, 0, 0, 0.92)   
   ),
-    url('media/hoc.jpg') no-repeat;
+    url('media/ironfist.jpeg') no-repeat;
 
   background-size: cover;
-  background-position-x: -100px;
+  background-position-x: -150px;
 }
 
 .login-overlay{
