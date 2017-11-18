@@ -295,7 +295,7 @@ header{
 
 input[class*="inp-"]{
   height: 30px;
-  width: 200px;
+  max-width: 200px;
 }
 
 .wrong-login{
@@ -955,24 +955,24 @@ h1.thread-view-title:first-child{
 .login-wrapper{  
   position: absolute;  
   text-align: center;
-  border: 10px solid #fff;
+  border: 3px solid #fff;
   box-shadow: 2px 2px 20px #fff;
   border-radius: 13px;
-  height: 600px;
-  width: 700px;
+  max-height: 600px;
+  max-width: 400px;
   left: 0;
   right: 0;
   margin-left: auto;
   margin-right: auto;
-  top: -500px;
+  top: -550px;
   background: linear-gradient(
     rgba(0, 0, 0, 0.51),     
     rgba(0, 0, 0, 0.92)   
   ),
-    url('media/hoc.jpg') no-repeat;
+    url('media/ironfist.jpeg') no-repeat;
 
   background-size: cover;
-  background-position-x: -100px;
+  background-position-x: -120px;
 }
 
 .login-overlay{
