@@ -544,7 +544,7 @@ $(function () {
   $('.thread.view').on('click', '#btn-edit-post', function () {
       var postId = $(this).closest('article').attr('id');
       $('.edit-post.view').attr('id', postId);
-
+      $('.edit-post-content').text($('.post-content').text());
       showView('edit-post');
     }
   );
