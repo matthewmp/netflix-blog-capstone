@@ -515,7 +515,7 @@ $(function () {
     state.threadView = $(this).attr('id');
   });
 
-  // Delet Post Button
+  // Delete Post Button
   $('.thread.view').on('click', '#btn-delete', function () {
       var postId = $(this).closest('article').attr('id');
       var threadId = $(this).closest('.thread.view').attr('id');

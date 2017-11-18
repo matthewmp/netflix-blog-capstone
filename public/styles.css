@@ -169,7 +169,7 @@ header{
   top: 350px;
   border: 1px solid #fff;
   height: 50px;
-  width: 100px;
+  max-width: 100px;
   text-align: center;
   line-height: 50px;
   color: #fff;
@@ -226,7 +226,7 @@ header{
 /* Log In View */
 
 .login-form, .sign-up-form{
-  margin-top: 120px;
+  margin-top: -20px;
   display: none;
 }
 
@@ -280,6 +280,7 @@ header{
 
 input[class*="inp-"]{
   height: 30px;
+  width: 80%;
   max-width: 200px;
 }
 
@@ -311,7 +312,7 @@ button[class*="btn-submit"]{
 .btn-login, .btn-create{
   border-style: none;
   cursor: pointer;
-  width: 120px;
+  max-width: 120px;
   height: 40px;
   font-size: 18px;
   font-family: 'Passion One';
@@ -943,25 +944,24 @@ h1.thread-view-title:first-child{
   border: 3px solid #fff;
   box-shadow: 2px 2px 20px #fff;
   border-radius: 13px;
-  max-height: 600px;
+  max-height: 300px;
   max-width: 400px;
   left: 0;
   right: 0;
   margin-left: auto;
   margin-right: auto;
-  top: -550px;
+  top: -620px;
   background: linear-gradient(
     rgba(0, 0, 0, 0.65),     
     rgba(0, 0, 0, 0.92)   
   ),
     url('media/ironfist.jpeg') no-repeat;
-
+  background-position: center;
   background-size: cover;
-  background-position-x: -120px;
 }
 
 .login-overlay{
-  position: absolute;
+  position: fixed;
   display: none;
   top: 0;
   right: 0;
