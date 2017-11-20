@@ -640,7 +640,7 @@ $(function () {
     }
   );
 
-  $('.nav-btn').click(function(){
+  $('.hb-btn').click(function(){
     $('.hb-menu').toggleClass('active', 5000);
   });
 
