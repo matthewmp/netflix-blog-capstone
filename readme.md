@@ -35,6 +35,11 @@ Netflix Junkie is a forum where a user can search for existing threads, create n
 * Javascript
 * jQuery
 * Node.js
+* Mocha / Chai
+* Chai-HTTP
+* MongoDB
+* Mongoose
+* Passport.js
 * mLab
 * Heroku
 
