@@ -640,6 +640,10 @@ $(function () {
     }
   );
 
+  $('.nav-btn').click(function(){
+    $('.hb-menu').toggleClass('active', 5000);
+  });
+
   // View Threads Button in Nav if No User is Logged In
   $('.thread-list-items').click(function (e) {
       if (!state.user) {
